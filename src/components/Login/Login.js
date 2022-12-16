@@ -29,7 +29,6 @@ function Login(props) {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    // console.log(firstname,lastname,email,password);
 
     const paperStyle = { padding: 20, height: '70vh', width: 320 }
     const avatarStyle = { backgroundColor: "#F65454" }
@@ -39,42 +38,35 @@ function Login(props) {
     let { user } = useSelector(state => state)
 
     const handleRegister = () => {
-        
-        //e.preventDefault();
-        // if (firstname === "") { setErrFirstname("First name required") }
-        // else if (lastname === "") { setErrLastname("Last name required") }
-        // else if (email === "") { setErrEmail("Email required") }
-        // else if (password === "") { setErrPassword("Password required") }
-        // else {        
-        if (props.user === "signup") {
-            dispatch(signUpUser({ firstname, lastname, email, password }))
-            
+        try {
+            if (props.user === "signup") {
+                dispatch(signUpUser({ firstname, lastname, email, password })).then(() => {
+                    navigate('/');
+                });
+            }
+            else {
+                dispatch(loginUser({ email, password })).then(() => {
+                    navigate('/');
+                });
+            }
+        } catch (error) {
+            return error
         }
-        else {
-            console.log("first");
-            dispatch(loginUser({ email, password }))
-        }
-        // }
-
     }
 
     return (
         <div>
             <Grid>
                 <Stack sx={{ ml: 50, my: 11 }} direction="row" alignItems="center" spacing={10}>
-                    {/* <Paper elevation={10} style={paperStyle}> */}
                     <h1 className='bg-gradient-to-r from-slate-50 to-[#F65454] rounded-lg text-white text-6xl'>
                         Chatvibe... {props.user ? <span><br />  <Typography>
                             ChatVibe helps you connect and share
                             with<br /> the people in your life.
                         </Typography></span> : ""}</h1>
 
-                    {/* </Paper> */}
                     <Paper elevation={10} style={paperStyle}>
                         <Grid align='center'> <Avatar style={avatarStyle}><LockOutlinedIcon />
                         </Avatar> {props.user === "user" ? <h2>Login</h2> : props.user === "admin" ? <h2>Admin</h2> : <h2>Signup</h2>}</Grid>
-
-
 
                         {props.user === "signup" ?
                             <div>
@@ -116,7 +108,7 @@ function Login(props) {
                                 Forgot password?
                             </Link></Typography>
                         </div> : ""}
-                        <Button onClick={() => { handleRegister() }}                        
+                        <Button onClick={() => { handleRegister() }}
                             variant="contained" style={btnStyle} fullWidth>{props.user === "signup" ? "Register" : "Login"}</Button>
 
                         {props.user === "user" ? <div>

@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { Navigate } from "react-router-dom";
 import axios from '../axios'
 // import { auth } from "../url";
 
@@ -12,13 +11,11 @@ const initialState = {
 }
 
 export const signUpUser = createAsyncThunk('signupuser', async (body) => {
-    // console.log("Sec.........",body);
     return await axios.post('register', body).then(({ data }) => {
         return data
     })
 })
 export const loginUser = createAsyncThunk('loginuser', async (body) => {
-    //console.log("Sec.........",body);
     return await axios.post('login', body).then(({ data }) => {
         return data
     })
@@ -49,22 +46,19 @@ const authslice = createSlice({
             console.log("Pending of logging user");
         })
         builder.addCase(loginUser.fulfilled, (state, action) => {
-            console.log(action.payload.user, "testing the action of login full filled");
+            // console.log(action.payload.user, "testing the action of login full filled");
             state.loading = false
             let user = action.payload.user
             let token = action.payload.token
             state.token = token
             state.user = user
             
-            // localStorage.setItem('msg',msg)
             localStorage.setItem("user", user)
             localStorage.setItem("token", token)
             state.isLoggedin = true;
             console.log("ok");
             console.log("second");
-            // <Navigate to='/' />
-
-            // }
+           
         })
         builder.addCase(loginUser.rejected, (state, action) => {
             state.loading = true
@@ -83,10 +77,8 @@ const authslice = createSlice({
             state.token = token
             state.user = user
 
-            // localStorage.setItem('msg',msg)
             localStorage.setItem("user", user)
-            localStorage.setItem("token", token)
-            // }
+            localStorage.setItem("token", token)            
         })
         builder.addCase(signUpUser.rejected, (state, action) => {
             state.loading = false
