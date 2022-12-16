@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react';
-import { useDispatch } from 'react-redux'
-import { signUpUser } from '../../redux/AuthSlice';
+import { useDispatch, useSelector } from 'react-redux'
+import { loginUser, signUpUser } from '../../redux/AuthSlice';
 import { Avatar, Button, Grid, Paper, TextField, Typography } from '@mui/material'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -12,10 +12,11 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import AppleIcon from '@mui/icons-material/Apple';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
-import { Link } from 'react-router-dom';
-import './Login.css'
+import { Link, useNavigate } from 'react-router-dom';
+import './Login.css';
 
 function Login(props) {
+
     const [firstname, setFirstname] = useState("")
     const [lastname, setLastname] = useState("")
     const [email, setEmail] = useState("")
@@ -26,38 +27,47 @@ function Login(props) {
     const [errEmail, setErrEmail] = useState("")
     const [errPassword, setErrPassword] = useState("")
 
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     // console.log(firstname,lastname,email,password);
 
-    const paperStyle = { padding: 20, height: '70vh', width: 280 }
+    const paperStyle = { padding: 20, height: '70vh', width: 320 }
     const avatarStyle = { backgroundColor: "#F65454" }
     const btnStyle = { backgroundColor: "#F65454", margin: "20px 0" }
     const textboxMargin = { margin: "5px 0", }
     const chatvibe = { color: "#F65454" }
-    const chatDecr = { color: "#2F88FF" }
+    let { user } = useSelector(state => state)
 
-
-    const handleRegister = (e) => {
+    const handleRegister = () => {
+        
         //e.preventDefault();
-        if (firstname === "") { setErrFirstname("First name required") }
-        else if (lastname === "") { setErrLastname("Last name required") }
-        else if (email === "") { setErrEmail("Email required") }
-        else if (password === "") { setErrPassword("Password required") }
+        // if (firstname === "") { setErrFirstname("First name required") }
+        // else if (lastname === "") { setErrLastname("Last name required") }
+        // else if (email === "") { setErrEmail("Email required") }
+        // else if (password === "") { setErrPassword("Password required") }
+        // else {        
+        if (props.user === "signup") {
+            dispatch(signUpUser({ firstname, lastname, email, password }))
+            
+        }
+        else {
+            console.log("first");
+            dispatch(loginUser({ email, password }))
+        }
+        // }
 
-        else { dispatch(signUpUser({ firstname, lastname, email, password })) }
     }
 
     return (
         <div>
-
-            <Grid   >
-
+            <Grid>
                 <Stack sx={{ ml: 50, my: 11 }} direction="row" alignItems="center" spacing={10}>
                     {/* <Paper elevation={10} style={paperStyle}> */}
-                    <h1 style={chatvibe}>Chatvibe... {props.user ? <span><br />  <Typography style={chatDecr}>
-                        ChatVibe helps you connect and share
-                        with<br /> the people in your life.
-                    </Typography></span> : ""}</h1>
+                    <h1 className='bg-gradient-to-r from-slate-50 to-[#F65454] rounded-lg text-white text-6xl'>
+                        Chatvibe... {props.user ? <span><br />  <Typography>
+                            ChatVibe helps you connect and share
+                            with<br /> the people in your life.
+                        </Typography></span> : ""}</h1>
 
                     {/* </Paper> */}
                     <Paper elevation={10} style={paperStyle}>
@@ -106,7 +116,7 @@ function Login(props) {
                                 Forgot password?
                             </Link></Typography>
                         </div> : ""}
-                        <Button onClick={() => { handleRegister() }}
+                        <Button onClick={() => { handleRegister() }}                        
                             variant="contained" style={btnStyle} fullWidth>{props.user === "signup" ? "Register" : "Login"}</Button>
 
                         {props.user === "user" ? <div>

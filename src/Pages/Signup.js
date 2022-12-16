@@ -3,7 +3,7 @@ import Login from '../components/Login/Login'
 
 function signuppage(props) {
   return (
-    <div>
+    <div>      
       <Login  user={props.user}/>
     </div>
   )
