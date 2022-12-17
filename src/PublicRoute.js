@@ -13,10 +13,10 @@ const isLoggedIn = () => {
 
 export default function ProtectedRoute() {
   if (isLoggedIn()) {
-    return <Outlet />
+   return <Navigate to="/" />
   }
   else {
-    return <Navigate to="/login" />
+    return <Outlet />
   }
 }
 
