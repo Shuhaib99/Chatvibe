@@ -5,6 +5,7 @@ import Login from './Pages/Login'
 import Admin from './Pages/Admin'
 import Signup from './Pages/Signup'
 import ViewHome from './Pages/ViewHome'
+import Profile from './Pages/Profile'
 // import { useSelector } from 'react-redux'
 import ProtectedRoute from './ProtectedRoute'
 import PublicRoute from './PublicRoute'
@@ -22,6 +23,12 @@ function App() {
           
           <Route element={<ProtectedRoute />} >
             <Route path='/' exact element={<ViewHome />} />
+            <Route path='/profile' exact element={<Profile />} />
+            <Route path='/about' exact element={<Profile />} />
+            <Route path='/friends' exact element={<Profile />} />
+            <Route path='/photos' exact element={<Profile />} />
+            <Route path='/posts' exact element={<Profile />} />
+
           </Route>
 
           <Route element={<PublicRoute />} >

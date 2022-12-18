@@ -1,9 +1,13 @@
 import React from 'react'
 
-function Avatar() {
+function Avatar({size}) {
+    let width = 'w-12'
+    if (size === 'lg') {
+        width = 'w-36'
+    }
     return (
 
-        <div className='w-12 rounded-full overflow-hidden'>
+        <div className={`${width} rounded-full overflow-hidden`}>
             <img src="https://thumbs.dreamstime.com/b/businessman-icon-vector-male-avatar-profile-image-profile-businessman-icon-vector-male-avatar-profile-image-182095609.jpg" alt='img' />
         </div>
 

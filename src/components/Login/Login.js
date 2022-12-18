@@ -98,9 +98,6 @@ function Login(props) {
                             <span >{errPassword}</span>
                         </center>
                         {props.user === "user" ? <div>
-                            {/* <FormControlLabel
-                        control={<Checkbox defaultChecked sx={{ color: "#F65454", '&.Mui-checked': { color: "#F65454", } }} />}
-                        label={<Typography variant="caption">Keep me Logged in. </Typography>} /> */}
                             <center>
                                 <Link className='text-white  text-xs hover:border-b' to="" >
                                     Forgotten Password?
