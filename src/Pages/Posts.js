@@ -1,6 +1,6 @@
 import React from 'react'
 import Posts from '../components/Profile/Posts'
-function Posts() {
+function postsPage() {
   return (
     <div>
       <Posts />
@@ -8,4 +8,4 @@ function Posts() {
   )
 }
 
-export default Posts
+export default postsPage

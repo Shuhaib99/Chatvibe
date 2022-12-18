@@ -1,9 +1,10 @@
 import React from 'react'
+import Profile from '../Profile'
 
 function Photos() {
   return (
     <div>
-      Photo
+      <Profile />
     </div>
   )
 }

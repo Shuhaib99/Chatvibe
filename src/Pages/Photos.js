@@ -1,6 +1,6 @@
 import React from 'react'
 import Photos from '../components/Profile/Photos'
-function Photos() {
+function photosPage() {
   return (
     <div>
       <Photos />
@@ -8,4 +8,4 @@ function Photos() {
   )
 }
 
-export default Photos
+export default photosPage

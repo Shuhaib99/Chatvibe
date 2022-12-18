@@ -1,6 +1,6 @@
 import React from 'react'
 import Friends from '../components/Profile/Friends'
-function Friends() {
+function friendsPage() {
   return (
     <div>
       <Friends />
@@ -8,4 +8,4 @@ function Friends() {
   )
 }
 
-export default Friends
+export default friendsPage
