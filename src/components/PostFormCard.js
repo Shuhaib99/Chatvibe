@@ -1,14 +1,28 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useState } from'react'
 import Avatar from './Avatar'
 import Card from './Card'
 
 function PostFormCard() {
+    // const [profile,setProfile]=useState(null)
+    const [content,setContent]=useState("")
+
+    const handleSubmit=()=>{
+        try{
+            
+        }catch(error){
+            return error
+        }
+    }
+
     return (
         <div>
             <Card>
                 <div className='flex gap-1'>
                   <Avatar />
-                    <textarea className='grow p-3 h-14' placeholder={'Whats on your mind, Shuhaib?'} />
+                    <textarea value={content} onChange={(e)=>{
+                        setContent(e.target.value)
+                    }} className='grow p-3 h-14' placeholder={'Whats on your mind, Shuhaib?'} />
                 </div>
                 <div className='flex gap-5 items-center mt-2'>
                     <div>
@@ -34,7 +48,9 @@ function PostFormCard() {
                             Mood</button>
                     </div>
                     <div className='grow text-right'>
-                        <button className='bg-socialBlue text-white px-6 py-1 rounded-md '>Share</button>
+                        <button onClick={()=>{
+                            handleSubmit()
+                        }} className='bg-socialBlue text-white px-6 py-1 rounded-md '>Share</button>
                     </div>
                 </div>
 

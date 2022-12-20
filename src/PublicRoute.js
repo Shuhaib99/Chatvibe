@@ -11,7 +11,7 @@ const isLoggedIn = () => {
   }
 }
 
-export default function ProtectedRoute() {
+export default function PublicRoute() {
   if (isLoggedIn()) {
    return <Navigate to="/" />
   }

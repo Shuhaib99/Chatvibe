@@ -1,1 +1,2 @@
-export const auth='auth/'
+export const authAPI='auth'
+export const userAPI='user'

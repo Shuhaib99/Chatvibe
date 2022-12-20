@@ -1,14 +1,21 @@
 import React from 'react'
 import Card from './Card'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 
 function Navigation() {
+    const navigate=useNavigate()
     const location = useLocation();
     const pathname = location.pathname
 
 
     const active_element = "flex gap-2 py-3 my-1  bg-socialBlue text-white -mx-10 px-10 rounded-md shadow-md shadow-gray-300"
     const nonActive_element = "flex gap-3 py-2 my-2 hover:bg-blue-500 hover:bg-opacity-20 -mx-1 px-4 rounded-md transition-all hover:scale-110 hover:shadow-md shadow-gray-300"
+
+    const logout=()=>{
+        localStorage.clear()
+        navigate('/login')
+    }
+
 
     return (
 
@@ -43,13 +50,14 @@ function Navigation() {
                         </svg>
                         Notifications
                     </Link>
-
-                    <Link to="" className={nonActive_element} >
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
-                        </svg>
-                        Logout
-                    </Link>
+                    <button onClick={()=>{  logout() }} className='w-full -my-3'>
+                        <span className={nonActive_element} >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                            </svg>
+                            Logout
+                        </span>
+                    </button>
 
                 </Card>
             </div>

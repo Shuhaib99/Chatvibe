@@ -19,10 +19,7 @@ function App() {
   // let { user } = useSelector(state => state)
   let USER
   return (
-
     <div>
-
-
       <BrowserRouter>
         <Routes >
 
