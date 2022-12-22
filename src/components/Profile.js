@@ -20,7 +20,7 @@ function Profile() {
       <Card noPadding={true}>
         <div className='relative overflow-hidden rounded-md'>
           <div className='h-36 overflow-hidden flex justify-center items-center'>
-            <img src='https://images.unsplash.com/photo-1505228395891-9a51e7e86bf6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1333&q=80' alt='image' />
+            <img src='https://images.unsplash.com/photo-1505228395891-9a51e7e86bf6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1333&q=80' alt='img' />
           </div>
           <div className='absolute top-24 left-4'>
             <Avatar size={'lg'} />

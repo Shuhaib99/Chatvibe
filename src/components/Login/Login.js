@@ -1,9 +1,10 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { loginUser, signUpUser, googleUser } from '../../redux/AuthSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode'
+
 import './Login.css';
 
 
@@ -15,14 +16,14 @@ function Login(props) {
     const [password, setPassword] = useState("")
 
     const [errFirstname, setErrFirstname] = useState(true)
-    const [errLastname, setErrLastname] = useState(true)
+    // const [errLastname, setErrLastname] = useState(true)
     const [errEmail, setErrEmail] = useState(true)
     const [errPassword, setErrPassword] = useState(true)
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    let { user } = useSelector(state => state)
+    // let { user } = useSelector(state => state)
 
     // let usernameRegex = /^[a-zA-Z0-9]{5,12}$/
     let firstnameRegex = /^[a-zA-Z0-9]{4,12}$/
@@ -38,11 +39,11 @@ function Login(props) {
             navigate('/')
         })
     }
-
+    
     useEffect(() => {
         /*global  google*/
         google.accounts.id.initialize({
-            client_id: "",
+            client_id: process.env.GCLIENTID,
             callback: handleCallbackResponse,
         });
 
@@ -167,8 +168,8 @@ function Login(props) {
                             <br />
                             <div>
                                 <p className='text-white text-xs'>__________________or continue with__________________</p>
-                            </div><br />                            
-                                <div className='w-96' id='googlebtn'>
+                            </div><br />
+                                <div id='googlebtn'>
 
                                 </div>                           
                         </center>
