@@ -1,8 +1,9 @@
 
 import axios from 'axios';
+import { cloud } from '../constants'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import {uploadImage} from '../redux/uploadSlice';
+import { uploadImage } from '../redux/uploadSlice';
 import Avatar from './Avatar'
 import Card from './Card'
 
@@ -19,30 +20,33 @@ function PostFormCard() {
         }
     }
 
-    const handleSubmit = (e) => {        
-        e.preventDefault()        
-        const newPost={
-            desc:content
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        const newPost = {
+            desc: content
         }
-        if(image){
+        if (image) {
             const data = new FormData()
             //const filename= Date.now()+image.name
             //data.append("name",filename)
-            data.append("file",image)
-            data.append("upload_preset","a6ul1tvu")
+            data.append("file", image)
+            data.append("upload_preset", "")
             // newPost.image=filename
             // console.log(newPost);            
-        }
-        try {            
-                axios.
 
-                dispatch(uploadImage({newPost})).then((res)=>{
-                    console.log(res);
+            try {
+                axios.post("https://api.cloudinary.com/v1_1//image/upload", data).then((res) => {
+                    console.log(res, "cloud");
                 })
-            
 
-        } catch (error) {
-            return error
+                // dispatch(uploadImage({newPost})).then((res)=>{
+                //     console.log(res);
+                // })
+
+
+            } catch (error) {
+                return error
+            }
         }
     }
 
@@ -94,10 +98,10 @@ function PostFormCard() {
                     </div>
                 </div>
                 {image && (
-                   
-                        <div className='overflow-hidden aspect-square w-96 flex items-center '>
-                            <img src={URL.createObjectURL(image)} alt="" />
-                      
+
+                    <div className='overflow-hidden aspect-square w-96 flex items-center '>
+                        <img src={URL.createObjectURL(image)} alt="" />
+
                     </div>
                 )}
             </Card>

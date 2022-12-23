@@ -22,7 +22,7 @@ function Login(props) {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
-
+    // const client= process.env.GCLIENTID
     // let { user } = useSelector(state => state)
 
     // let usernameRegex = /^[a-zA-Z0-9]{5,12}$/
@@ -43,7 +43,7 @@ function Login(props) {
     useEffect(() => {
         /*global  google*/
         google.accounts.id.initialize({
-            client_id: process.env.GCLIENTID,
+            client_id:"",
             callback: handleCallbackResponse,
         });
 
@@ -169,7 +169,7 @@ function Login(props) {
                             <div>
                                 <p className='text-white text-xs'>__________________or continue with__________________</p>
                             </div><br />
-                                <div id='googlebtn'>
+                                <div className='w-96' id='googlebtn'>
 
                                 </div>                           
                         </center>
