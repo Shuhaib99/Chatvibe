@@ -2,17 +2,26 @@
 import axios from 'axios';
 import { cloud } from '../constants'
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { uploadImage } from '../redux/uploadSlice';
+import { useDispatch, useSelector } from 'react-redux'
+import { uploadImage } from '../redux/PostSlice';
+import toast, { Toaster } from 'react-hot-toast';
+// import { ToastContainer, toast } from 'react-toastify'
+// import 'react-toastify/dist/ReactToastify.css';
 import Avatar from './Avatar'
 import Card from './Card'
+
+
+
 
 function PostFormCard() {
     // const [profile,setProfile]=useState(null)
     const [content, setContent] = useState("")
     const [image, setImage] = useState(null)
+    let loading = useSelector(state => state.postSlice.loading)
     // const imageRef = useRef()
     const dispatch = useDispatch()
+    const notify = () => toast.success(loading);
+
     const onImageChange = (e) => {
         if (e.target.files && e.target.files[0]) {
             let img = e.target.files[0]
@@ -20,38 +29,53 @@ function PostFormCard() {
         }
     }
 
+
     const handleSubmit = (e) => {
         e.preventDefault()
         const newPost = {
             desc: content
         }
+        //if (content || image) {
         if (image) {
             const data = new FormData()
             //const filename= Date.now()+image.name
             //data.append("name",filename)
             data.append("file", image)
-            data.append("upload_preset", "")
-            // newPost.image=filename
-            // console.log(newPost);            
+            data.append("upload_preset", "a6ul1tvu")
 
-            try {
-                axios.post("https://api.cloudinary.com/v1_1//image/upload", data).then((res) => {
-                    console.log(res, "cloud");
+            //console.log(newPost);            
+            axios.post(cloud, data).then((res) => {
+                newPost.image = res.data.secure_url
+                newPost.imagePID = res.data.public_id
+                dispatch(uploadImage({ newPost })).then((res) => {
+                    notify()
                 })
-
-                // dispatch(uploadImage({newPost})).then((res)=>{
-                //     console.log(res);
-                // })
-
-
-            } catch (error) {
-                return error
-            }
+            })
+        } else if (content) {
+            dispatch(uploadImage({ newPost })).then((res) => {
+                notify()
+            })
         }
+
+
+        //}
     }
 
     return (
         <div>
+            <Toaster toastOptions={{
+                success: {
+                    style: {
+                        border: '2px solid black',
+                        padding: '16px'
+                    },
+                },
+                error: {
+                    style: {
+                        background: 'red',
+                    },
+                },
+            }} />
             <Card>
                 <div className='flex gap-1'>
                     <Avatar />
@@ -82,6 +106,7 @@ function PostFormCard() {
                             </svg>
                             Mood</button>
                     </div>
+
                     <div>
 
                         <input type="file" hidden id='inpfile' onChange={onImageChange} />
@@ -97,9 +122,9 @@ function PostFormCard() {
                         }} className='bg-socialBlue text-white px-6 py-1 rounded-md '>Share</button>
                     </div>
                 </div>
-                {image && (
 
-                    <div className='overflow-hidden aspect-square w-96 flex items-center '>
+                {image && (
+                    <div>
                         <img src={URL.createObjectURL(image)} alt="" />
 
                     </div>

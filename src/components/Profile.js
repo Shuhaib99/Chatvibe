@@ -65,7 +65,7 @@ function Profile() {
       </Card>
       {isPosts && (
         <div>
-          <PostCard />
+          {/* <PostCard /> */}
         </div>
       )}
       {isAbout && (

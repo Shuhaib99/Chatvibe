@@ -84,7 +84,7 @@ function Login(props) {
                         navigate('/');
                     });
                 } else {
-                    console.log("validartiokn error");
+                    console.log("validation error");
                 }
             }
         } catch (error) {

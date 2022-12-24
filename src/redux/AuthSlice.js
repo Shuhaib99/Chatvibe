@@ -7,22 +7,23 @@ const initialState = {
     isLoggedin: false,
     user: "",
     loading: "",
-    error: ""
+    error: "",
+    token:localStorage.getItem('token') || null
 }
 
 export const signUpUser = createAsyncThunk('signupuser', async (body) => {
-    return await axios.post(`${authAPI}/register`, body).then(({ data }) => {
+    return await axios.post(`${authAPI}register`, body).then(({ data }) => {
         return data
     })
 })
 
 export const loginUser = createAsyncThunk('loginuser', async (body) => {
-    return await axios.post(`${authAPI}/login`, body).then(({ data }) => {
+    return await axios.post(`${authAPI}login`, body).then(({ data }) => {
         return data
     })
 })
 export const googleUser = createAsyncThunk('googleuser', async (body) => {
-    return await axios.post(`${authAPI}/google`, body).then(({ data }) => {
+    return await axios.post(`${authAPI}google`, body).then(({ data }) => {
         return data
     })
 })
