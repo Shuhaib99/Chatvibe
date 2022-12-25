@@ -1,11 +1,11 @@
 import React from 'react'
-
-function loading() {
+import { BounceLoader } from 'react-spinners';
+function Loading() {
   return (
     <div>
-      <img src='../../../images' alt='' />
+      <BounceLoader color='#348DFA'/>              
     </div>
   )
 }
 
-export default loading
+export default Loading

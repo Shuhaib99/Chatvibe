@@ -5,6 +5,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { uploadImage } from '../redux/PostSlice';
 import toast, { Toaster } from 'react-hot-toast';
+import Loading from './Loading';
 // import { ToastContainer, toast } from 'react-toastify'
 // import 'react-toastify/dist/ReactToastify.css';
 import Avatar from './Avatar'
@@ -13,10 +14,12 @@ import Card from './Card'
 
 
 
+
 function PostFormCard() {
     // const [profile,setProfile]=useState(null)
     const [content, setContent] = useState("")
     const [image, setImage] = useState(null)
+    const [isLoading, setIsLoading] = useState(false)
     let loading = useSelector(state => state.postSlice.loading)
     // const imageRef = useRef()
     const dispatch = useDispatch()
@@ -37,6 +40,7 @@ function PostFormCard() {
         }
         //if (content || image) {
         if (image) {
+            setIsLoading(true)
             const data = new FormData()
             //const filename= Date.now()+image.name
             //data.append("name",filename)
@@ -48,11 +52,16 @@ function PostFormCard() {
                 newPost.image = res.data.secure_url
                 newPost.imagePID = res.data.public_id
                 dispatch(uploadImage({ newPost })).then((res) => {
+                    setIsLoading(false)
                     notify()
+
                 })
             })
+
         } else if (content) {
+            setIsLoading(true)
             dispatch(uploadImage({ newPost })).then((res) => {
+                setIsLoading(false)
                 notify()
             })
         }
@@ -119,10 +128,15 @@ function PostFormCard() {
                         }} className='bg-socialBlue text-white px-6 py-1 rounded-md '>Share</button>
                     </div>
                 </div>
-
-                {image && (
+                {isLoading &&
                     <div>
-                        <img src={URL.createObjectURL(image)} alt="" className='' />
+                        <Loading />
+                            </div>
+                }
+
+                {image && !isLoading && (
+                    <div>
+                        <img src={URL.createObjectURL(image)} alt="" />
 
                     </div>
                 )}
