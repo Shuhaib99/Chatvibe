@@ -41,7 +41,7 @@ function PostFormCard() {
             //const filename= Date.now()+image.name
             //data.append("name",filename)
             data.append("file", image)
-            data.append("upload_preset", "a6ul1tvu")
+            data.append("upload_preset", "")
 
             //console.log(newPost);            
             axios.post(cloud, data).then((res) => {
@@ -56,9 +56,6 @@ function PostFormCard() {
                 notify()
             })
         }
-
-
-        //}
     }
 
     return (
@@ -125,7 +122,7 @@ function PostFormCard() {
 
                 {image && (
                     <div>
-                        <img src={URL.createObjectURL(image)} alt="" />
+                        <img src={URL.createObjectURL(image)} alt="" className='' />
 
                     </div>
                 )}

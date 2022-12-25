@@ -58,8 +58,6 @@ function Login(props) {
 
     //.....................................................
     const handleRegister = (e) => {
-
-        console.log("its the handleRegoster ");
         e.preventDefault()
         try {
             if (props.user === "signup") {

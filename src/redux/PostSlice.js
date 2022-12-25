@@ -1,9 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from '../axios'
-import { postAPI } from "../url";
+import { likeAPI, postAPI } from "../url";
 const initialState = {
     loading: "Loading",
-    post: []
+    post: [],
+    likes:[]
 }
 
 export const uploadImage = createAsyncThunk('imagePost', async (body) => {
@@ -19,6 +20,16 @@ export const getPosts = createAsyncThunk('getPosts', async () => {
     const token = localStorage.getItem('token')
     return await axios.get(`${postAPI}getPosts`, { headers: { 'authorization': 'Bearer ' + token } }).then(({ data }) => {
         return data
+        
+    }).catch(err => {
+        console.log(err)
+    })
+})
+
+export const likePosts = createAsyncThunk('likePosts', async (body) => {
+    const token = localStorage.getItem('token')
+    return await axios.post(`${likeAPI}`,body, { headers: { 'authorization': 'Bearer ' + token } }).then(({ data }) => {
+        return data
     }).catch(err => {
         console.log(err)
     })
@@ -29,7 +40,7 @@ export const getPosts = createAsyncThunk('getPosts', async () => {
 
 
 const PostSlice = createSlice({
-    name: "upload_image",
+    name: "Posts",
     initialState,
     reducers: {
 
@@ -65,7 +76,7 @@ const PostSlice = createSlice({
         })
 
         builder.addCase(getPosts.fulfilled, (state, action) => {
-            state.post = action.payload
+            // state.post = action.payload
             console.log("full filled posts"); 
 
         })
@@ -73,6 +84,25 @@ const PostSlice = createSlice({
         builder.addCase(getPosts.rejected, (state, action) => {
             //state.loading = "Loading failed please try again"
             //console.log("Rejected of Loading");
+        })
+
+        //..............................likes.......................
+
+        builder.addCase(likePosts.pending, (state, action) => {
+
+            console.log("Pending of like");
+            //state.loading = "Pending"
+        })
+
+        builder.addCase(likePosts.fulfilled, (state, action) => {
+            console.log(" full filled like");
+            state.likes=action.payload
+
+        })
+
+        builder.addCase(likePosts.rejected, (state, action) => {
+            //state.loading = "Uploading failed please try again"
+            console.log("Rejected of like");
         })
     }
 })

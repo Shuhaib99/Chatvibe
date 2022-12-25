@@ -1,26 +1,44 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { getPosts, posts } from '../redux/PostSlice'
+import { getPosts, likePosts } from '../redux/PostSlice'
+import { currentUser } from '../redux/AuthSlice'
 import Avatar from './Avatar'
 import Card from './Card'
 import Moment from 'react-moment'
 
 function PostCard() {
-    // const [post, setPost] = useState([])
     const dispatch = useDispatch()
-    let posts = useSelector(state => state.postSlice.post)
+    const [likes, setLikes] = useState([])
+    const [user, setUser] = useState("")
+    const [posts, setPosts] = useState([])
+    // let posts = useSelector(state => state.postSlice.post)
+    let likesArr = useSelector(state => state.postSlice.likes)
+    // const user=useSelector(currentUser)
+    // const isLikedByMe = !!likes.find(like => likes.userid === user)
+    //console.log(isLikedByMe); 
+
+
+    function likeThisPost(postid) {
+        dispatch(likePosts({ postid })).then((res) => {
+            setLikes(likesArr)
+        })
+    }
+
     useEffect(() => {
         dispatch(getPosts()).then((res) => {
-            console.log("then() Fetch posts");
+            //console.log(res.payload.userid, "then() Fetch posts");
+            setPosts(res.payload.posts)
+            setUser(res.payload.userid)
         })
-    }, [])
+    }, [likes])
 
     return (
         <div>
-            {posts.map(obj => {
+            {posts?.map(obj => {
 
-                return  <Card key={obj._id}>
+                return <Card key={obj._id}>
+
                     <div className='flex gap-3'>
                         <div>
                             <Link to="/profile">
@@ -28,7 +46,7 @@ function PostCard() {
                             </Link>
                         </div>
                         <div className='grow'>
-                            <Link to="/profile" className='font-semibold'>{obj.userid.firstname+" " + obj.userid.lastname} </Link> shared a
+                            <Link to="/profile" className='font-semibold'>{obj.userid.firstname + " " + obj.userid.lastname} </Link> shared a
                             <Link to="" className='text-socialBlue'> album</Link>
                             <p className='text-gray-500 text-sm'> <Moment fromNow>{obj.createdAt}</Moment></p>
                         </div>
@@ -49,10 +67,13 @@ function PostCard() {
                         </div>
                     </div>
                     <div className='mt-5 flex gap-8'>
-                        <button className='flex gap-2 items-center'>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+                        <button onClick={() => {
+                            likeThisPost(obj._id)
+
+                        }} className='flex gap-2 items-center'>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className={obj.likes.includes(user) ? "w-6 h-6 fill-red-500" : "w-6 h-6"}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-                            </svg>72
+                            </svg>{obj?.likes?.length}
                         </button>
 
                         <button className='flex gap-2 items-center'>
@@ -83,7 +104,7 @@ function PostCard() {
                     </div>
                 </Card>
             })
-        }
+            }
         </div>
     )
 }
