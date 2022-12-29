@@ -7,7 +7,7 @@ function ViewHome() {
   return (
     <Layout>
       <PostFormCard />
-      <PostCard />
+      <PostCard userid={""}/>
     </Layout>
   )
 }

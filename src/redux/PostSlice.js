@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from '../axios'
-import { likeAPI, postAPI } from "../url";
+import { likeAPI, postAPI,commentAPI } from "../url";
 const initialState = {
     loading: "Loading",
+    refresh:"false",
     post: [],
     likes:[]
 }
@@ -35,6 +36,16 @@ export const likePosts = createAsyncThunk('likePosts', async (body) => {
     })
 })
 
+export const commentPost = createAsyncThunk('commentPost', async (body) => {
+    const token = localStorage.getItem('token')
+    console.log(body,"bodycomment");
+    return await axios.post(`${commentAPI}`,body, { headers: { 'authorization': 'Bearer ' + token } }).then(({ data }) => {
+        return data
+    }).catch(err => {
+        console.log(err)
+    })
+})
+
 
 
 
@@ -43,10 +54,13 @@ const PostSlice = createSlice({
     name: "Posts",
     initialState,
     reducers: {
-
+            refr:(state,action)=>{
+                state.refresh=action.payload
+                console.log(state.refresh,"Inside of reducer");
+            }
     },
 
-
+    
     extraReducers: (builder) => {
         //..............Upload image....................
 
@@ -106,5 +120,5 @@ const PostSlice = createSlice({
         })
     }
 })
-
+export const {refr}=PostSlice.actions
 export default PostSlice.reducer

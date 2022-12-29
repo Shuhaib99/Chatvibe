@@ -11,17 +11,31 @@ const initialState = {
 export const signUpUser = createAsyncThunk('signupuser', async (body) => {
     return await axios.post(`${authAPI}register`, body).then(({ data }) => {
         return data
+    }).catch ((err)=>{
+        console.log(err)
     })
 })
 
 export const loginUser = createAsyncThunk('loginuser', async (body) => {
     return await axios.post(`${authAPI}login`, body).then(({ data }) => {
         return data
+    }).catch ((err)=>{
+        console.log(err)
     })
 })
 export const googleUser = createAsyncThunk('googleuser', async (body) => {
     return await axios.post(`${authAPI}google`, body).then(({ data }) => {
         return data
+    }).catch ((err)=>{
+        console.log(err)
+    })
+})
+
+export const getUser = createAsyncThunk('getUser', async (body) => {
+    return await axios.post(`${authAPI}google`, body).then(({ data }) => {
+        return data
+    }).catch ((err)=>{
+        console.log(err)
     })
 })
 

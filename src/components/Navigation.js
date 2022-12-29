@@ -19,7 +19,7 @@ function Navigation() {
 
     return (
 
-        <div>
+        <div className='fixed'>
             <div className='px-4 py-2'>
                 <Card>
                     <h2 className='text-gray-400 font-bold mb-3'>Navigation</h2>

@@ -5,17 +5,16 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { uploadImage } from '../redux/PostSlice';
 import toast, { Toaster } from 'react-hot-toast';
+// import { refr } from '../redux/PostSlice'
+import PostCard from './PostCard'
 import Loading from './Loading';
+
 // import { ToastContainer, toast } from 'react-toastify'
 // import 'react-toastify/dist/ReactToastify.css';
 import Avatar from './Avatar'
 import Card from './Card'
 
-
-
-
-
-function PostFormCard() {
+function PostFormCard() {    
     // const [profile,setProfile]=useState(null)
     const [content, setContent] = useState("")
     const [image, setImage] = useState(null)
@@ -63,12 +62,15 @@ function PostFormCard() {
             dispatch(uploadImage({ newPost })).then((res) => {
                 setIsLoading(false)
                 notify()
+                // dispatch(refr("true"))
             })
         }
     }
 
     return (
-        <div>
+        
+        <div className=''>
+            
             <Toaster toastOptions={{
                 success: {
                     style: {
@@ -87,7 +89,7 @@ function PostFormCard() {
                     <Avatar />
                     <textarea value={content} onChange={(e) => {
                         setContent(e.target.value)
-                    }} className='grow p-3 h-14' placeholder={'Whats on your mind, Shuhaib?'} />
+                    }} className='grow p-3 h-14' placeholder={'Whats on your mind?'} />
                 </div>
                 <div className='flex gap-5 items-center mt-2'>
                     <div>
@@ -131,7 +133,7 @@ function PostFormCard() {
                 {isLoading &&
                     <div>
                         <Loading />
-                            </div>
+                    </div>
                 }
 
                 {image && !isLoading && (

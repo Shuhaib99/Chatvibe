@@ -1,47 +1,95 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Navigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { getPosts, likePosts } from '../redux/PostSlice'
-import { currentUser } from '../redux/AuthSlice'
+import { getPosts, likePosts, commentPost } from '../redux/PostSlice'
+import { useFormik } from 'formik'
+import { getPostsById } from '../redux/UserSlice'
+import * as yup from 'yup'
+// import { refr } from '../redux/PostSlice'
 import Avatar from './Avatar'
 import Card from './Card'
 import Moment from 'react-moment'
+import Profile from './Profile'
 
-function PostCard() {
+
+function PostCard(props) {
+    console.log(props.userid.id, "props");
     const dispatch = useDispatch()
+    const params = useParams()
     const [likes, setLikes] = useState([])
     const [user, setUser] = useState("")
     const [posts, setPosts] = useState([])
-    // let posts = useSelector(state => state.postSlice.post)
+    const [commentText, setCommentText] = useState('')
+    // let refresh = useSelector(state => state.postSlice.refresh)
     let likesArr = useSelector(state => state.postSlice.likes)
     // const user=useSelector(currentUser)
     // const isLikedByMe = !!likes.find(like => likes.userid === user)
-    //console.log(isLikedByMe); 
+    // console.log(refresh,"testrefresh"); 
 
-
+    // dispatch(refr())
     function likeThisPost(postid) {
+
         dispatch(likePosts({ postid })).then((res) => {
             setLikes(likesArr)
         })
     }
 
     useEffect(() => {
-        dispatch(getPosts()).then((res) => {
-            //console.log(res.payload.userid, "then() Fetch posts");
-            setPosts(res.payload.posts)
-            setUser(res.payload.userid)
-        })
+        if (!props.userid) {
+            dispatch(getPosts()).then((res) => {
+                //console.log(res.payload, "then() Fetch posts");
+                setPosts(res.payload.posts)
+                setUser(res.payload.userid)
+            })
+        } else {
+            console.log("Postcard test");
+            dispatch(getPostsById(props.userid.id)).then((res) => {
+                console.log(res.payload);
+                setPosts(res.payload.posts)
+                setUser(res.payload.userid)
+            })
+        }
     }, [likes])
 
+
+
+    const handleSubmit =(e,id)=>{
+        e.preventDefault()
+        console.log(commentText,id,"tedttttttttttt");
+
+        dispatch(commentPost({ commentText,id }))
+            .then((res) => {
+                console.log(res);
+            });
+        
+    }
+    
+    // const formik = useFormik({
+    //     initialValues: {
+    //         comment: "",
+    //         id:""
+    //     }
+    // });
+
+
+    //console.log(formik.errors,"errorrrrrrrrrr");
+
+
+    //const comment = commentText
+    // function postComment(postid) {
+    //     // e.preventDefault()
+    //     dispatch(commentPost({ postid })).then((res) => {
+    //         console.log(res.payload);
+    //     })
+    // }
     return (
         <div>
             {posts?.map(obj => {
-
-                return <Card key={obj._id}>
-
+                return <Card key={obj._id} >
                     <div className='flex gap-3'>
                         <div>
-                            <Link to="/profile">
+
+                            <Link to='/profile/' state={{ id: obj.userid._id }}>
                                 <Avatar />
                             </Link>
                         </div>
@@ -93,19 +141,31 @@ function PostCard() {
                             <Avatar />
                         </div>
                         <div className='border grow rounded-full relative'>
-                            <textarea className='block w-full p-3 px-4 overflow-hidden h-12 ' placeholder='Leave a comment' />
-                            <button className='absolute top-3 right-3 text-gray-400'>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-                                </svg>
+                            <form action="" onSubmit={(e) => { handleSubmit(e,obj._id); }}>
+                                <input 
+                                    className='block w-full p-3 px-4 overflow-hidden h-12 ' placeholder='Leave a comment'
+                                    name="comment"
+                                    value={commentText}
+                                    
+                                    onChange={(e)=>{setCommentText(e.target.value)}}                                    
+                                />
+                                
+                                <button type='submit' className='absolute top-3 right-3 text-gray-400'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                                    </svg>
 
-                            </button>
+                                </button>
+                            </form>
+
+
+
                         </div>
                     </div>
                 </Card>
             })
             }
-        </div>
+        </div >
     )
 }
 
