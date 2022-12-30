@@ -79,23 +79,23 @@ function Profile() {
               <div className='text-gray-500 leading-4'>United Kingdom</div>
             </div>
             <div>
-              
+
 
               {userid.id === user.userid ? "" : user.otherDetails?.followers.includes(user.userid) ?
 
                 <button onClick={() => {
                   handleUnFollow(userid)
                 }} className='mt-3 ml-40 bg-socialBlue text-white px-6 py-1 rounded-md '>
-                   {isBttnLoading ? <LoadOnButton /> : "Unfollow" }</button>
+                  {isBttnLoading ? <LoadOnButton /> : "Unfollow"}</button>
                 :
                 <button onClick={() => {
                   handleFollow(userid)
                 }} className='mt-3 ml-40 bg-socialBlue text-white px-6 py-1 rounded-md '>
-                   {isBttnLoading ? <LoadOnButton /> : "Follow" }
+                  {isBttnLoading ? <LoadOnButton /> : "Follow"}
                 </button>
               }
             </div>
-            
+
             <div className='mt-10 flex gap-0'>
               <Link to="/posts" className={isPosts ? active_tab_classes : tab_classes}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">

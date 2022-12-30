@@ -37,7 +37,7 @@ function PostCard(props) {
     useEffect(() => {
         if (!props.userid) {
             dispatch(getPosts()).then((res) => {
-                //console.log(res.payload, "then() Fetch posts");
+                console.log(res.payload, "then() Fetch posts");
                 setPosts(res.payload.posts)
                 setUser(res.payload.userid)
             })
@@ -53,17 +53,33 @@ function PostCard(props) {
 
 
 
-    const handleSubmit =(e,id)=>{
+    const handleSubmit = (e, id) => {
         e.preventDefault()
-        console.log(commentText,id,"tedttttttttttt");
+        console.log(commentText, id, "testtttttttttt");
 
-        dispatch(commentPost({ commentText,id }))
+        dispatch(commentPost({ commentText, id }))
             .then((res) => {
                 console.log(res);
             });
-        
+
     }
-    
+
+    // const getCurrentCommentById = (postid) => {
+    //     posts.filter(post => {
+    //         if (post._id === postid) {               
+    //             return post.comments
+    //         }
+
+    //     })
+
+    // }
+
+    // function getComments(postid) {
+    //     const comments = getCurrentCommentById(postid)
+    //     console.log(comments, "filtered");
+    // }
+
+
     // const formik = useFormik({
     //     initialValues: {
     //         comment: "",
@@ -88,7 +104,6 @@ function PostCard(props) {
                 return <Card key={obj._id} >
                     <div className='flex gap-3'>
                         <div>
-
                             <Link to='/profile/' state={{ id: obj.userid._id }}>
                                 <Avatar />
                             </Link>
@@ -124,10 +139,12 @@ function PostCard(props) {
                             </svg>{obj?.likes?.length}
                         </button>
 
-                        <button className='flex gap-2 items-center'>
+                        <button onClick={() => {
+                            // getComments(obj._id)
+                        }} className='flex gap-2 items-center'>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
-                            </svg>11
+                            </svg>{obj.comments.length}
                         </button>
 
                         <button className='flex gap-2 items-center'>
@@ -136,20 +153,54 @@ function PostCard(props) {
                             </svg>4
                         </button>
                     </div>
+                    <div className=' overflow-auto h-40 rounded-md'>
+                        {
+                            obj?.comments?.map(comment => {
+
+                                return comment?.commentby?._id === user ?
+                                    <div key={comment?._id} className='flex flex-row-reverse'>
+                                        <Avatar />
+                                        <div className='bg-green-300  w-64 mt-1 rounded-3xl py-2 px-4 '>
+                                            <span className='font-semibold mr-1'>
+                                                {comment?.commentby?.firstname}</span>
+                                            <span className='text-sm text-gray-500'><Moment fromNow>{comment?.createdAt}</Moment></span><br />
+
+                                            <p className='text-sm'>{comment?.comment}</p>
+                                        </div>
+                                    </div>
+                                    :
+                                    <div key={comment?._id} className='flex '>
+                                        <Avatar />
+
+                                        <div className='bg-gray-200 w-64  mt-1 rounded-3xl py-2 px-4 '>
+                                            <span className='font-semibold mr-1'>
+                                                {comment?.commentby?.firstname}</span>
+                                            <span  className='text-sm text-gray-500'><Moment fromNow>{comment?.createdAt}</Moment></span><br />
+
+                                            <p className='text-sm'>{comment?.comment}</p>
+
+                                        </div>
+                                    </div>
+
+
+                            })
+                        }
+                    </div>
+
                     <div className='flex mt-4 gap-3'>
                         <div>
                             <Avatar />
                         </div>
                         <div className='border grow rounded-full relative'>
-                            <form action="" onSubmit={(e) => { handleSubmit(e,obj._id); }}>
-                                <input 
+                            <form action="" onSubmit={(e) => { handleSubmit(e, obj._id); }}>
+                                <input
                                     className='block w-full p-3 px-4 overflow-hidden h-12 ' placeholder='Leave a comment'
                                     name="comment"
                                     value={commentText}
-                                    
-                                    onChange={(e)=>{setCommentText(e.target.value)}}                                    
+
+                                    onChange={(e) => { setCommentText(e.target.value) }}
                                 />
-                                
+
                                 <button type='submit' className='absolute top-3 right-3 text-gray-400'>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
