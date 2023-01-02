@@ -3,7 +3,7 @@ import axios from '../axios'
 import { likeAPI, postAPI,commentAPI } from "../url";
 const initialState = {
     loading: "Loading",
-    refresh:"false",
+    refresh:false,
     post: [],
     likes:[]
 }
@@ -55,7 +55,7 @@ const PostSlice = createSlice({
     initialState,
     reducers: {
             refr:(state,action)=>{
-                state.refresh=action.payload
+                state.refresh=!!refr
                 console.log(state.refresh,"Inside of reducer");
             }
     },

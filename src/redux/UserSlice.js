@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from '../axios'
-import { postsByIdAPI, userAPI } from "../url";
+import { loginUserAPI, postsByIdAPI, userAPI } from "../url";
 import { followAPI } from "../url";
 import { unfollowAPI } from "../url";
+import { uploadCoverImgAPI } from "../url";
 
 
 const initialState = {
@@ -18,9 +19,19 @@ export const getUser = createAsyncThunk('getUser', async (params) => {
     })
 })
 
+export const getCurrentUser = createAsyncThunk('getCurrentUser', async () => {
+    const token = localStorage.getItem('token')
+    console.log("getCurrent user");
+    return await axios.get(`${loginUserAPI}`, { headers: { 'authorization': 'Bearer ' + token } }).then(({ data }) => {
+        return data
+    }).catch((error) => {
+        console.log(error)
+    })
+})
+
 
 export const follow = createAsyncThunk('follow', async (body) => {
-    console.log(body,"follw");
+    console.log(body, "follw");
     const token = localStorage.getItem('token')
     return await axios.post(`${followAPI}`, body, { headers: { 'authorization': 'Bearer ' + token } }).then(({ data }) => {
         return data
@@ -40,11 +51,20 @@ export const unfollow = createAsyncThunk('unfollow', async (body) => {
 
 export const getPostsById = createAsyncThunk('getPostsById', async (params) => {
     const token = localStorage.getItem('token')
-    console.log(params,"getPostsById");
+    console.log(params, "getPostsById");
     return await axios.get(`${postsByIdAPI}` + params, { headers: { 'authorization': 'Bearer ' + token } }).then(({ data }) => {
         return data
-        
+
     }).catch(err => {
+        console.log(err)
+    })
+})
+
+export const uploadProfileImage = createAsyncThunk('imagePost', async (body) => {
+    const token = localStorage.getItem('token')
+    return await axios.post(`${uploadCoverImgAPI}`, body, { headers: { 'authorization': 'Bearer ' + token } }).then(({ data }) => {
+        return data
+    }).catch((err) => {
         console.log(err)
     })
 })

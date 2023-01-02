@@ -1,9 +1,11 @@
 
 export const authAPI='auth/'
-export const userAPI='user/'
+export const userAPI='user/userById'
+export const loginUserAPI='user/getCurrentUser/'
 export const followAPI='user/follow/'
 export const unfollowAPI='user/unfollow/'
 export const postAPI='posts/'
 export const likeAPI='posts/likes/'
 export const commentAPI='posts/commentPost/'
 export const postsByIdAPI='posts/getPostsByID/'
+export const uploadCoverImgAPI='user/updateProfileImg/'

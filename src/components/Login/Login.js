@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux'
 import { loginUser, signUpUser, googleUser } from '../../redux/AuthSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode'
-
 import './Login.css';
 
 
@@ -39,8 +38,7 @@ function Login(props) {
             navigate('/')
         })
     }
-    
-    useEffect(() => {
+    function GVerify(){
         /*global  google*/
         google.accounts.id.initialize({
             client_id:"",
@@ -52,7 +50,11 @@ function Login(props) {
             { theme: "outline", size: "large", shape: "rectangle" }
         );
         //google.accounts.id.prompt();
+    }
 
+    
+    useEffect(() => {
+        GVerify()
     }, [])
 
 

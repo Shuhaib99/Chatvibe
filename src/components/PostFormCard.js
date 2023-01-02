@@ -1,24 +1,26 @@
 
 import axios from 'axios';
 import { cloud } from '../constants'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { uploadImage } from '../redux/PostSlice';
+import { refr, uploadImage } from '../redux/PostSlice';
 import toast, { Toaster } from 'react-hot-toast';
-// import { refr } from '../redux/PostSlice'
-import PostCard from './PostCard'
+import { getCurrentUser } from '../redux/UserSlice';
 import Loading from './Loading';
+import Avatar from './Avatar'
+import Card from './Card'
+import { Link } from 'react-router-dom';
+
 
 // import { ToastContainer, toast } from 'react-toastify'
 // import 'react-toastify/dist/ReactToastify.css';
-import Avatar from './Avatar'
-import Card from './Card'
 
-function PostFormCard() {    
+function PostFormCard() {
     // const [profile,setProfile]=useState(null)
     const [content, setContent] = useState("")
     const [image, setImage] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
+    const [user, setUser] = useState([])
     let loading = useSelector(state => state.postSlice.loading)
     // const imageRef = useRef()
     const dispatch = useDispatch()
@@ -53,7 +55,11 @@ function PostFormCard() {
                 dispatch(uploadImage({ newPost })).then((res) => {
                     setIsLoading(false)
                     notify()
-
+                    setContent("")
+                    setImage("")
+                    dispatch(refr(true)).then((res) => {
+                        console.log(res, "refr");
+                    })
                 })
             })
 
@@ -62,15 +68,25 @@ function PostFormCard() {
             dispatch(uploadImage({ newPost })).then((res) => {
                 setIsLoading(false)
                 notify()
-                // dispatch(refr("true"))
+                setContent("")
+                dispatch(refr(true)).then((res) => {
+                    console.log(res, "refr");
+                })
             })
         }
     }
+    useEffect(() => {
+        dispatch(getCurrentUser()).then((res) => {
+            console.log(res, "GetCurrentUser");
+            setUser(res.payload.user)
+
+        })
+    }, [])
 
     return (
-        
+
         <div className=''>
-            
+
             <Toaster toastOptions={{
                 success: {
                     style: {
@@ -86,10 +102,12 @@ function PostFormCard() {
             }} />
             <Card>
                 <div className='flex gap-1'>
-                    <Avatar />
+                    <Link to='/profile/' state={{ id: user._id }}>
+                        <Avatar url={user.profilepic} />
+                    </Link>
                     <textarea value={content} onChange={(e) => {
                         setContent(e.target.value)
-                    }} className='grow p-3 h-14' placeholder={'Whats on your mind?'} />
+                    }} className='grow p-3 h-14' placeholder={`Whats on your mind Mr. ${user?.firstname} `} />
                 </div>
                 <div className='flex gap-5 items-center mt-2'>
                     <div>
@@ -131,12 +149,14 @@ function PostFormCard() {
                     </div>
                 </div>
                 {isLoading &&
-                    <div>
-                        <Loading />
+                    <div className=' flex items-center'>
+                        <div className='mx-auto'>
+                            <Loading />
+                        </div>
                     </div>
                 }
 
-                {image && !isLoading && (
+                {image && (
                     <div>
                         <img src={URL.createObjectURL(image)} alt="" />
 

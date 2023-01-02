@@ -1,27 +1,30 @@
-import React, { useState, useEffect } from 'react'
-import { Link, Navigate, useParams } from 'react-router-dom'
+import React, { useState, useEffect, useRef } from 'react'
+import { Link, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getPosts, likePosts, commentPost } from '../redux/PostSlice'
-import { useFormik } from 'formik'
 import { getPostsById } from '../redux/UserSlice'
-import * as yup from 'yup'
-// import { refr } from '../redux/PostSlice'
 import Avatar from './Avatar'
 import Card from './Card'
 import Moment from 'react-moment'
-import Profile from './Profile'
-
+import '../App.css'
+import Loading from './Loading';
+// import { refr } from '../redux/PostSlice'
+// import Profile from './Profile'
 
 function PostCard(props) {
-    console.log(props.userid.id, "props");
+    // console.log(props.userid.id, "props");
     const dispatch = useDispatch()
-    const params = useParams()
+
+    //const params = useParams()
     const [likes, setLikes] = useState([])
     const [user, setUser] = useState("")
     const [posts, setPosts] = useState([])
     const [commentText, setCommentText] = useState('')
-    // let refresh = useSelector(state => state.postSlice.refresh)
+    const [refresh, setRefresh] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     let likesArr = useSelector(state => state.postSlice.likes)
+    const formref = useRef(null)
+    let refrsh = useSelector(state => state.postSlice.refresh)
     // const user=useSelector(currentUser)
     // const isLikedByMe = !!likes.find(like => likes.userid === user)
     // console.log(refresh,"testrefresh"); 
@@ -35,77 +38,60 @@ function PostCard(props) {
     }
 
     useEffect(() => {
-        if (!props.userid) {
+        if (!props?.userid) {
+            setIsLoading(true)
             dispatch(getPosts()).then((res) => {
-                console.log(res.payload, "then() Fetch posts");
+
+                // console.log(res.payload, "then() Fetch posts");
                 setPosts(res.payload.posts)
                 setUser(res.payload.userid)
+                setIsLoading(false)
             })
+
         } else {
-            console.log("Postcard test");
-            dispatch(getPostsById(props.userid.id)).then((res) => {
-                console.log(res.payload);
+            setIsLoading(true)
+            // console.log("Postcard test");
+            // console.log(props?.userid?.id, "props profile");
+            dispatch(getPostsById(props?.userid?.id)).then((res) => {
+
                 setPosts(res.payload.posts)
                 setUser(res.payload.userid)
+                setIsLoading(false)
             })
+
         }
-    }, [likes])
+
+    }, [likes, refrsh])
 
 
 
     const handleSubmit = (e, id) => {
-        e.preventDefault()
-        console.log(commentText, id, "testtttttttttt");
 
+        e.preventDefault()
         dispatch(commentPost({ commentText, id }))
             .then((res) => {
-                console.log(res);
+                setCommentText("")
+                refresh ? setRefresh(false) : setRefresh(true)
             });
 
     }
 
-    // const getCurrentCommentById = (postid) => {
-    //     posts.filter(post => {
-    //         if (post._id === postid) {               
-    //             return post.comments
-    //         }
 
-    //     })
-
-    // }
-
-    // function getComments(postid) {
-    //     const comments = getCurrentCommentById(postid)
-    //     console.log(comments, "filtered");
-    // }
-
-
-    // const formik = useFormik({
-    //     initialValues: {
-    //         comment: "",
-    //         id:""
-    //     }
-    // });
-
-
-    //console.log(formik.errors,"errorrrrrrrrrr");
-
-
-    //const comment = commentText
-    // function postComment(postid) {
-    //     // e.preventDefault()
-    //     dispatch(commentPost({ postid })).then((res) => {
-    //         console.log(res.payload);
-    //     })
-    // }
     return (
         <div>
+            {isLoading && (
+                <div className=' flex items-center'>
+                    <div className='mx-auto'>
+                        <Loading />
+                    </div>
+                </div>
+            )}
             {posts?.map(obj => {
                 return <Card key={obj._id} >
                     <div className='flex gap-3'>
                         <div>
-                            <Link to='/profile/' state={{ id: obj.userid._id }}>
-                                <Avatar />
+                            <Link to='/profile/' state={{ id: obj?.userid._id }}>
+                                <Avatar url={obj?.userid.profilepic} />
                             </Link>
                         </div>
                         <div className='grow'>
@@ -140,7 +126,7 @@ function PostCard(props) {
                         </button>
 
                         <button onClick={() => {
-                            // getComments(obj._id)
+
                         }} className='flex gap-2 items-center'>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
@@ -153,14 +139,15 @@ function PostCard(props) {
                             </svg>4
                         </button>
                     </div>
-                    <div className=' overflow-auto h-40 rounded-md'>
+                    {obj?.comments.length > 0 ? <div className=' overflow-auto h-40 rounded-md postComments'>
                         {
-                            obj?.comments?.map(comment => {
+                            obj?.comments?.slice(0).reverse().map(comment => {
 
                                 return comment?.commentby?._id === user ?
-                                    <div key={comment?._id} className='flex flex-row-reverse'>
-                                        <Avatar />
-                                        <div className='bg-green-300  w-64 mt-1 rounded-3xl py-2 px-4 '>
+                                    <div key={comment?._id} className='flex flex-row-reverse mt-2 gap-2 items-center'>
+                                        <div>
+                                            <Avatar url={comment?.commentby?.profilepic} /></div>
+                                        <div className='bg-green-300  w-64   rounded-3xl py-2 px-4 '>
                                             <span className='font-semibold mr-1'>
                                                 {comment?.commentby?.firstname}</span>
                                             <span className='text-sm text-gray-500'><Moment fromNow>{comment?.createdAt}</Moment></span><br />
@@ -169,13 +156,13 @@ function PostCard(props) {
                                         </div>
                                     </div>
                                     :
-                                    <div key={comment?._id} className='flex '>
-                                        <Avatar />
+                                    <div key={comment?._id} className='flex gap-2 items-center mt-2'>
+                                        <div> <Avatar url={comment?.commentby?.profilepic} /></div>
 
-                                        <div className='bg-gray-200 w-64  mt-1 rounded-3xl py-2 px-4 '>
+                                        <div className='bg-gray-200 w-64 rounded-3xl py-2 px-4 '>
                                             <span className='font-semibold mr-1'>
                                                 {comment?.commentby?.firstname}</span>
-                                            <span  className='text-sm text-gray-500'><Moment fromNow>{comment?.createdAt}</Moment></span><br />
+                                            <span className='text-sm text-gray-500'><Moment fromNow>{comment?.createdAt}</Moment></span><br />
 
                                             <p className='text-sm'>{comment?.comment}</p>
 
@@ -185,7 +172,7 @@ function PostCard(props) {
 
                             })
                         }
-                    </div>
+                    </div> : ""}
 
                     <div className='flex mt-4 gap-3'>
                         <div>
@@ -193,7 +180,7 @@ function PostCard(props) {
                         </div>
                         <div className='border grow rounded-full relative'>
                             <form action="" onSubmit={(e) => { handleSubmit(e, obj._id); }}>
-                                <input
+                                <input ref={formref}
                                     className='block w-full p-3 px-4 overflow-hidden h-12 ' placeholder='Leave a comment'
                                     name="comment"
                                     value={commentText}

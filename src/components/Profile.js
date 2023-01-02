@@ -8,7 +8,8 @@ import { getUser, follow, unfollow } from '../redux/UserSlice'
 import FriendsInfo from './FriendsInfo'
 import { useDispatch } from 'react-redux'
 import LoadOnButton from './LoadOnButton'
-// import Loading from './Loading'
+import Cover from './Cover'
+//import Loading from './Loading'
 
 function Profile() {
   const [user, setUser] = useState("")
@@ -19,7 +20,7 @@ function Profile() {
   const dispatch = useDispatch()
   const router = useLocation()
   const userid = router.state
-  console.log(router.state, "rouuuuuuuute stateeeeeeeeeeeee");
+  // console.log(router.state, "rouuuuuuuute stateeeeeeeeeeeee");
   // const user = useSelector(state => state.UserSlice.user)
   const pathname = router.pathname
 
@@ -48,14 +49,17 @@ function Profile() {
       setRefresh("Unfollow")
     })
   }
-
-  useEffect(() => {
+  function fetchUser() {
     // setIsLoading(true)
     dispatch(getUser({ userid })).then((res) => {
       console.log(res.payload);
       setUser(res.payload)
       // setIsLoading(false)
     })
+  }
+
+  useEffect(() => {
+    fetchUser()
   }, [refresh])
 
 
@@ -65,11 +69,11 @@ function Profile() {
       <Card noPadding={true}>
 
         <div className='relative overflow-hidden rounded-md'>
-          <div className='h-36 overflow-hidden flex justify-center items-center'>
-            <img src='https://images.unsplash.com/photo-1505228395891-9a51e7e86bf6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1333&q=80' alt='img' />
-          </div>
-          <div className='absolute top-24 left-4'>
-            <Avatar size={'lg'} />
+          <div>{userid.id === user.userid ? <Cover url={user?.otherDetails?.coverpic} publicID={user?.otherDetails?.coverpicPubID} editable={true} onchange={fetchUser} />
+            : <Cover url={user?.otherDetails?.coverpic} publicID={user?.otherDetails?.coverpicPubID} editable={false} />}</div>
+          <div className='absolute top-24 left-4 z-20'>
+            {userid.id === user.userid ? <Avatar size={'lg'} url={user?.otherDetails?.profilepic} editable={true} onchange={fetchUser} />
+              : <Avatar size={'lg'} url={user?.otherDetails?.profilepic} editable={false} />}
           </div>
           <div className='p-4 pb-4'>
             <div className='ml-40 '>
