@@ -1,13 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from '../axios'
-import { loginUserAPI, postsByIdAPI, userAPI } from "../url";
+import { loginUserAPI, postsByIdAPI, userAPI,followUserAPI, FollowingUserAPI } from "../url";
 import { followAPI } from "../url";
 import { unfollowAPI } from "../url";
 import { uploadCoverImgAPI } from "../url";
 
 
 const initialState = {
-    // user:[]
+    profileid:""
 }
 
 export const getUser = createAsyncThunk('getUser', async (params) => {
@@ -21,8 +21,28 @@ export const getUser = createAsyncThunk('getUser', async (params) => {
 
 export const getCurrentUser = createAsyncThunk('getCurrentUser', async () => {
     const token = localStorage.getItem('token')
-    console.log("getCurrent user");
+    //console.log("getCurrent user");
     return await axios.get(`${loginUserAPI}`, { headers: { 'authorization': 'Bearer ' + token } }).then(({ data }) => {
+        return data
+    }).catch((error) => {
+        console.log(error)
+    })
+})
+
+export const getFollowers = createAsyncThunk('getFollowers', async (params) => {
+    const token = localStorage.getItem('token')
+    //console.log("getCurrent user");
+    return await axios.get(`${followUserAPI}`+params, { headers: { 'authorization': 'Bearer ' + token } }).then(({ data }) => {
+        return data
+    }).catch((error) => {
+        console.log(error)
+    })
+})
+
+export const getFollowingUsers = createAsyncThunk('getFollowers', async (params) => {
+    const token = localStorage.getItem('token')
+    //console.log("getCurrent user");
+    return await axios.get(`${FollowingUserAPI}`+params, { headers: { 'authorization': 'Bearer ' + token } }).then(({ data }) => {
         return data
     }).catch((error) => {
         console.log(error)
@@ -51,7 +71,7 @@ export const unfollow = createAsyncThunk('unfollow', async (body) => {
 
 export const getPostsById = createAsyncThunk('getPostsById', async (params) => {
     const token = localStorage.getItem('token')
-    console.log(params, "getPostsById");
+    //console.log(params, "getPostsById");
     return await axios.get(`${postsByIdAPI}` + params, { headers: { 'authorization': 'Bearer ' + token } }).then(({ data }) => {
         return data
 
@@ -74,7 +94,10 @@ const UserSlice = createSlice({
     name: "users",
     initialState,
     reducers: {
-
+        addProfileId:(state,action)=>{
+            state.profileid=action.payload
+            //console.log(state.profileid,"Inside of profile id reducer");
+        }
     },
     extraReducers: (builder) => {
         //..............getUser....................
@@ -92,4 +115,5 @@ const UserSlice = createSlice({
         })
     }
 })
+export const {addProfileId}=UserSlice.actions
 export default UserSlice.reducer

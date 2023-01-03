@@ -7,9 +7,9 @@ import Signup from './Pages/Signup'
 import ViewHome from './Pages/ViewHome'
 import Profile from './Pages/Profile'
 import About from './Pages/About'
-import Friends from './Pages/Friends'
+import Followers from './Pages/Followers'
 import Posts from './Pages/Posts'
-import Photos from './Pages/Photos'
+import Following from './Pages/Following'
 
 // import { useSelector } from 'react-redux'
 import ProtectedRoute from './ProtectedRoute'
@@ -25,11 +25,11 @@ function App() {
 
           <Route element={<ProtectedRoute />} >
             <Route path='/' exact element={<ViewHome />} />
-            <Route path='/profile' exact element={<Profile />} />
-            <Route path='/about' exact element={<About />} />
-            <Route path='/friends' exact element={<Friends />} />
-            <Route path='/photos' exact element={<Photos />} />
-            <Route path='/posts' exact element={<Posts />} />
+            <Route path='/profile' element={<Profile />} />
+            <Route path='/about' element={<About />} />
+            <Route path='/followers' element={<Followers />} />
+            <Route path='/following' element={<Following />} />
+            <Route path='/posts' element={<Posts />} />
           </Route>
 
           <Route element={<PublicRoute />} >

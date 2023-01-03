@@ -1,7 +1,7 @@
 import React from 'react'
 import Profile from '../Profile'
 
-function Friends() {
+function Following() {
   return (
     <div>
       <Profile />
@@ -9,4 +9,4 @@ function Friends() {
   )
 }
 
-export default Friends
+export default Following

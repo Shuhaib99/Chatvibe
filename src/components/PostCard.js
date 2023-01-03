@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getPosts, likePosts, commentPost } from '../redux/PostSlice'
-import { getPostsById } from '../redux/UserSlice'
+import { getCurrentUser, getPostsById, addProfileId } from '../redux/UserSlice'
 import Avatar from './Avatar'
 import Card from './Card'
 import Moment from 'react-moment'
@@ -18,10 +18,12 @@ function PostCard(props) {
     //const params = useParams()
     const [likes, setLikes] = useState([])
     const [user, setUser] = useState("")
+    const [currentuser, setCurrentUser] = useState("")
     const [posts, setPosts] = useState([])
     const [commentText, setCommentText] = useState('')
     const [refresh, setRefresh] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
+    const [userProfile, setUserProfile] = useState(false)
     let likesArr = useSelector(state => state.postSlice.likes)
     const formref = useRef(null)
     let refrsh = useSelector(state => state.postSlice.refresh)
@@ -30,12 +32,19 @@ function PostCard(props) {
     // console.log(refresh,"testrefresh"); 
 
     // dispatch(refr())
+
     function likeThisPost(postid) {
 
         dispatch(likePosts({ postid })).then((res) => {
             setLikes(likesArr)
         })
     }
+    useEffect(() => {
+        dispatch(getCurrentUser()).then((res) => {
+            setCurrentUser(res.payload.user)
+
+        })
+    }, [])
 
     useEffect(() => {
         if (!props?.userid) {
@@ -45,40 +54,41 @@ function PostCard(props) {
                 // console.log(res.payload, "then() Fetch posts");
                 setPosts(res.payload.posts)
                 setUser(res.payload.userid)
+                setUserProfile(false)
                 setIsLoading(false)
             })
 
         } else {
             setIsLoading(true)
             // console.log("Postcard test");
-            // console.log(props?.userid?.id, "props profile");
+            //console.log(props?.userid?.id, "props profile");
             dispatch(getPostsById(props?.userid?.id)).then((res) => {
-
+                //console.log(res.payload, "Profile post");
                 setPosts(res.payload.posts)
                 setUser(res.payload.userid)
+                setUserProfile(true)
                 setIsLoading(false)
             })
 
         }
 
-    }, [likes, refrsh])
+    }, [likes, refresh, refrsh])
 
 
 
     const handleSubmit = (e, id) => {
-
         e.preventDefault()
         dispatch(commentPost({ commentText, id }))
             .then((res) => {
                 setCommentText("")
                 refresh ? setRefresh(false) : setRefresh(true)
             });
-
     }
 
-
     return (
+
         <div>
+
             {isLoading && (
                 <div className=' flex items-center'>
                     <div className='mx-auto'>
@@ -89,16 +99,19 @@ function PostCard(props) {
             {posts?.map(obj => {
                 return <Card key={obj._id} >
                     <div className='flex gap-3'>
+
                         <div>
                             <Link to='/profile/' state={{ id: obj?.userid._id }}>
                                 <Avatar url={obj?.userid.profilepic} />
                             </Link>
                         </div>
+
                         <div className='grow'>
                             <Link to="/profile" className='font-semibold'>{obj.userid.firstname + " " + obj.userid.lastname} </Link> shared a
                             <Link to="" className='text-socialBlue'> album</Link>
                             <p className='text-gray-500 text-sm'> <Moment fromNow>{obj.createdAt}</Moment></p>
                         </div>
+
                         <div>
                             <button className='text-gray-400'>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
@@ -106,6 +119,8 @@ function PostCard(props) {
                                 </svg>
                             </button>
                         </div>
+
+
                     </div>
                     <div>
                         <div className='my-3 text-sm'>
@@ -168,15 +183,13 @@ function PostCard(props) {
 
                                         </div>
                                     </div>
-
-
                             })
                         }
                     </div> : ""}
 
-                    <div className='flex mt-4 gap-3'>
+                    {!userProfile && <div className='flex mt-4 gap-3'>
                         <div>
-                            <Avatar />
+                            <Avatar url={currentuser.profilepic} />
                         </div>
                         <div className='border grow rounded-full relative'>
                             <form action="" onSubmit={(e) => { handleSubmit(e, obj._id); }}>
@@ -199,7 +212,7 @@ function PostCard(props) {
 
 
                         </div>
-                    </div>
+                    </div>}
                 </Card>
             })
             }
