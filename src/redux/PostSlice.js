@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from '../axios'
-import { likeAPI, postAPI,commentAPI } from "../url";
+import { likeAPI, postAPI,commentAPI, deletePostAPI } from "../url";
 const initialState = {
     loading: "Loading",
     refresh:false,
@@ -45,6 +45,17 @@ export const commentPost = createAsyncThunk('commentPost', async (body) => {
         console.log(err)
     })
 })
+
+export const deletePost = createAsyncThunk('deletePost', async (postid) => {
+    const token = localStorage.getItem('token') 
+    // console.log(body,"bodycomment");
+    return await axios.delete(`${deletePostAPI}`,{data:{postid}}, { headers: { 'authorization': 'Bearer ' + token } }).then(({ data }) => {
+        return data
+    }).catch(err => {
+        console.log(err)
+    })
+})
+
 
 
 

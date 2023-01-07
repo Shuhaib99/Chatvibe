@@ -112,7 +112,7 @@ const authslice = createSlice({
             state.user = user
             state.token = token
 
-            localStorage.setItem('user', JSON.stringify(user))
+            // localStorage.setItem('user', JSON.stringify(user))
             localStorage.setItem('token', token)
         })
         builder.addCase(googleUser.rejected, (state, action) => {

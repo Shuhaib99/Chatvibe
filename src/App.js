@@ -10,10 +10,12 @@ import About from './Pages/About'
 import Followers from './Pages/Followers'
 import Posts from './Pages/Posts'
 import Following from './Pages/Following'
+import Chat from './Pages/Chat'
 
 // import { useSelector } from 'react-redux'
 import ProtectedRoute from './ProtectedRoute'
 import PublicRoute from './PublicRoute'
+
 
 function App() {
   // let { user } = useSelector(state => state)
@@ -30,6 +32,8 @@ function App() {
             <Route path='/followers' element={<Followers />} />
             <Route path='/following' element={<Following />} />
             <Route path='/posts' element={<Posts />} />
+            <Route path='/chat' element={<Chat />} />
+
           </Route>
 
           <Route element={<PublicRoute />} >

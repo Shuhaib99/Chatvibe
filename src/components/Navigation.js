@@ -3,7 +3,7 @@ import Card from './Card'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 
 function Navigation() {
-    const navigate=useNavigate()
+    const navigate = useNavigate()
     const location = useLocation();
     const pathname = location.pathname
 
@@ -11,7 +11,7 @@ function Navigation() {
     const active_element = "flex gap-2 py-3 my-1  bg-socialBlue text-white -mx-10 px-10 rounded-md shadow-md shadow-gray-300"
     const nonActive_element = "flex gap-3 py-2 my-2 hover:bg-blue-500 hover:bg-opacity-20 -mx-1 px-4 rounded-md transition-all hover:scale-110 hover:shadow-md shadow-gray-300"
 
-    const logout=()=>{
+    const logout = () => {
         localStorage.clear()
         navigate('/login')
     }
@@ -37,6 +37,14 @@ function Navigation() {
 
                         Friends
                     </Link>
+                    <Link to="/chat" className={pathname === '/chat' ? active_element : nonActive_element }>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
+                        </svg>
+
+                        Chat
+                    </Link>
+
                     <Link to="" className={nonActive_element} >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
@@ -50,7 +58,7 @@ function Navigation() {
                         </svg>
                         Notifications
                     </Link>
-                    <button onClick={()=>{  logout() }} className='w-full -my-3'>
+                    <button onClick={() => { logout() }} className='w-full -my-3'>
                         <span className={nonActive_element} >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />

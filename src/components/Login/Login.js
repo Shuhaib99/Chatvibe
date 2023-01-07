@@ -101,7 +101,7 @@ function Login(props) {
 
                         <center>
                             <h1 className='rounded-lg  text-orange-700 text-6xl'>
-                                Chatvibe... </h1>{props.user ? <span><br />
+                                Chatvibe </h1>{props.user ? <span><br />
                                     <p className='rounded-lg text-orange-300'> ChatVibe helps you connect and share
                                         with<br /> the people in your life.</p>
                                 </span> : ""}

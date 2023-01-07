@@ -33,7 +33,6 @@ function PostFormCard() {
         }
     }
 
-
     const handleSubmit = (e) => {
         e.preventDefault()
         const newPost = {

@@ -7,6 +7,6 @@ function Posts() {
       <Profile />
     </div>
   )
-}
+} 
 
 export default Posts
