@@ -68,9 +68,7 @@ function PostFormCard() {
                 setIsLoading(false)
                 notify()
                 setContent("")
-                dispatch(refr(true)).then((res) => {
-                    console.log(res, "refr");
-                })
+                dispatch(refr(true))
             })
         }
     }

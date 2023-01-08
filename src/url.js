@@ -16,3 +16,6 @@ export const postsByIdAPI='posts/getPostsByID/'
 export const deletePostAPI='posts/deletePost/'
 
 export const userChatsAPI='chat/userChats/'
+
+export const getMessagesAPI='message/get_messages/'
+export const addMessageAPI='message/addMessage/'
