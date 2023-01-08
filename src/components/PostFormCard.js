@@ -45,7 +45,7 @@ function PostFormCard() {
             //const filename= Date.now()+image.name
             //data.append("name",filename)
             data.append("file", image)
-            data.append("upload_preset", "")
+            data.append("upload_preset",process.env.REACT_APP_CLOUDID)
 
             //console.log(newPost);            
             axios.post(cloud, data).then((res) => {

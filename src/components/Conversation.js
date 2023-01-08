@@ -1,10 +1,40 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { getUser } from '../redux/UserSlice'
+import Avatar from './Avatar'
 
-function Conversation({data}) {
+function Conversation({ data, currentuserid }) {
+  const dispatch = useDispatch()
+  const [userData, setUserData] = useState([])
+  const params = {
+    userid: {
+      id: ""
+    }
+  }
+  useEffect(() => {
+    params.userid.id = data?.members?.find((id) => id !== currentuserid)
+    dispatch(getUser(params)).then((res) => {
+      setUserData(res.payload.otherDetails)
+
+    })
+  }, [])
+  // console.log(userData.profilepic,"res Connv");
   return (
-    <div >
-      conversation
-    </div>
+    <>
+      <div className='hover:bg-slate-100 hover:cursor-pointer'>
+        <div>
+          <div className='rounded-full w-3 h-3 bg-green-600 absolute ml-9 z-10'></div>
+          <div className='flex items-center gap-2 mt-2'>
+            <Avatar url={userData.profilepic} />
+            <div className='name font-semibold' >
+              <span>{userData?.firstname + " " + userData?.lastname}</span><br />
+              <span className='font-normal text-xs text-gray-400'>Online</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr />
+    </>
   )
 }
 

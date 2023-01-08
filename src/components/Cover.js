@@ -18,7 +18,7 @@ function Cover({ url, publicID, editable, onchange }) {
             setIsLoading(true)
             const data = new FormData()
             data.append("file", img)
-            data.append("upload_preset", "wuhddsdk")
+            data.append("upload_preset", process.env.REACT_APP_CLOUDFOLDER_PROFILE)
             // axios.post(deleteFromcloud,publicID).then((res)=>{
             //     console.log("Deleted..");
             // })

@@ -67,15 +67,17 @@ const authslice = createSlice({
         builder.addCase(loginUser.fulfilled, (state, action) => {
             // console.log(action.payload.user,"starting of full fill");
             state.loading = false
-            state.user=action.payload.user
+            // let user=action.payload.user._id
+            // state.user=user
         
             let token = action.payload.token
             state.token = token
 
-            //localStorage.setItem("user", user)
+            // localStorage.setItem("user", user)
             localStorage.setItem("token", token)
+            
             state.isLoggedin = true;
-            console.log(action.payload.user, "testing the action of login full filled");
+            // console.log(action.payload.user, "testing the action of login full filled");
 
         })
         builder.addCase(loginUser.rejected, (state, action) => {
@@ -91,7 +93,7 @@ const authslice = createSlice({
             state.loading = false
             console.log(action.payload.user, "testing the action of signup full filled");
             state.loading = false
-            state.user=action.payload.user
+            //state.user=action.payload.user
             let token = action.payload.token
             state.token = token
 
@@ -106,10 +108,10 @@ const authslice = createSlice({
         builder.addCase(googleUser.fulfilled, (state, action) => {
 
             state.loading = false
-            let user = action.payload.User
+            // let user = action.payload.User
             let token = action.payload.token
 
-            state.user = user
+            // state.user = user
             state.token = token
 
             // localStorage.setItem('user', JSON.stringify(user))
@@ -121,5 +123,5 @@ const authslice = createSlice({
     }
 })
 
-export const currentUser = (state)=>state.auth.user
+// export const currentUser = (state)=>state.auth.user
 export default authslice.reducer

@@ -24,7 +24,7 @@ function Avatar({ size, url, editable, onchange }) {
             console.log("first");
             const data = new FormData()
             data.append("file", img)
-            data.append("upload_preset", "")
+            data.append("upload_preset", process.env.REACT_APP_CLOUDFOLDER_PROFILE)
             console.log("second");
             axios.post(cloud, data).then((res) => {
                 profileImg.image = res.data.secure_url
