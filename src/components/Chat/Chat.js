@@ -71,21 +71,16 @@ function Chat() {
         <Layout>
           <PostFormCard />
           <Card>
-            <div className='Left-side-chat  '>
-              Chatvibe
-              <div className='Chat-container'>
-                <h2>Chats</h2>
-                <div className='Chat-list'>
-                  {chats?.map(chat => (
-                    <div key={chat?._id}>
-                      <div onClick={() => { setCurrentChat(chat) }}>
-                        <Conversation data={chat} currentuserid={user} online={checkOnlineStatus(chat)} />
-                      </div>
-                    </div>
-                  ))}
+            <div className='Chat-list'>
+              {chats?.map(chat => (
+                <div key={chat?._id}>
+                  <div onClick={() => { setCurrentChat(chat) }}>
+                    <Conversation data={chat} currentuserid={user} online={checkOnlineStatus(chat)} />
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
+
           </Card>
           <Card>
             <div className='Right-side-chat'>

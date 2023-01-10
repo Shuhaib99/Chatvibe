@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { loginUser, signUpUser, googleUser, otpAuth } from '../../redux/AuthSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode'
+import LoadOnButton from '../LoadOnButton'
 import './Login.css';
 
 
@@ -23,6 +24,7 @@ function Login(props) {
     const [errPassword, setErrPassword] = useState(true)
     const [otpError, setOtpError] = useState(false)
     const [showRegLog, setShowRegLog] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -40,7 +42,7 @@ function Login(props) {
     function handleCallbackResponse(response) {
         var userObject = jwt_decode(response.credential);
         dispatch(googleUser(userObject)).then(() => {
-            // console.log(res);
+            console.log(userObject);
             navigate('/')
         })
     }
@@ -71,9 +73,8 @@ function Login(props) {
                 emailRegex.test(email) ? setErrEmail(true) : setErrEmail(false)
                 PasswordRegex.test(password) ? setErrPassword(true) : setErrPassword(false)
                 if (firstnameRegex.test(firstname) && PasswordRegex.test(password)) {
-                   
+                    setIsLoading(true)
                     dispatch(otpAuth({ email })).then((res) => {
-                        //console.log(res);
                         if (res.payload.user === false) {
                             setSignupError(true)
                         } else if (res.payload.success) {
@@ -81,7 +82,9 @@ function Login(props) {
                             setOtp(true)
                             setShowRegLog(true)
                         }
+
                     })
+                    setIsLoading(false)
                     console.log("ok");
                 }
             }
@@ -89,12 +92,10 @@ function Login(props) {
             return error
         }
     }
-
-    //.....................................................
-    const handleRegister = (e) => {
-        e.preventDefault()
+    function LoginReg(){
         try {
-
+            setIsLoading(true)
+           
             if (props.user === "signup") {
                 if (otpNumber === otpVerify) {
 
@@ -113,25 +114,30 @@ function Login(props) {
                                 navigate('/');
 
                             }
-                        });
+                        })
+                        setIsLoading(false)
                     }
                     else {
+                        setIsLoading(false)
                         console.log("Signup error");
                     }
                 } else {
-                    console.log("Statrt");
                     otpError(true)
                 }
             }
             else {
-                console.log("Login");
+               
                 emailRegex.test(email) ? setErrEmail(true) : setErrEmail(false)
                 PasswordRegex.test(password) ? setErrPassword(true) : setErrPassword(false)
                 if (emailRegex.test(email) && PasswordRegex.test(password)) {
+
                     dispatch(loginUser({ email, password })).then(() => {
                         navigate('/');
+                        // console.log("testing");
                     });
+                    setIsLoading(false)
                 } else {
+                    setIsLoading(false)
                     console.log("validation error");
                 }
             }
@@ -139,12 +145,19 @@ function Login(props) {
             return error
         }
     }
+    //.....................................................
+    const handleRegister = (e) => {
+        
+        e.preventDefault()
+        LoginReg()
+        
+    }
     return (
         <div className='h-screen w-full bg-cover bg-center bg-fixed bg-[url("https://dm0qx8t0i9gc9.cloudfront.net/watermarks/image/rDtN98Qoishumwih/abstract-colorful-social-network-people-background_zJgPXisO_SB_PM.jpg")]'>
             <div className='bg-black/90 w-full h-screen'>
 
                 <div className='flex flex-col h-screen justify-center'>
-                    <form className=' space-y-5 ' onSubmit={props.user === 'user'  ? handleRegister : otp ? handleRegister : otpVerification}>
+                    <form className=' space-y-5 ' onSubmit={props.user === 'user' ? handleRegister : otp ? handleRegister : otpVerification}>
 
                         <center>
                             <h1 className='rounded-lg  text-orange-700 text-6xl'>
@@ -157,10 +170,11 @@ function Login(props) {
                         <center>
                             {props.user === "user" ? <h2 className='text-white text-4xl '>Sign in</h2> : props.user === "admin" ? <h2 className='text-white text-4xl'>Admin</h2> : <h2 className='text-white text-4xl'>Signup</h2>}
                         </center>
+                       {isLoading && <center className='text-orange-500'> <LoadOnButton />Please wait...</center> }
                         {props.user === "signup" ?
                             <div className=' space-y-5'>
                                 <center>
-                                    <input className='w-96 p-2 px-3 bg-transparent border border-white outline-none rounded-xl text-white' type="text" onChange={(e) => {
+                                    <input className='w-96 p-2 px-3 bg-transparent border border-white outline-none rounded-3xl text-white' type="text" onChange={(e) => {
                                         setFirstname(e.target.value)
                                         setErrFirstname(true)
                                     }}
@@ -169,7 +183,7 @@ function Login(props) {
                                 </center>
 
                                 <center>
-                                    <input className='w-96 p-2 px-3 bg-transparent border border-white outline-none rounded-xl text-white' type="text" onChange={(e) => {
+                                    <input className='w-96 p-2 px-3 bg-transparent border border-white outline-none rounded-3xl text-white' type="text" onChange={(e) => {
                                         setLastname(e.target.value)
 
                                     }}
@@ -179,7 +193,7 @@ function Login(props) {
                             </div>
                             : ""}
                         <center>
-                            <input className='w-96 p-2 px-3 bg-transparent border border-white outline-none rounded-xl text-white' onChange={(e) => {
+                            <input className='w-96 p-2 px-3 bg-transparent border border-white outline-none rounded-3xl text-white' onChange={(e) => {
                                 setEmail(e.target.value)
                                 setErrEmail(true)
                                 setSignupError(false)
@@ -193,7 +207,7 @@ function Login(props) {
                             </div>}
                         </center>
                         <center>
-                            <input className='w-96 p-2 px-3 bg-transparent border border-white outline-none rounded-xl text-white' onChange={(e) => {
+                            <input className='w-96 p-2 px-3 bg-transparent border border-white outline-none rounded-3xl text-white' onChange={(e) => {
                                 setPassword(e.target.value)
                                 setErrPassword(true)
                             }}
@@ -219,7 +233,7 @@ function Login(props) {
                                 </Link>
                             </center>
                         </div> : ""}
-                        {showRegLog ===false ? <center>
+                        {showRegLog === false ? <center>
                             <button
                                 className='w-96 p-2 px-3 bg-transparent border border-white outline-none rounded-xl text-white hover:bg-slate-200 hover:text-black duration-300'
 
@@ -236,12 +250,11 @@ function Login(props) {
 
                         </center>
                             : ""}
-
                         <center>
                             {props.user === "user" ? <div className='text-white text-xs'>
                                 Don't have an account? <Link to='/signup'> Signup </Link>
                             </div> : props.user === "signup" ? <div className='text-white text-xs'>
-                             Allready have an account? <Link to='/login'> Login </Link>
+                                Allready have an account? <Link to='/login'> Login </Link>
                             </div> : ""}
                             <br />
                             <div>
