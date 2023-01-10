@@ -9,12 +9,15 @@ export const unfollowAPI='user/unfollow/'
 export const followUserAPI='user/getFollowers/'
 export const FollowingUserAPI='user/getFollowingUser/'
 export const uploadCoverImgAPI='user/updateProfileImg/'
+export const getSavedPostsAPI='user/getSavedPosts/'
 
 export const postAPI='posts/'
 export const likeAPI='posts/likes/'
 export const commentAPI='posts/commentPost/'
 export const postsByIdAPI='posts/getPostsByID/'
 export const deletePostAPI='posts/deletePost/'
+export const savePostAPI='posts/savePosts'
+
 
 export const userChatsAPI='chat/userChats/'
 

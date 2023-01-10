@@ -101,7 +101,7 @@ const authslice = createSlice({
             state.loading = false
             console.log(action.payload.user, "testing the action of signup full filled");
             state.loading = false
-            //state.user=action.payload.user
+           
             let token = action.payload.token
             state.token = token
 

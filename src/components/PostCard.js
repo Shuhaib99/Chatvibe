@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { getPosts, likePosts, commentPost, deletePost } from '../redux/PostSlice'
+import { getPosts, likePosts, commentPost, deletePost, savePosts } from '../redux/PostSlice'
 import { getCurrentUser, getPostsById, addProfileId } from '../redux/UserSlice'
 import Avatar from './Avatar'
 import Card from './Card'
@@ -10,6 +10,7 @@ import '../App.css'
 import Loading from './Loading';
 import Modal from './Modal'
 import OutsideClickHandler from 'react-outside-click-handler'
+import toast, { Toaster } from 'react-hot-toast';
 // import { refr } from '../redux/PostSlice'
 // import Profile from './Profile'
 
@@ -33,7 +34,7 @@ function PostCard(props) {
     let likesArr = useSelector(state => state.postSlice.likes)
     const formref = useRef(null)
     // const btnRef = useRef()
-
+    const notify = () => toast.success("Successfully added");
     let refrsh = useSelector(state => state.postSlice.refresh)
     // const user=useSelector(currentUser)
     // const isLikedByMe = !!likes.find(like => likes.userid === user)
@@ -114,12 +115,20 @@ function PostCard(props) {
             });
     }
 
-    const handleSavePost=(postid)=>{
-
+    const handleSavePost = (postid) => {
+        console.log(postid,"savepost");
+        dispatch(savePosts({postid:postid})).then((res)=>{
+            console.log(res);
+            notify()
+            
+        })
     }
 
     return (
         <div>
+             <Toaster toastOptions={{success: { style: {border: '2px solid black', padding: '16px' },},
+                error: {style: {background: 'red',},}, }} />
+
             {isLoading && (
                 <div className=' flex items-center'>
                     <div className='mx-auto'>
@@ -127,11 +136,11 @@ function PostCard(props) {
                     </div>
                 </div>
             )}
-             {openModal && <Modal closeModal={setOpenModal} confirmModal={setConfirmDelete} />}
+            {openModal && <Modal closeModal={setOpenModal} confirmModal={setConfirmDelete} />}
             {posts?.map(obj => {
                 return <Card key={obj._id} >
                     <div className='flex gap-3'>
-                  
+
                         <div>
                             <Link to='/profile/' state={{ id: obj?.userid._id }}>
                                 <Avatar url={obj?.userid.profilepic} />
@@ -169,31 +178,28 @@ function PostCard(props) {
                         <div className='relative'>
                             {isPopup === obj._id && <div className=' bg-slate-300  rounded-md w-44 -ml-40 top-8 absolute '>
                                 <OutsideClickHandler onOutsideClick={(e) => { !openModal && setIsPOp("") }}>
-                                    <button onClick={() => {
-
+                                    {user === obj.userid._id && <button onClick={() => {
                                         setOpenModal(true)
 
                                     }} className=' px-6 py-1  rounded-md w-44 mt-1 hover:bg-slate-200   flex gap-3'>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 ">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m6 4.125l2.25 2.25m0 0l2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
                                         </svg>
-
-
                                         Delete
-                                    </button>
+                                    </button>}
                                     {confirmDelete && handleDelete(obj._id)}
                                     {/* </OutsideClickHandler> */}
 
                                     {/* <OutsideClickHandler onOutsideClick={(e) => { !confirmDelete && setIsPOp("") }}> */}
-                                    <button onClick={() => {
-                                            handleSavePost(obj._id)
+                                    {user !== obj.userid._id && <button onClick={() => {
+                                        handleSavePost(obj._id)
                                     }} className=' px-6 py-1  rounded-md w-44 mt-1 hover:bg-slate-200 flex gap-3'>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
                                         </svg>
                                         Save
-                                    </button>
-                                    <button onClick={() => {
+                                    </button>}
+                                    {user !== obj.userid._id && <button onClick={() => {
 
                                     }} className=' px-6 py-1  rounded-md w-44 mt-1 hover:bg-slate-200 flex gap-3'>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -201,7 +207,7 @@ function PostCard(props) {
                                         </svg>
 
                                         Report
-                                    </button>
+                                    </button>}
                                 </OutsideClickHandler>
                             </div>}
                         </div>
