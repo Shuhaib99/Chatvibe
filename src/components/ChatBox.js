@@ -60,9 +60,9 @@ function ChatBox({ chat, currentuserid, setSendMessage, recieveMessage }) {
     }
   }, [chat, currentuserid])
 
-  useEffect(()=>{
-    scroll.current?.scrollIntoView({behaviour:"smooth"})
-  },[messages])
+  useEffect(() => {
+    scroll.current?.scrollIntoView({ behaviour: "smooth" })
+  }, [messages])
   return (
     <div>
       {chat.length !== 0 ? (
@@ -81,17 +81,28 @@ function ChatBox({ chat, currentuserid, setSendMessage, recieveMessage }) {
             </div>
             <hr />
             <>
-              <div  className='overflow-auto h-48 postComments'>
+              <div className='overflow-auto h-48 postComments'>
                 {messages?.map((message) => (
                   <div key={message._id}>
-
-                    <div ref={scroll} className='flex flex-row-reverse '>
-                      <div className=' items-center bg-blue-500 rounded-3xl leading-4 px-4 py-1 mt-5'>
-                        <div className=' text-white  font-serif'>{message?.text}<br />
-                          <p className=' text-gray-700 text-xs'><Moment fromNow>{message.createdAt}</Moment></p>
+                    {message.senderid === currentuserid ?
+                      <div ref={scroll} className='flex flex-row-reverse '>
+                        <div className=' items-center bg-blue-500 rounded-3xl leading-4 px-4 py-1 mt-1'>
+                          <div className=' text-white  font-serif'>{message?.text}<br />
+                            <p className=' text-gray-700 text-xs'><Moment fromNow>{message.createdAt}</Moment></p>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                      :
+                      <div ref={scroll} className='flex flex-grow-0 '>
+                        <div className=' items-center bg-blue-500 rounded-3xl leading-4 px-4 py-1 mt-1'>
+                          <div className=' text-white  font-serif'>{message?.text}<br />
+                            <p className=' text-gray-700 text-xs'><Moment fromNow>{message.createdAt}</Moment></p>
+                          </div>
+                        </div>
+                      </div>
+                    }
+
+
 
                   </div>
                 ))}

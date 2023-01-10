@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux'
-import { loginUser, signUpUser, googleUser } from '../../redux/AuthSlice';
+import { loginUser, signUpUser, googleUser, otpAuth } from '../../redux/AuthSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode'
 import './Login.css';
@@ -13,11 +13,16 @@ function Login(props) {
     const [lastname, setLastname] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-
+    const [signupError, setSignupError] = useState(false)
+    const [otp, setOtp] = useState(false)
+    const [otpVerify, setOtpVerify] = useState("")
+    const [otpNumber, setOtpNumber] = useState("")
     const [errFirstname, setErrFirstname] = useState(true)
     // const [errLastname, setErrLastname] = useState(true)
     const [errEmail, setErrEmail] = useState(true)
     const [errPassword, setErrPassword] = useState(true)
+    const [otpError, setOtpError] = useState(false)
+    const [showRegLog, setShowRegLog] = useState(false)
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -35,13 +40,14 @@ function Login(props) {
     function handleCallbackResponse(response) {
         var userObject = jwt_decode(response.credential);
         dispatch(googleUser(userObject)).then(() => {
+            // console.log(res);
             navigate('/')
         })
     }
-    function GVerify(){
+    function GVerify() {
         /*global  google*/
         google.accounts.id.initialize({
-            client_id:process.env.REACT_APP_GClientID,
+            client_id: process.env.REACT_APP_GClientID,
             callback: handleCallbackResponse,
         });
 
@@ -52,27 +58,69 @@ function Login(props) {
         //google.accounts.id.prompt();
     }
 
-    
+
     useEffect(() => {
         GVerify()
     }, [])
 
-
-    //.....................................................
-    const handleRegister = (e) => {
+    const otpVerification = (e) => {
         e.preventDefault()
         try {
             if (props.user === "signup") {
                 firstnameRegex.test(firstname) ? setErrFirstname(true) : setErrFirstname(false)
                 emailRegex.test(email) ? setErrEmail(true) : setErrEmail(false)
                 PasswordRegex.test(password) ? setErrPassword(true) : setErrPassword(false)
-                if (firstnameRegex.test(firstname) && emailRegex.test(email) && PasswordRegex.test(password)) {
-                    dispatch(signUpUser({ firstname, lastname, email, password })).then(() => {
-                        navigate('/');
-                    });
+                if (firstnameRegex.test(firstname) && PasswordRegex.test(password)) {
+                   
+                    dispatch(otpAuth({ email })).then((res) => {
+                        //console.log(res);
+                        if (res.payload.user === false) {
+                            setSignupError(true)
+                        } else if (res.payload.success) {
+                            setOtpNumber(res.payload.response.otp)
+                            setOtp(true)
+                            setShowRegLog(true)
+                        }
+                    })
+                    console.log("ok");
                 }
-                else {
-                    console.log("Signup error");
+            }
+        } catch (error) {
+            return error
+        }
+    }
+
+    //.....................................................
+    const handleRegister = (e) => {
+        e.preventDefault()
+        try {
+
+            if (props.user === "signup") {
+                if (otpNumber === otpVerify) {
+
+                    firstnameRegex.test(firstname) ? setErrFirstname(true) : setErrFirstname(false)
+                    emailRegex.test(email) ? setErrEmail(true) : setErrEmail(false)
+                    PasswordRegex.test(password) ? setErrPassword(true) : setErrPassword(false)
+                    if (firstnameRegex.test(firstname) && emailRegex.test(email) && PasswordRegex.test(password)) {
+
+                        dispatch(signUpUser({ firstname, lastname, email, password })).then((res) => {
+                            if (res.payload.user === false) {
+                                console.log("user false");
+                                setSignupError(true)
+                            } else {
+                                setOtp(false)
+                                setShowRegLog(false)
+                                navigate('/');
+
+                            }
+                        });
+                    }
+                    else {
+                        console.log("Signup error");
+                    }
+                } else {
+                    console.log("Statrt");
+                    otpError(true)
                 }
             }
             else {
@@ -91,13 +139,12 @@ function Login(props) {
             return error
         }
     }
-
     return (
         <div className='h-screen w-full bg-cover bg-center bg-fixed bg-[url("https://dm0qx8t0i9gc9.cloudfront.net/watermarks/image/rDtN98Qoishumwih/abstract-colorful-social-network-people-background_zJgPXisO_SB_PM.jpg")]'>
             <div className='bg-black/90 w-full h-screen'>
 
                 <div className='flex flex-col h-screen justify-center'>
-                    <form className=' space-y-5 ' onSubmit={handleRegister}>
+                    <form className=' space-y-5 ' onSubmit={props.user === 'user'  ? handleRegister : otp ? handleRegister : otpVerification}>
 
                         <center>
                             <h1 className='rounded-lg  text-orange-700 text-6xl'>
@@ -135,9 +182,15 @@ function Login(props) {
                             <input className='w-96 p-2 px-3 bg-transparent border border-white outline-none rounded-xl text-white' onChange={(e) => {
                                 setEmail(e.target.value)
                                 setErrEmail(true)
+                                setSignupError(false)
                             }}
                                 value={email} size="small" type="email" label='Email ID' placeholder='Info@example.com' />
                             <span style={{ display: errEmail ? "none" : "block", color: "red", fontSize: "12px" }}>Please enter valid email</span>
+                            {signupError && <div>
+                                <span className='text-red-600'>
+                                    Entered email allready exist !
+                                </span>
+                            </div>}
                         </center>
                         <center>
                             <input className='w-96 p-2 px-3 bg-transparent border border-white outline-none rounded-xl text-white' onChange={(e) => {
@@ -147,6 +200,18 @@ function Login(props) {
                                 value={password} size="small" label='Password' placeholder='Enter Password' type='password' autoComplete='on' />
                             <span style={{ display: errPassword ? "none" : "block", color: "red", fontSize: "12px" }}>Password Shoud be 3 Characters</span>
                         </center>
+                        <br />
+                        {otp && <center>
+                            <div className='text-white font-semibold text-center'> Verify OTP </div>
+                            <input className='w-96 p-2 px-3 bg-transparent border border-white outline-none rounded-xl text-white' onChange={(e) => {
+                                setOtpVerify(e.target.value)
+                                setOtpError(false)
+                            }}
+                                value={otpVerify} size="small" placeholder='Enter OTP' autoComplete='on' />
+                        </center>}
+                        {
+                            otpError && <center> <div className='text-red-600 text-center'>Entered otp wrong</div> </center>
+                        }
                         {props.user === "user" ? <div>
                             <center>
                                 <Link className='text-white  text-xs hover:border-b' to="">
@@ -154,24 +219,37 @@ function Login(props) {
                                 </Link>
                             </center>
                         </div> : ""}
-                        <center>
+                        {showRegLog ===false ? <center>
                             <button
                                 className='w-96 p-2 px-3 bg-transparent border border-white outline-none rounded-xl text-white hover:bg-slate-200 hover:text-black duration-300'
 
                                 type='submit'   >{props.user === "signup" ? "Register" : "Login"}</button>
 
+                        </center> : ""}
+
+                        {otp ? <center>
+                            <button
+                                className='w-96 p-2 px-3 bg-transparent border border-white outline-none rounded-xl text-white hover:bg-slate-200 hover:text-black duration-300'
+                                type='submit' >
+                                Send OTP
+                            </button>
+
                         </center>
+                            : ""}
+
                         <center>
                             {props.user === "user" ? <div className='text-white text-xs'>
                                 Don't have an account? <Link to='/signup'> Signup </Link>
+                            </div> : props.user === "signup" ? <div className='text-white text-xs'>
+                             Allready have an account? <Link to='/login'> Login </Link>
                             </div> : ""}
                             <br />
                             <div>
                                 <p className='text-white text-xs'>__________________or continue with__________________</p>
                             </div><br />
-                                <div className='w-96' id='googlebtn'>
+                            <div className='w-96' id='googlebtn'>
 
-                                </div>                           
+                            </div>
                         </center>
 
                     </form>

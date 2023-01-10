@@ -1,5 +1,6 @@
 
 export const authAPI='auth/'
+export const otpVerifyAPI='auth/otpVerify'
 
 export const userAPI='user/userById'
 export const loginUserAPI='user/getCurrentUser/'

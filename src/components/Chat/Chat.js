@@ -28,7 +28,7 @@ function Chat() {
       setUser(res.payload.user)
       // console.log(res.payload.user,"newwwww");
     })
-  }, [user])
+  }, [])
 
   useEffect(() => {
     if (sendMessage !== null) {
@@ -41,25 +41,29 @@ function Chat() {
     socket.current = io('http://localhost:8800')
     socket.current.emit("new-user-add", user)
     socket.current.on('get-users', (users) => {
+      // console.log(users,"newUserusersesrsersers");
       setOnlineUsers(users)
-      console.log("onlineusers",onlineUsers);
+
     })
   }, [user])
 
   useEffect(() => {
-    socket.current.on("recieve-message", (data) => {
+
+    socket.current.on("receive-message", (data) => {
+      // console.log(data,"recievedMssgs");
       setRecievedMessage(data)
     })
-  }, [])
+  }, [chats])
+
+
 
   const checkOnlineStatus = (chat) => {
     const chatMember = chat.members.find((member) => member !== user)
-    const online = onlineUsers.find((user) => user.userid === chatMember)
+    const online = onlineUsers.find((user) => user.userId === chatMember)
+    // console.log(online,"Is Online");
     return online ? true : false
+
   }
-
-
-
 
   return (
     <div>
@@ -75,7 +79,7 @@ function Chat() {
                   {chats?.map(chat => (
                     <div key={chat?._id}>
                       <div onClick={() => { setCurrentChat(chat) }}>
-                        <Conversation data={chat} currentuserid={user} online={checkOnlineStatus(chat)}/>
+                        <Conversation data={chat} currentuserid={user} online={checkOnlineStatus(chat)} />
                       </div>
                     </div>
                   ))}

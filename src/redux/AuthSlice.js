@@ -1,17 +1,25 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from '../axios'
-import { authAPI } from "../url";
+import { authAPI, otpVerifyAPI } from "../url";
 
 
 const initialState = {
-    user:""
-  
+    user: ""
+
 }
 
 export const signUpUser = createAsyncThunk('signupuser', async (body) => {
     return await axios.post(`${authAPI}register`, body).then(({ data }) => {
         return data
-    }).catch ((err)=>{
+    }).catch((err) => {
+        console.log(err)
+    })
+})
+
+export const otpAuth = createAsyncThunk('otpAuth', async (body) => {
+    return await axios.post(`${otpVerifyAPI}`,body).then(({ data }) => {
+        return data
+    }).catch((err) => {
         console.log(err)
     })
 })
@@ -19,14 +27,14 @@ export const signUpUser = createAsyncThunk('signupuser', async (body) => {
 export const loginUser = createAsyncThunk('loginuser', async (body) => {
     return await axios.post(`${authAPI}login`, body).then(({ data }) => {
         return data
-    }).catch ((err)=>{
+    }).catch((err) => {
         console.log(err)
     })
 })
 export const googleUser = createAsyncThunk('googleuser', async (body) => {
     return await axios.post(`${authAPI}google`, body).then(({ data }) => {
         return data
-    }).catch ((err)=>{
+    }).catch((err) => {
         console.log(err)
     })
 })
@@ -34,7 +42,7 @@ export const googleUser = createAsyncThunk('googleuser', async (body) => {
 export const getUser = createAsyncThunk('getUser', async (body) => {
     return await axios.post(`${authAPI}google`, body).then(({ data }) => {
         return data
-    }).catch ((err)=>{
+    }).catch((err) => {
         console.log(err)
     })
 })
@@ -69,13 +77,13 @@ const authslice = createSlice({
             state.loading = false
             // let user=action.payload.user._id
             // state.user=user
-        
+
             let token = action.payload.token
             state.token = token
 
             // localStorage.setItem("user", user)
             localStorage.setItem("token", token)
-            
+
             state.isLoggedin = true;
             // console.log(action.payload.user, "testing the action of login full filled");
 
@@ -84,7 +92,7 @@ const authslice = createSlice({
             state.loading = true
             console.log("Rejected of user");
         })
-        
+
         //...........signUp...............
         builder.addCase(signUpUser.pending, (state, action) => {
             state.loading = true
