@@ -77,10 +77,15 @@ function Login(props) {
                     dispatch(otpAuth({ email })).then((res) => {
                         if (res.payload.user === false) {
                             setSignupError(true)
-                        } else if (res.payload.success) {
+                        } else if (res.payload.response.otp) {
+                            console.log(res.payload.response.otp,"otp");
                             setOtpNumber(res.payload.response.otp)
                             setOtp(true)
                             setShowRegLog(true)
+                        }else{
+                            console.log("OTP error.....");
+                            setIsLoading(false)
+                            setOtpError(true)
                         }
 
                     })
@@ -98,7 +103,7 @@ function Login(props) {
            
             if (props.user === "signup") {
                 if (otpNumber === otpVerify) {
-
+                    console.log("Inside otp ok");
                     firstnameRegex.test(firstname) ? setErrFirstname(true) : setErrFirstname(false)
                     emailRegex.test(email) ? setErrEmail(true) : setErrEmail(false)
                     PasswordRegex.test(password) ? setErrPassword(true) : setErrPassword(false)
@@ -122,7 +127,8 @@ function Login(props) {
                         console.log("Signup error");
                     }
                 } else {
-                    otpError(true)
+                    setIsLoading(false)
+                    setOtpError(true)
                 }
             }
             else {

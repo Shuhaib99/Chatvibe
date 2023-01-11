@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { getFollowers } from '../redux/UserSlice'
 import Avatar from './Avatar'
 
-function Followers(props) {
+function Followers(props,refresh) {
     const [followers, setFollowers] = useState([])
 
     const dispatch = useDispatch()
@@ -12,7 +12,7 @@ function Followers(props) {
             console.log(res.payload.followers, "GET FOLLOWERS");
             setFollowers(res.payload.followers)
         })
-    }, [])
+    }, [refresh])
     return (
         <div className='flex gap-2'>
             {followers.map(obj => {

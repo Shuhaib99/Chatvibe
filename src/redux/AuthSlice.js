@@ -99,7 +99,7 @@ const authslice = createSlice({
         })
         builder.addCase(signUpUser.fulfilled, (state, action) => {
             state.loading = false
-            console.log(action.payload.user, "testing the action of signup full filled");
+            //console.log(action.payload.user, "testing the action of signup full filled");
             state.loading = false
            
             let token = action.payload.token

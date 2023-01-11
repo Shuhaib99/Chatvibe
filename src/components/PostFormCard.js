@@ -10,7 +10,7 @@ import Loading from './Loading';
 import Avatar from './Avatar'
 import Card from './Card'
 import { Link } from 'react-router-dom';
-import { Modal } from '@mui/material';
+
 
 
 // import { ToastContainer, toast } from 'react-toastify'
@@ -29,12 +29,12 @@ function PostFormCard() {
     const imgNotify =() =>toast.success("Post should be as image files")
     const onImageChange = (e) => {
         if (e.target.files && e.target.files[0]) {
-            // if(e.target.files[0].type === 'image/x-png' || e.target.files[0].type === 'image/gif' || e.target.files[0].type === 'image/jpeg' || e.target.files[0].type === 'image/jpg'){
+            if(e.target.files[0].type === 'image/x-png' || e.target.files[0].type === 'image/gif' || e.target.files[0].type === 'image/jpeg' || e.target.files[0].type === 'image/jpg'){
                 let img = e.target.files[0]
                 setImage(img)
-            // }else{               
-            //    imgNotify()
-            // }
+            }else{               
+               imgNotify()
+            }
            
         }
     }
@@ -78,7 +78,7 @@ function PostFormCard() {
     }
     useEffect(() => {
         dispatch(getCurrentUser()).then((res) => {
-            console.log(res, "GetCurrentUser");
+            //console.log(res, "GetCurrentUser");
             setUser(res.payload.user)
 
         })

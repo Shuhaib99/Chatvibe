@@ -11,7 +11,7 @@ function SavedPosts() {
     useEffect(() => {
         console.log("HELLLLLOOOO");
         dispatch(getSavedPosts()).then((res) => {
-            console.log(res,"savedposts");
+            console.log(res, "savedposts");
             // setSavedPosts(res.payload.user.savedPosts)
         })
     }, [])
@@ -21,19 +21,21 @@ function SavedPosts() {
             <Layout>
                 <PostFormCard />
                 {/* {savedPosts?.map(obj => {
-                    return <Card key={obj._id} >
-                        <div className='flex gap-3'>
-                        </div>
-                        <div>
-                            <div className='my-3 text-sm'>
-                                <p>{obj.description}</p>
-                                <div className='rounded-md overflow-hidden'>
-                                    <img src={obj.images} alt='' />
+                    return <div>
+                        <Card key={obj._id} >
+                            <div className='flex gap-3'>
+                            </div>
+                            <div>
+                                <div className='my-3 text-sm'>
+                                    <p>{obj.description}</p>
+                                    <div className='rounded-md overflow-hidden'>
+                                        <img src={obj.images} alt='' />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                    </Card>
+                        </Card>
+                    </div>
                 })
                 } */}
             </Layout>

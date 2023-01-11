@@ -156,7 +156,7 @@ function Profile() {
           <Card>
             <h2 className='text-3xl mb-2 '>Followers</h2>
             <div className='border-b p-3'>
-              <Followers id={userid.id}/>
+              <Followers id={userid.id} refresh={refresh}/>
             </div>
           </Card>
         </div>
