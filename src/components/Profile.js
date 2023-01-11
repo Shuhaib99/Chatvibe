@@ -7,9 +7,10 @@ import { Link, useLocation } from 'react-router-dom'
 import { getUser, follow, unfollow, addProfileId } from '../redux/UserSlice'
 import Followers from './Followers'
 import Following from './Following'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import LoadOnButton from './LoadOnButton'
 import Cover from './Cover'
+
 //import Loading from './Loading'
 
 function Profile() {
@@ -46,7 +47,9 @@ function Profile() {
       console.log(res);
       setBttnIsLoading(false)
       setRefresh("Follow")
+      
     })
+    
   }
   function handleUnFollow(id) {
     setBttnIsLoading(true)
@@ -156,7 +159,7 @@ function Profile() {
           <Card>
             <h2 className='text-3xl mb-2 '>Followers</h2>
             <div className='border-b p-3'>
-              <Followers id={userid.id} refresh={refresh}/>
+              <Followers id={userid.id} />
             </div>
           </Card>
         </div>

@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getFollowers } from '../redux/UserSlice'
 import Avatar from './Avatar'
 
-function Followers(props,refresh) {
+function Followers(props) {
     const [followers, setFollowers] = useState([])
-
+    
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(getFollowers(props.id)).then((res) => {
             console.log(res.payload.followers, "GET FOLLOWERS");
             setFollowers(res.payload.followers)
         })
-    }, [refresh])
+    }, [props])
     return (
         <div className='flex gap-2'>
             {followers.map(obj => {
                 return (
                     obj.followers.map(obj => {
                         return (
-                            <div>
+                            <div key={obj._id}>
                                 <div key={obj._id} className='flex gap-4'>
                                     <Avatar url={obj?.profilepic} />
                                     <div>

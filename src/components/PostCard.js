@@ -11,6 +11,7 @@ import Loading from './Loading';
 import Modal from './Modal'
 import OutsideClickHandler from 'react-outside-click-handler'
 import toast, { Toaster } from 'react-hot-toast';
+import Report from './Report'
 // import { refr } from '../redux/PostSlice'
 // import Profile from './Profile'
 
@@ -31,6 +32,7 @@ function PostCard(props) {
     const [isPopup, setIsPOp] = useState("")
     const [openModal, setOpenModal] = useState(false)
     const [confirmDelete, setConfirmDelete] = useState(false)
+    const [reportForm,setReportForm]=useState(false)
     let likesArr = useSelector(state => state.postSlice.likes)
     const formref = useRef(null)
     // const btnRef = useRef()
@@ -137,6 +139,7 @@ function PostCard(props) {
                 </div>
             )}
             {openModal && <Modal closeModal={setOpenModal} confirmModal={setConfirmDelete} />}
+            {reportForm && <Report close={setReportForm}/>}
             {posts?.map(obj => {
                 return <Card key={obj._id} >
                     <div className='flex gap-3'>
@@ -200,7 +203,7 @@ function PostCard(props) {
                                         Save
                                     </button>}
                                     {user !== obj.userid._id && <button onClick={() => {
-
+                                            setReportForm(true)
                                     }} className=' px-6 py-1  rounded-md w-44 mt-1 hover:bg-slate-200 flex gap-3'>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5" />
@@ -211,8 +214,6 @@ function PostCard(props) {
                                 </OutsideClickHandler>
                             </div>}
                         </div>
-
-
                     </div>
 
                     <div>
