@@ -119,7 +119,7 @@ function PostCard(props) {
 
     const handleSavePost = (postid) => {
         console.log(postid,"savepost");
-        dispatch(savePosts({postid:postid})).then((res)=>{
+        dispatch(savePosts({postid:postid,savedpostdelete:false})).then((res)=>{
             console.log(res);
             notify()
             
