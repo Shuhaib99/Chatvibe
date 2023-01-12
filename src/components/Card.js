@@ -7,7 +7,7 @@ export default function Card({ children,noPadding }) {
     }
     return (
         <div className={cardClass}>            
-                { children }            
+                { children }
         </div>
     )
 }

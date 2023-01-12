@@ -10,6 +10,7 @@ export const followUserAPI='user/getFollowers/'
 export const FollowingUserAPI='user/getFollowingUser/'
 export const uploadCoverImgAPI='user/updateProfileImg/'
 export const getSavedPostsAPI='user/getSavedPosts/'
+export const getUsersAPI='user/getUsers/'
 
 export const postAPI='posts/'
 export const likeAPI='posts/likes/'

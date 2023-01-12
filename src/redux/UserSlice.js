@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from '../axios'
-import { loginUserAPI, postsByIdAPI, userAPI,followUserAPI, FollowingUserAPI, getSavedPostsAPI } from "../url";
+import { loginUserAPI, postsByIdAPI, userAPI,followUserAPI, FollowingUserAPI, getSavedPostsAPI, getUsersAPI } from "../url";
 import { followAPI } from "../url";
 import { unfollowAPI } from "../url";
 import { uploadCoverImgAPI } from "../url";
@@ -37,6 +37,17 @@ export const getFollowers = createAsyncThunk('getFollowers', async (params) => {
     }).catch((error) => {
         console.log(error)
     })
+})
+
+export const getUsers = createAsyncThunk('getUsers', async (params) => {
+    try {
+
+    const token = localStorage.getItem('token')
+    const {data}=await axios.get(`${getUsersAPI}`+params, { headers: { 'authorization': 'Bearer ' + token } })
+        return data
+    }catch (err) {
+        console.log(err)
+    }
 })
 
 export const getSavedPosts = createAsyncThunk('getSavedPosts', async () => {

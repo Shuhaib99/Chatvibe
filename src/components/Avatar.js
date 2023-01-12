@@ -7,6 +7,7 @@ import Loading from './Loading';
 import { style } from '@mui/system';
 
 function Avatar({ size, url, editable, onchange }) {
+   
     let width = 'w-12 h-12'
     if (size === 'lg') {
         width = 'h-32 w-32'

@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getPosts, likePosts, commentPost, deletePost, savePosts } from '../redux/PostSlice'
 import { getCurrentUser, getPostsById, addProfileId } from '../redux/UserSlice'
+import InputEmoji from 'react-input-emoji'
 import Avatar from './Avatar'
 import Card from './Card'
 import Moment from 'react-moment'
@@ -32,7 +33,7 @@ function PostCard(props) {
     const [isPopup, setIsPOp] = useState("")
     const [openModal, setOpenModal] = useState(false)
     const [confirmDelete, setConfirmDelete] = useState(false)
-    const [reportForm,setReportForm]=useState(false)
+    const [reportForm, setReportForm] = useState(false)
     let likesArr = useSelector(state => state.postSlice.likes)
     const formref = useRef(null)
     // const btnRef = useRef()
@@ -99,11 +100,13 @@ function PostCard(props) {
 
     const handleSubmit = (e, id) => {
         e.preventDefault()
-        dispatch(commentPost({ commentText, id }))
-            .then((res) => {
-                setCommentText("")
-                refresh ? setRefresh(false) : setRefresh(true)
-            });
+        if (commentText) {
+            dispatch(commentPost({ commentText, id }))
+                .then((res) => {
+                    setCommentText("")
+                    refresh ? setRefresh(false) : setRefresh(true)
+                });
+        }
     }
 
     const handleDelete = (postid) => {
@@ -118,18 +121,20 @@ function PostCard(props) {
     }
 
     const handleSavePost = (postid) => {
-        console.log(postid,"savepost");
-        dispatch(savePosts({postid:postid,savedpostdelete:false})).then((res)=>{
+        console.log(postid, "savepost");
+        dispatch(savePosts({ postid: postid, savedpostdelete: false })).then((res) => {
             console.log(res);
             notify()
-            
+
         })
     }
 
     return (
         <div>
-             <Toaster toastOptions={{success: { style: {border: '2px solid black', padding: '16px' },},
-                error: {style: {background: 'red',},}, }} />
+            <Toaster toastOptions={{
+                success: { style: { border: '2px solid black', padding: '16px' }, },
+                error: { style: { background: 'red', }, },
+            }} />
 
             {isLoading && (
                 <div className=' flex items-center'>
@@ -139,7 +144,7 @@ function PostCard(props) {
                 </div>
             )}
             {openModal && <Modal closeModal={setOpenModal} confirmModal={setConfirmDelete} />}
-            {reportForm && <Report close={setReportForm}/>}
+            {reportForm && <Report close={setReportForm} />}
             {posts?.map(obj => {
                 return <Card key={obj._id} >
                     <div className='flex gap-3'>
@@ -203,7 +208,7 @@ function PostCard(props) {
                                         Save
                                     </button>}
                                     {user !== obj.userid._id && <button onClick={() => {
-                                            setReportForm(true)
+                                        setReportForm(true)
                                     }} className=' px-6 py-1  rounded-md w-44 mt-1 hover:bg-slate-200 flex gap-3'>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5" />
@@ -242,11 +247,11 @@ function PostCard(props) {
                             </svg>{obj.comments.length}
                         </button>
 
-                        <button className='flex gap-2 items-center'>
+                        {/* <button className='flex gap-2 items-center'>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" />
                             </svg>4
-                        </button>
+                        </button> */}
                     </div>
                     {
                         obj?.comments.length > 0 ? <div className=' overflow-auto h-40 rounded-md postComments'>
@@ -297,13 +302,19 @@ function PostCard(props) {
 
                                         onChange={(e) => { setCommentText(e.target.value) }}
                                     />
+                                    {/* <InputEmoji
+                                        ref={formref}
+                                        value={commentText}
+                                        onChange={setCommentText}
+                                        placeholder='Leave a comment'
+                                    /> */}
 
                                     <button type='submit' className='absolute top-3 right-3 text-gray-400'>
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-                                        </svg>
-
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                                            </svg>   
                                     </button>
+
                                 </form>
 
 
