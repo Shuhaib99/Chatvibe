@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from '../axios'
-import { authAPI, otpVerifyAPI } from "../url";
+import { authAPI, otpVerifyAPI, superAPI } from "../url";
 
 
 const initialState = {
@@ -17,7 +17,7 @@ export const signUpUser = createAsyncThunk('signupuser', async (body) => {
 })
 
 export const otpAuth = createAsyncThunk('otpAuth', async (body) => {
-    return await axios.post(`${otpVerifyAPI}`,body).then(({ data }) => {
+    return await axios.post(`${otpVerifyAPI}`, body).then(({ data }) => {
         return data
     }).catch((err) => {
         console.log(err)
@@ -45,6 +45,16 @@ export const getUser = createAsyncThunk('getUser', async (body) => {
     }).catch((err) => {
         console.log(err)
     })
+})
+
+
+export const bySuper = createAsyncThunk('bySuper', async (body) => {
+    try {
+        const { data } = await axios.post(`${superAPI}`, body)
+        return data
+    } catch (err) {
+        console.log(err)
+    }
 })
 
 
@@ -101,7 +111,7 @@ const authslice = createSlice({
             state.loading = false
             //console.log(action.payload.user, "testing the action of signup full filled");
             state.loading = false
-           
+
             let token = action.payload.token
             state.token = token
 
@@ -128,6 +138,25 @@ const authslice = createSlice({
         builder.addCase(googleUser.rejected, (state, action) => {
             state.loading = false
         })
+
+
+        //.....................Admin...............................
+
+        builder.addCase(bySuper.pending, (state, action) => {
+            console.log("Pending of Spr");
+        })
+        builder.addCase(bySuper.fulfilled, (state, action) => {
+
+            let adlog = action.payload.token
+
+            localStorage.setItem("adlog", adlog)
+
+        })
+        builder.addCase(bySuper.rejected, (state, action) => {
+           
+            console.log("Rejected login");
+        })
+
     }
 })
 

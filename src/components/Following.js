@@ -14,21 +14,23 @@ function Following(props) {
         })
     }, [])
     return (
-        <div className='flex gap-2'>
+        <div className=''>
             {following.map(obj => {
                 return (
-                        obj.following.map(obj => {
-                            return (
-                                <div key={obj._id} className='flex gap-4'>
+                    obj.following.map(obj => {
+                        return (
+                            <div key={obj._id} className='flex gap-4 items-center'>
+                                <div className='pb-3'>
                                     <Avatar url={obj?.profilepic} />
-                                    <div>
-                                        <h3 className='font-bold'>{obj?.firstname}</h3>
-                                        {/* <div className='text-sm leading-3'>5 mutual friends</div> */}
-                                    </div>
                                 </div>
-                            )
-                        })
-             )
+                                <div>
+                                    <h3 className='font-bold'>{obj?.firstname}</h3>
+                                    {/* <div className='text-sm leading-3'>5 mutual friends</div> */}
+                                </div>
+                            </div>
+                        )
+                    })
+                )
             })}
 
         </div>

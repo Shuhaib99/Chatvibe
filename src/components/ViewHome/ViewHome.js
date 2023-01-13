@@ -7,11 +7,9 @@ import Search from '../Search'
 function ViewHome() {
   return (
     <Layout>
-     
-        <Search />
-      <div className='mt-5'>
+
+      <Search />
       <PostFormCard />
-      </div >
       <PostCard userid={""} />
     </Layout>
   )

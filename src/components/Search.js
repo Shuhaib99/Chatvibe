@@ -1,19 +1,22 @@
-import { Avatar, Card } from '@mui/material'
+
 import React, { useState, useEffect } from 'react'
+import Avatar from './Avatar'
+import Card from './Card'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { getUsers } from '../redux/UserSlice'
+import OutsideClickHandler from 'react-outside-click-handler'
 
 function Search() {
     const [search, setSearch] = useState("")
     const [users, setUsers] = useState([])
+    const [ispop,setIspop]=useState(false)
 
     const dispatch = useDispatch()
 
     useEffect(() => {
         if (search) {
             dispatch(getUsers(search)).then((res) => {
-                console.log(res.payload);
                 setUsers(res.payload)
             })
         }
@@ -21,36 +24,39 @@ function Search() {
 
     return (
         <div>
-            <Card>
-                <div className='mt-2 p-3'>
-                    <div className='ml-11'>
 
-                        <input value={search} onChange={(e) => {
-                            setSearch(e.target.value)
-                        }} className='p-2 w-11/12' placeholder='Search here...' />
-                    </div>
+            <Card>
+
+                <div className='ml-11 relative'>
+
+                    <input value={search} onChange={(e) => {
+                        setIspop(true)
+                        setSearch(e.target.value)
+                    }} className='p-2 w-11/12' placeholder='Search here...' />
                 </div>
+
             </Card>
-            {search && <div className='absolute ml-32 w-96 h-auto bg-blue-200 z-50'>
-                {users?.map(obj => {
-                    return (                        
-                        <div key={obj._id} className='p-3'>
-                           
-                            <div className='flex  gap-3'>
-                            <div>
-                            <Link to='/profile/' state={{ id: obj?._id }}>
-                                <Avatar url={obj?.profilepic} />
-                            </Link>
-                        </div>
-                                <div>
-                                    <p className=' font-semibold mt-2'>{obj.firstname + " " + obj.lastname}</p>
+            <OutsideClickHandler onOutsideClick={(e) => { setIspop(false) }}>
+                {search && ispop && <div className='absolute ml-32 w-96 h-auto bg-blue-900 text-white z-50 rounded-md'>
+                    {users?.map(obj => {
+                        return (
+                            <div key={obj._id} className='p-3'>
+
+                                <div className='flex  gap-3'>
+                                    <div>
+                                        <Link to='/profile/' state={{ id: obj?._id }}>
+                                            <Avatar url={obj?.profilepic} />
+                                        </Link>
+                                    </div>
+                                    <div>
+                                        <p className=' font-semibold mt-2'>{obj.firstname + " " + obj.lastname}</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    )
-                })}
-            </div>}
-
+                        )
+                    })}
+                </div>}
+            </OutsideClickHandler>
         </div>
 
     )

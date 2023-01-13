@@ -12,10 +12,15 @@ import Posts from './Pages/Posts'
 import Following from './Pages/Following'
 import Chat from './Pages/Chat'
 import SavedPosts from './Pages/SavedPosts'
+import AdminHome from './Pages/AdminHome'
 
 // import { useSelector } from 'react-redux'
+import ProtectedAdminRoute from './ProtectedAdminRoute'
 import ProtectedRoute from './ProtectedRoute'
 import PublicRoute from './PublicRoute'
+import PublicAdminRoute from './PublicAdminRoute'
+
+
 
 
 
@@ -41,9 +46,19 @@ function App() {
 
           <Route element={<PublicRoute />} >
             <Route path='/login' element={<Login user={USER = "user"} />} />
-            <Route path='/admin' element={<Admin user={USER = "admin"} />} />
             <Route path='/signup' element={<Signup user={USER = "signup"} />} />
           </Route>
+
+
+          <Route element={<ProtectedAdminRoute />} >
+            <Route path='/admin_home' element={<AdminHome />} />
+          </Route>
+
+          <Route element={<PublicAdminRoute />} >
+            {console.log("Inside PublicAdminRoute")}
+            <Route path='/admin' element={<Admin />} />
+          </Route>
+
 
         </Routes>
       </BrowserRouter>

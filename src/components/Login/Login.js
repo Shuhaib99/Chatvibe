@@ -174,7 +174,7 @@ function Login(props) {
                         </center>
 
                         <center>
-                            {props.user === "user" ? <h2 className='text-white text-4xl '>Sign in</h2> : props.user === "admin" ? <h2 className='text-white text-4xl'>Admin</h2> : <h2 className='text-white text-4xl'>Signup</h2>}
+                            {props.user === "user" ? <h2 className='text-white text-4xl '>Sign in</h2> : <h2 className='text-white text-4xl'>Signup</h2>}
                         </center>
                        {isLoading && <center className='text-orange-500'> <LoadOnButton />Please wait...</center> }
                         {props.user === "signup" ?

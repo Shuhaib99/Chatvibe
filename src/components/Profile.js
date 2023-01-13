@@ -10,6 +10,7 @@ import Following from './Following'
 import { useDispatch } from 'react-redux'
 import LoadOnButton from './LoadOnButton'
 import Cover from './Cover'
+import Search from './Search'
 
 //import Loading from './Loading'
 
@@ -75,6 +76,7 @@ function Profile() {
 
   return (
     <Layout>
+      <Search />
       {/* {isLoading && <Loading />} */}
       <Card noPadding={true}>
 

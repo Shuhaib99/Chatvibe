@@ -8,6 +8,7 @@ import Layout from '../Layout'
 import PostFormCard from '../PostFormCard'
 import { io } from 'socket.io-client'
 import './Chat.css'
+import Search from '../Search'
 function Chat() {
 
   const [chats, setChats] = useState([])
@@ -69,6 +70,7 @@ function Chat() {
     <div>
       <div className='Chat'>
         <Layout>
+          <Search/>
           <PostFormCard />
           <Card>
             <div className='Chat-list'>

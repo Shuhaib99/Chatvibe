@@ -24,3 +24,5 @@ export const userChatsAPI='chat/userChats/'
 
 export const getMessagesAPI='message/get_messages/'
 export const addMessageAPI='message/addMessage/'
+
+export const superAPI='super/bySuper/'

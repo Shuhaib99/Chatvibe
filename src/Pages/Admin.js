@@ -1,10 +1,11 @@
 import React from 'react'
-import Login from '../components/Login/Login'
+import AdminLogin from '../components/Admin/AdminLogin'
+// import Admin from '../components/Admin/AdminLogin'
 
-function loginadmin(props) {
+function loginadmin() {
   return (
     <div>
-      <Login user={props.user}/>
+      <AdminLogin />
     </div>
   )
 }
