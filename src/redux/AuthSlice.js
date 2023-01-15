@@ -146,8 +146,8 @@ const authslice = createSlice({
             console.log("Pending of Spr");
         })
         builder.addCase(bySuper.fulfilled, (state, action) => {
-
-            let adlog = action.payload.token
+            console.log(action,"action");
+            let adlog = action.payload.adlog
 
             localStorage.setItem("adlog", adlog)
 

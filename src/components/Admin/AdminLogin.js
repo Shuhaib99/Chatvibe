@@ -40,7 +40,7 @@ function AdminLogin() {
           <div className=' flex'>
             <h1 className='rounded-lg  text-orange-700 text-6xl'>
               Chatvibe </h1>
-            <label className='text-yellow-400 ' >Admin</label><br />
+            <label className='text-white ' >Admin</label><br />
           </div>
           <input value={email} className='w-96 p-2 px-3 mt-5 bg-transparent border border-white outline-none rounded-3xl text-yellow-400' type="text" onChange={(e) => {
             setEmail(e.target.value)

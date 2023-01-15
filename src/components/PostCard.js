@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getPosts, likePosts, commentPost, deletePost, savePosts } from '../redux/PostSlice'
-import { getCurrentUser, getPostsById, addProfileId } from '../redux/UserSlice'
+import { getCurrentUser, getPostsById, addProfileId, addReport } from '../redux/UserSlice'
 import InputEmoji from 'react-input-emoji'
 import Avatar from './Avatar'
 import Card from './Card'
@@ -34,6 +34,8 @@ function PostCard(props) {
     const [openModal, setOpenModal] = useState(false)
     const [confirmDelete, setConfirmDelete] = useState(false)
     const [reportForm, setReportForm] = useState(false)
+    const [report, setReport] = useState("")
+    const [confirmSendReport, setConfirmSendREport] = useState(false)
     let likesArr = useSelector(state => state.postSlice.likes)
     const formref = useRef(null)
     // const btnRef = useRef()
@@ -94,7 +96,7 @@ function PostCard(props) {
 
         }
 
-    }, [likes, refresh, refrsh, confirmDelete])
+    }, [likes, refresh, refrsh, confirmDelete,confirmSendReport])
 
 
 
@@ -110,8 +112,6 @@ function PostCard(props) {
     }
 
     const handleDelete = (postid) => {
-
-        console.log(postid, "test");
         dispatch(deletePost({ postid }))
             .then((res) => {
 
@@ -129,6 +129,14 @@ function PostCard(props) {
         })
     }
 
+    const handleReport = (postid,reason)=>{
+        console.log("inside handle Report");
+        dispatch(addReport({postid,reason})).then((res)=>{
+            console.log(res.payload);
+            setConfirmSendREport(false)
+        })
+    }
+
     return (
         <div>
             <Toaster toastOptions={{
@@ -143,8 +151,10 @@ function PostCard(props) {
                     </div>
                 </div>
             )}
+
             {openModal && <Modal closeModal={setOpenModal} confirmModal={setConfirmDelete} />}
-            {reportForm && <Report close={setReportForm} />}
+           
+            {reportForm && <Report close={setReportForm} reason={setReport} confirmReport={setConfirmSendREport} />}
             {posts?.map(obj => {
                 return <Card key={obj._id} >
                     <div className='flex gap-3'>
@@ -160,18 +170,6 @@ function PostCard(props) {
                             <Link to="" className='text-socialBlue'> album</Link>
                             <p className='text-gray-500 text-sm'> <Moment fromNow>{obj.createdAt}</Moment></p>
                         </div>
-
-
-
-                        {/* <div className="relative">
-                            <select className="w-5 rounded-md shadow-sm outline-none ">
-                                <option ></option>
-                                <option onChange={handleDelete(obj._id)}>Delete</option>
-                                <option>React with Tailwind CSS</option>
-                                <option>React With Headless UI</option>
-                            </select>
-                        </div> */}
-
 
                         <button onClick={() =>
                             setIsPOp(obj._id)
@@ -196,9 +194,8 @@ function PostCard(props) {
                                         Delete
                                     </button>}
                                     {confirmDelete && handleDelete(obj._id)}
-                                    {/* </OutsideClickHandler> */}
+                                  
 
-                                    {/* <OutsideClickHandler onOutsideClick={(e) => { !confirmDelete && setIsPOp("") }}> */}
                                     {user !== obj.userid._id && <button onClick={() => {
                                         handleSavePost(obj._id)
                                     }} className=' px-6 py-1  rounded-md w-44 mt-1 hover:bg-slate-200 flex gap-3'>
@@ -215,12 +212,15 @@ function PostCard(props) {
                                         </svg>
 
                                         Report
-                                    </button>}
+                                    </button> }                                    
+                                    { confirmSendReport && handleReport(obj._id,report) }
+                                  
                                 </OutsideClickHandler>
+                                 
                             </div>}
                         </div>
                     </div>
-
+                    {console.log(confirmSendReport,"confirmSendReport")}
                     <div>
                         <div className='my-3 text-sm'>
                             <p>{obj.description}</p>
@@ -311,8 +311,8 @@ function PostCard(props) {
 
                                     <button type='submit' className='absolute top-3 right-3 text-gray-400'>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
-                                            </svg>   
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                                        </svg>
                                     </button>
 
                                 </form>

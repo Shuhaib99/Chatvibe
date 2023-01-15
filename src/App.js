@@ -55,7 +55,6 @@ function App() {
           </Route>
 
           <Route element={<PublicAdminRoute />} >
-            {console.log("Inside PublicAdminRoute")}
             <Route path='/admin' element={<Admin />} />
           </Route>
 

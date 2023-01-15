@@ -25,4 +25,7 @@ export const userChatsAPI='chat/userChats/'
 export const getMessagesAPI='message/get_messages/'
 export const addMessageAPI='message/addMessage/'
 
+export const addReportAPI='report/addReport/'
+
 export const superAPI='super/bySuper/'
+export const getReportAPI='super/getReport'
