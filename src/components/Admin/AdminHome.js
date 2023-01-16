@@ -1,9 +1,20 @@
+
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import Report from './Report'
+
 
 function AdminHome() {
     const [open, setOpen] = useState(true)
+    const [report, setReport] = useState(false)
+    const navigate = useNavigate()
+    const logoutAdmin = () => {
+        localStorage.setItem("adlog", "")
+        navigate('/admin')
+    }
     return (
-        <div className='flex'>
+
+        <div className='flex gap-2'>
             <div className={`${open ? "w-72" : "w-20"} text-lg  p-20 pt-28 duration-300  h-screen bg-gray-900 relative text-white`}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"
                     className={`w-9 h-9 absolute cursor-pointer border-2 -right-3 top-9 bg-gray-900 rounded-full ${!open && "rotate-180"}`}
@@ -44,8 +55,28 @@ function AdminHome() {
                         Report
                     </div>
                 </div>
+                <div className='flex gap-x-3 items-center p-3 hover:bg-gray-500 rounded-md cursor-pointer' onClick={() => {
+                    logoutAdmin()
+                }}>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                        </svg>
+
+
+                    </div>
+                    <div className={`duration-300 ${!open && "scale-0"}`}>
+                        Logout
+                    </div>
+                </div>
+            </div>
+
+            <div className='p-10 px-16'>
+                <h1 className='text-2xl text-center font-semibold'>Report</h1>
+                <Report />
             </div>
         </div>
+
     )
 }
 

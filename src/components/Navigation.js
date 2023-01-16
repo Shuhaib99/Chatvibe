@@ -13,7 +13,7 @@ function Navigation() {
     const nonActive_element = "flex gap-3 py-2 my-2 hover:bg-blue-500 hover:bg-opacity-20 -mx-1 px-4 rounded-md transition-all hover:scale-110 hover:shadow-md shadow-gray-300"
 
     const logout = () => {
-        localStorage.clear()
+        localStorage.setItem("token","")
         navigate('/login')
     }
 

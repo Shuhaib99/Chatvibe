@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from '../axios'
-import { loginUserAPI, postsByIdAPI, userAPI,followUserAPI, FollowingUserAPI, getSavedPostsAPI, getUsersAPI, addReportAPI } from "../url";
+import { loginUserAPI, postsByIdAPI, userAPI,followUserAPI, FollowingUserAPI, getSavedPostsAPI, getUsersAPI, addReportAPI, getReportAPI } from "../url";
 import { followAPI } from "../url";
 import { unfollowAPI } from "../url";
 import { uploadCoverImgAPI } from "../url";
@@ -117,9 +117,18 @@ export const addReport = createAsyncThunk('addReport', async (body) => {
         return data
     } catch (err) {
         console.log(err)
-    }
- 
+    } 
 })
+export const getReport = createAsyncThunk('agetReport', async () => {
+    try {
+        const token = localStorage.getItem('adlog')
+        const { data } = await axios.get(`${getReportAPI}`, { headers: { 'authorization': 'Bearer ' + token } })
+        return data
+    } catch (err) {
+        console.log(err)
+    } 
+})
+
 
 const UserSlice = createSlice({
 
