@@ -73,8 +73,13 @@ const PostSlice = createSlice({
     name: "Posts",
     initialState,
     reducers: {
-        refr: (state, action) => {            
-            state.refresh=!!refr
+        refr: (state, action) => {
+            if (state.refresh === true) {
+                state.refresh = false
+            }
+            else {
+                state.refresh = true
+            }
             console.log(state.refresh, "Inside of reducer");
         }
     },

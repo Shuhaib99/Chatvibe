@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { getUsers } from '../redux/UserSlice'
 import OutsideClickHandler from 'react-outside-click-handler'
+import { refr } from '../redux/PostSlice'
 
 function Search() {
     const [search, setSearch] = useState("")
@@ -42,7 +43,7 @@ function Search() {
                         return (
                             <div key={obj._id} className='p-3'>
 
-                                <div className='flex  gap-3'>
+                                <div className='flex  gap-3 cursor-pointer'>
                                     <div>
                                         <Link to='/profile/' state={{ id: obj?._id }}>
                                             <Avatar url={obj?.profilepic} />

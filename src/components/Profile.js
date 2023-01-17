@@ -7,7 +7,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { getUser, follow, unfollow, addProfileId } from '../redux/UserSlice'
 import Followers from './Followers'
 import Following from './Following'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import LoadOnButton from './LoadOnButton'
 import Cover from './Cover'
 import Search from './Search'
@@ -41,6 +41,8 @@ function Profile() {
   const isFollowing = pathname.includes('/following')
   const tab_classes = 'flex gap-2 px-6 items-center border-b-4 border-b-white'
   const active_tab_classes = 'flex gap-2 px-6 py-1 items-center border-socialBlue border-b-4 text-socialBlue font-bold'
+  
+  let refrsh = useSelector(state => state.postSlice.refresh)
 
   function handleFollow(id) {
     setBttnIsLoading(true)
@@ -71,11 +73,12 @@ function Profile() {
 
   useEffect(() => {
     fetchUser()
-  }, [refresh])
+  }, [refresh,refrsh])
 
 
   return (
     <Layout>
+      {/* <Search /> */}
       {/* {isLoading && <Loading />} */}
       <Card noPadding={true}>
 

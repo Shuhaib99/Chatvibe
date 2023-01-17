@@ -15,7 +15,8 @@ const Report = () => {
     const [openModal, setOpenModal] = useState(false)
     const [confirmDelete, setConfirmDelete] = useState(false)
     const [confirmDecline, setConfirmDecline] = useState(false)
-    
+    const [reportID,setReportID]=useState("")
+    const [postID,setPosttID]=useState("")
     const dispatch = useDispatch()
     // const {
     //     getTableProps,
@@ -32,16 +33,15 @@ const Report = () => {
             console.log(res.payload, "Reports");
             setReports(res.payload.report)
         })
-        return  ()=>{
-            setConfirmDecline(false)
-        }
-    }, [confirmDelete])
+       
+    }, [confirmDelete,confirmDecline])
 
     const handleDeletePost = (postid, reportId) => {
         console.log("handle delete");
         dispatch(deletePost({ postid, isSuper: reportId })).then((res) => {
             console.log(res);
             setConfirmDelete(false)
+            setPosttID("")
         })
 
     }
@@ -50,6 +50,7 @@ const Report = () => {
         dispatch(deleteReport(reportid)).then((res) => {
             console.log("Deleted");
             setConfirmDecline(false)
+            setReportID("")
         })
     }
     return (
@@ -103,7 +104,6 @@ const Report = () => {
                             return (
                                 
                                 <tr key={obj._id} className=' duration-300'>
-                                {console.log("1234")}
                                     <td>
                                         <div className='px-6  flex py-3'>
                                             <Avatar url={obj?.userid?.profilepic} />
@@ -122,6 +122,7 @@ const Report = () => {
                                     <td >
                                         <div className='px-6 flex gap-2'>
                                             <button className='bg-red-700 text-white rounded-full p-2 cursor-pointer flex' onClick={() => {
+                                                setReportID(obj._id)
                                                 setOpenModal(true)
                                             }}>
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -129,18 +130,20 @@ const Report = () => {
                                                 </svg>
 
                                                 Decline</button>
-                                                {console.log("4321")}
-                                                {confirmDecline && handleDeleteReport(obj._id)}
+                                               
+                                                { reportID === obj._id && confirmDecline && handleDeleteReport(obj._id)}
                                             <button className='bg-green-900 text-white rounded-full p-2 cursor-pointer flex' onClick={() => {
-                                                setOpenModal(true)
-
+                                                // setPosttID(obj?._id)
+                                                // setOpenModal(true)
+                                                handleDeletePost(obj?.postid?._id, obj?._id)
                                             }}>
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                                     <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                 </svg>
 
                                                 Remove Post</button>
-                                            {confirmDelete && handleDeletePost(obj?.postid?._id, obj?._id)}
+                                                {console.log(postID,obj._id,"checking doubts")}
+                                            {/* {postID === obj._id &&  confirmDelete && } */}
                                            
 
 
@@ -149,10 +152,10 @@ const Report = () => {
 
                                 </tr>)
                         })}
-
                     </tbody>
                 </table>
             {/* </div> */}
+            
         </div >)
 }
 export default Report 

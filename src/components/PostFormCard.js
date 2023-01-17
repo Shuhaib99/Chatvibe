@@ -63,7 +63,7 @@ function PostFormCard() {
                     notify()
                     setContent("")
                     setImage("")
-                    dispatch(refr(true))
+                    dispatch(refr())
                 })
             })
 
@@ -73,7 +73,7 @@ function PostFormCard() {
                 setIsLoading(false)
                 notify()
                 setContent("")
-                dispatch(refr(true))
+                dispatch(refr())
             })
         }
     }
