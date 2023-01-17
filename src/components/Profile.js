@@ -76,7 +76,6 @@ function Profile() {
 
   return (
     <Layout>
-      <Search />
       {/* {isLoading && <Loading />} */}
       <Card noPadding={true}>
 

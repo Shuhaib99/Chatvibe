@@ -241,7 +241,7 @@ function Login(props) {
                         </div> : ""}
                         {showRegLog === false ? <center>
                             <button
-                                className='w-96 p-2 px-3 bg-transparent border border-white outline-none rounded-xl text-white hover:bg-slate-200 hover:text-black duration-300'
+                                className='w-96 p-2 px-3 bg-transparent text-xl border border-white outline-none text-white hover:bg-black hover:text-2xl  duration-300'
 
                                 type='submit'   >{props.user === "signup" ? "Register" : "Login"}</button>
 
@@ -249,7 +249,7 @@ function Login(props) {
 
                         {otp ? <center>
                             <button
-                                className='w-96 p-2 px-3 bg-transparent border border-white outline-none rounded-xl text-white hover:bg-slate-200 hover:text-black duration-300'
+                                className='w-96 p-2 px-3 bg-transparent border border-white outline-none rounded-xl text-white hover: duration-300'
                                 type='submit' >
                                 Send OTP
                             </button>

@@ -28,4 +28,5 @@ export const addMessageAPI='message/addMessage/'
 export const addReportAPI='report/addReport/'
 
 export const superAPI='super/bySuper/'
-export const getReportAPI='super/getReport'
+export const getReportAPI='super/getReport/'
+export const deleteReportAPI ='super/deleteReport/'

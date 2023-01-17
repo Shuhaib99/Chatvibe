@@ -35,6 +35,7 @@ function PostCard(props) {
     const [confirmDelete, setConfirmDelete] = useState(false)
     const [reportForm, setReportForm] = useState(false)
     const [report, setReport] = useState("")
+    const [reportHandle,setReportHanle]=useState("")
     const [confirmSendReport, setConfirmSendREport] = useState(false)
     let likesArr = useSelector(state => state.postSlice.likes)
     const formref = useRef(null)
@@ -96,7 +97,7 @@ function PostCard(props) {
 
         }
 
-    }, [likes, refresh, refrsh, confirmDelete,confirmSendReport])
+    }, [likes, refresh, refrsh,confirmDelete])
 
 
 
@@ -112,7 +113,7 @@ function PostCard(props) {
     }
 
     const handleDelete = (postid) => {
-        dispatch(deletePost({ postid }))
+        dispatch(deletePost({ postid,isSuper:false }))
             .then((res) => {
 
                 console.log("deleted");
@@ -125,7 +126,6 @@ function PostCard(props) {
         dispatch(savePosts({ postid: postid, savedpostdelete: false })).then((res) => {
             console.log(res);
             notify()
-
         })
     }
 
@@ -134,6 +134,7 @@ function PostCard(props) {
         dispatch(addReport({postid,reason})).then((res)=>{
             console.log(res.payload);
             setConfirmSendREport(false)
+            notify()
         })
     }
 
@@ -154,7 +155,7 @@ function PostCard(props) {
 
             {openModal && <Modal closeModal={setOpenModal} confirmModal={setConfirmDelete} />}
            
-            {reportForm && <Report close={setReportForm} reason={setReport} confirmReport={setConfirmSendREport} />}
+            {reportForm && <Report close={setReportForm} reason={setReport} confirmReport={setConfirmSendREport}/>}
             {posts?.map(obj => {
                 return <Card key={obj._id} >
                     <div className='flex gap-3'>
@@ -183,7 +184,7 @@ function PostCard(props) {
 
                         <div className='relative'>
                             {isPopup === obj._id && <div className=' bg-slate-300  rounded-md w-44 -ml-40 top-8 absolute '>
-                                <OutsideClickHandler onOutsideClick={(e) => { !openModal && setIsPOp("") }}>
+                                <OutsideClickHandler onOutsideClick={(e) => { !openModal && !reportForm && setIsPOp("") }}>
                                     {user === obj.userid._id && <button onClick={() => {
                                         setOpenModal(true)
 
@@ -205,22 +206,20 @@ function PostCard(props) {
                                         Save
                                     </button>}
                                     {user !== obj.userid._id && <button onClick={() => {
-                                        setReportForm(true)
+                                         setReportForm(true)
                                     }} className=' px-6 py-1  rounded-md w-44 mt-1 hover:bg-slate-200 flex gap-3'>
+                                        {confirmSendReport && handleReport(obj._id,report) }
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5" />
                                         </svg>
 
                                         Report
-                                    </button> }                                    
-                                    { confirmSendReport && handleReport(obj._id,report) }
-                                  
+                                    </button> }
                                 </OutsideClickHandler>
                                  
                             </div>}
                         </div>
                     </div>
-                    {console.log(confirmSendReport,"confirmSendReport")}
                     <div>
                         <div className='my-3 text-sm'>
                             <p>{obj.description}</p>
