@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from '../axios'
-import { loginUserAPI, postsByIdAPI, userAPI,followUserAPI, FollowingUserAPI, getSavedPostsAPI, getUsersAPI, addReportAPI, getReportAPI, deleteReportAPI } from "../url";
+import { loginUserAPI, postsByIdAPI, userAPI,followUserAPI, FollowingUserAPI, getSavedPostsAPI, getUsersAPI, addReportAPI, getReportAPI, deleteReportAPI, getAllUsersAPI } from "../url";
 import { followAPI } from "../url";
 import { unfollowAPI } from "../url";
 import { uploadCoverImgAPI } from "../url";
@@ -110,6 +110,7 @@ export const uploadProfileImage = createAsyncThunk('imagePost', async (body) => 
     })
 })
 
+
 export const addReport = createAsyncThunk('addReport', async (body) => {
     try {
         const token = localStorage.getItem('token')
@@ -133,6 +134,16 @@ export const deleteReport = createAsyncThunk('deleteReport', async (reportid) =>
     try {
         const token = localStorage.getItem('adlog')
         const { data } = await axios.delete(`${deleteReportAPI}`,  { data: { reportid } }, { headers: { 'authorization': 'Bearer ' + token } })
+        return data
+    } catch (err) {
+        console.log(err)
+    } 
+})
+
+export const getAllUsers = createAsyncThunk('getAllUsers', async () => {
+    try {
+        const token = localStorage.getItem('adlog')
+        const { data } = await axios.get(`${getAllUsersAPI}`, { headers: { 'authorization': 'Bearer ' + token } })
         return data
     } catch (err) {
         console.log(err)
