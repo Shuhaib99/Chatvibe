@@ -43,7 +43,7 @@ function Search() {
                         return (
                             <div key={obj._id} className='p-3'>
 
-                                <div className='flex  gap-3 cursor-pointer'>
+                                <div className='flex  gap-3 cursor-pointer hover:text-yellow-400 rounded-md'>
                                     <div>
                                         <Link to='/profile/' state={{ id: obj?._id }}>
                                             <Avatar url={obj?.profilepic} />

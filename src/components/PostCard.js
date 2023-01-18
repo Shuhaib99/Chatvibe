@@ -13,6 +13,7 @@ import Modal from './Modal'
 import OutsideClickHandler from 'react-outside-click-handler'
 import toast, { Toaster } from 'react-hot-toast';
 import Report from './Report'
+import { Key } from '@mui/icons-material'
 // import { refr } from '../redux/PostSlice'
 // import Profile from './Profile'
 
@@ -34,13 +35,18 @@ function PostCard(props) {
     const [openModal, setOpenModal] = useState(false)
     const [confirmDelete, setConfirmDelete] = useState(false)
     const [reportForm, setReportForm] = useState(false)
-    const [report, setReport] = useState("")
-    const [reportHandle,setReportHanle]=useState("")
+    const [currCommentID, setCurrCommentID] = useState("")
+    const [reportHandle, setReportHandle] = useState("")
     const [confirmSendReport, setConfirmSendREport] = useState(false)
+    const [isComment, setIsComment] = useState(false)
+
     let likesArr = useSelector(state => state.postSlice.likes)
     const formref = useRef(null)
     // const btnRef = useRef()
     const notify = () => toast.success("Successfully added");
+    const notifySavedPost = () => toast.success("Saved Post");
+    const errNotifySavedPost = () => toast.success("Post allready saved you ! ");
+
     let refrsh = useSelector(state => state.postSlice.refresh)
     // const user=useSelector(currentUser)
     // const isLikedByMe = !!likes.find(like => likes.userid === user)
@@ -72,6 +78,7 @@ function PostCard(props) {
     // }, [isPopup])
 
     useEffect(() => {
+
         if (!props?.userid) {
             setIsLoading(true)
             dispatch(getPosts()).then((res) => {
@@ -97,7 +104,7 @@ function PostCard(props) {
 
         }
 
-    }, [likes, refresh, refrsh,confirmDelete])
+    }, [likes, refresh, refrsh, confirmDelete])
 
 
 
@@ -113,7 +120,7 @@ function PostCard(props) {
     }
 
     const handleDelete = (postid) => {
-        dispatch(deletePost({ postid,isSuper:false }))
+        dispatch(deletePost({ postid, isSuper: false }))
             .then((res) => {
 
                 console.log("deleted");
@@ -124,19 +131,15 @@ function PostCard(props) {
     const handleSavePost = (postid) => {
         console.log(postid, "savepost");
         dispatch(savePosts({ postid: postid, savedpostdelete: false })).then((res) => {
-            console.log(res);
-            notify()
+            if (res.payload.exist_post) {
+                errNotifySavedPost()
+            } else {
+                notifySavedPost()
+            }
         })
     }
 
-    const handleReport = (postid,reason)=>{
-        console.log("inside handle Report");
-        dispatch(addReport({postid,reason})).then((res)=>{
-            console.log(res.payload);
-            setConfirmSendREport(false)
-            notify()
-        })
-    }
+
 
     return (
         <div>
@@ -154,8 +157,7 @@ function PostCard(props) {
             )}
 
             {openModal && <Modal closeModal={setOpenModal} confirmModal={setConfirmDelete} />}
-           
-            {reportForm && <Report close={setReportForm} reason={setReport} confirmReport={setConfirmSendREport}/>}
+            {reportForm && <Report close={setReportForm} postid={reportHandle} />}
             {posts?.map(obj => {
                 return <Card key={obj._id} >
                     <div className='flex gap-3'>
@@ -187,7 +189,6 @@ function PostCard(props) {
                                 <OutsideClickHandler onOutsideClick={(e) => { !openModal && !reportForm && setIsPOp("") }}>
                                     {user === obj.userid._id && <button onClick={() => {
                                         setOpenModal(true)
-
                                     }} className=' px-6 py-1  rounded-md w-44 mt-1 hover:bg-slate-200   flex gap-3'>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 ">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m6 4.125l2.25 2.25m0 0l2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
@@ -195,7 +196,7 @@ function PostCard(props) {
                                         Delete
                                     </button>}
                                     {confirmDelete && handleDelete(obj._id)}
-                                  
+
 
                                     {user !== obj.userid._id && <button onClick={() => {
                                         handleSavePost(obj._id)
@@ -206,17 +207,19 @@ function PostCard(props) {
                                         Save
                                     </button>}
                                     {user !== obj.userid._id && <button onClick={() => {
-                                         setReportForm(true)
+                                        setReportHandle(obj._id)
+                                        setReportForm(true)
+
                                     }} className=' px-6 py-1  rounded-md w-44 mt-1 hover:bg-slate-200 flex gap-3'>
-                                        {confirmSendReport && handleReport(obj._id,report) }
+
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5" />
                                         </svg>
-
                                         Report
-                                    </button> }
+                                    </button>}
+
                                 </OutsideClickHandler>
-                                 
+
                             </div>}
                         </div>
                     </div>
@@ -239,7 +242,8 @@ function PostCard(props) {
                         </button>
 
                         <button onClick={() => {
-
+                            setCurrCommentID(obj._id)
+                            {isComment ? setIsComment(false) : setIsComment(true) } 
                         }} className='flex gap-2 items-center'>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
@@ -252,8 +256,9 @@ function PostCard(props) {
                             </svg>4
                         </button> */}
                     </div>
+
                     {
-                        obj?.comments.length > 0 ? <div className=' overflow-auto h-40 rounded-md postComments'>
+                       currCommentID === obj._id && isComment && <div className=' overflow-auto h-40 rounded-md postComments'>
                             {
                                 obj?.comments?.slice(0).reverse().map(comment => {
 
@@ -284,7 +289,7 @@ function PostCard(props) {
                                         </div>
                                 })
                             }
-                        </div> : ""
+                        </div>
                     }
 
                     {
