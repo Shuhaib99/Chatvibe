@@ -3,10 +3,10 @@ import react, { useState, useEffect } from 'react'
 import moment from 'moment'
 
 import { useDispatch } from 'react-redux'
-import { deleteReport, getReport } from '../../redux/UserSlice'
 import Avatar from '../Avatar'
 import { deletePost } from '../../redux/PostSlice'
 import Modal from '../Modal'
+import { getReport,deleteReport } from '../../redux/AdminSlice'
 
 // import { useTable } from 'react-table'
 
@@ -29,7 +29,7 @@ const Report = () => {
     //     columns,
     //     data
     // })
-    useEffect(() => {
+    useEffect(() => { 
         dispatch(getReport()).then((res) => {
             console.log(res.payload, "Reports");
             setReports(res.payload.report)
