@@ -8,7 +8,7 @@ const initialState = {
     profileid:""
 }
 
-export const getReport = createAsyncThunk('agetReport', async () => {
+export const getReport = createAsyncThunk('getReport', async () => {
     try {
         const token = localStorage.getItem('adlog')
         const { data } = await axios.get(`${getReportAPI}`, { headers: { 'authorization': 'Bearer ' + token } })
@@ -38,10 +38,10 @@ export const getAllUsers = createAsyncThunk('getAllUsers', async () => {
     } 
 })
 
-export const orUnBlockUsers = createAsyncThunk('getAllUsers', async (body) => {
+export const blockOrUnBlockUsers = createAsyncThunk('getAllUsers', async (body) => {
     try {
         const token = localStorage.getItem('adlog')
-        const { data } = await axios.get(`${actionOnUserAPI}`,body, { headers: { 'authorization': 'Bearer ' + token } })
+        const { data } = await axios.post(`${actionOnUserAPI}`,body, { headers: { 'authorization': 'Bearer ' + token } })
         return data
     } catch (err) {
         console.log(err) 
