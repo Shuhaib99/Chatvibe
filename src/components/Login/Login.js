@@ -25,6 +25,8 @@ function Login(props) {
     const [otpError, setOtpError] = useState(false)
     const [showRegLog, setShowRegLog] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
+    const [blockedUser, setBlockedUser] = useState(false)
+    const [invalidUser, setInvalidUser] = useState(false)
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -40,24 +42,34 @@ function Login(props) {
     //..................Gooooogle..........................
 
     function handleCallbackResponse(response) {
+
         var userObject = jwt_decode(response.credential);
-        dispatch(googleUser(userObject)).then(() => {
-            console.log(userObject);
-            navigate('/')
+        dispatch(googleUser(userObject)).then((res) => {
+            //console.log(userObject);
+            if (res.payload.isBlock) {
+                setBlockedUser(true)
+            } else {
+                navigate('/')
+            }
+
         })
     }
     function GVerify() {
         /*global  google*/
-        google.accounts.id.initialize({
-            client_id: process.env.REACT_APP_GClientID,
-            callback: handleCallbackResponse,
-        });
+        try {
+            google.accounts.id.initialize({
+                client_id: process.env.REACT_APP_GClientID,
+                callback: handleCallbackResponse,
+            });
 
-        google.accounts.id.renderButton(
-            document.getElementById("googlebtn"),
-            { theme: "outline", size: "large", shape: "rectangle" }
-        );
-        //google.accounts.id.prompt();
+            google.accounts.id.renderButton(
+                document.getElementById("googlebtn"),
+                { theme: "outline", size: "large", shape: "rectangle" }
+            );
+            //google.accounts.id.prompt();
+        } catch (err) {
+            console.log(err);
+        }
     }
 
 
@@ -78,11 +90,11 @@ function Login(props) {
                         if (res.payload.user === false) {
                             setSignupError(true)
                         } else if (res.payload.response.otp) {
-                            console.log(res.payload.response.otp,"otp");
+                            console.log(res.payload.response.otp, "otp");
                             setOtpNumber(res.payload.response.otp)
                             setOtp(true)
                             setShowRegLog(true)
-                        }else{
+                        } else {
                             console.log("OTP error.....");
                             setIsLoading(false)
                             setOtpError(true)
@@ -97,10 +109,10 @@ function Login(props) {
             return error
         }
     }
-    function LoginReg(){
+    function LoginReg() {
         try {
             setIsLoading(true)
-           
+
             if (props.user === "signup") {
                 if (otpNumber === otpVerify) {
                     console.log("Inside otp ok");
@@ -132,14 +144,21 @@ function Login(props) {
                 }
             }
             else {
-               
+
                 emailRegex.test(email) ? setErrEmail(true) : setErrEmail(false)
                 PasswordRegex.test(password) ? setErrPassword(true) : setErrPassword(false)
                 if (emailRegex.test(email) && PasswordRegex.test(password)) {
 
-                    dispatch(loginUser({ email, password })).then(() => {
-                        navigate('/');
-                        // console.log("testing");
+                    dispatch(loginUser({ email, password })).then((res) => {
+                        console.log(res, "isBlock");
+                        if (res.payload.isBlock) {
+                            setBlockedUser(true)
+                        } else if (!res.payload.isUser) {
+                            setInvalidUser(true)
+                        }
+                        else {
+                            navigate('/');
+                        }
                     });
                     setIsLoading(false)
                 } else {
@@ -153,10 +172,10 @@ function Login(props) {
     }
     //.....................................................
     const handleRegister = (e) => {
-        
+
         e.preventDefault()
         LoginReg()
-        
+
     }
     return (
         <div className='h-screen w-full bg-cover bg-center bg-fixed bg-[url("https://dm0qx8t0i9gc9.cloudfront.net/watermarks/image/rDtN98Qoishumwih/abstract-colorful-social-network-people-background_zJgPXisO_SB_PM.jpg")]'>
@@ -176,7 +195,7 @@ function Login(props) {
                         <center>
                             {props.user === "user" ? <h2 className='text-white text-4xl '>Sign in</h2> : <h2 className='text-white text-4xl'>Signup</h2>}
                         </center>
-                       {isLoading && <center className='text-orange-500'> <LoadOnButton />Please wait...</center> }
+                        {isLoading && <center className='text-orange-500'> <LoadOnButton />Please wait...</center>}
                         {props.user === "signup" ?
                             <div className=' space-y-5'>
                                 <center>
@@ -203,6 +222,8 @@ function Login(props) {
                                 setEmail(e.target.value)
                                 setErrEmail(true)
                                 setSignupError(false)
+                                setBlockedUser(false)
+                                setInvalidUser(false)
                             }}
                                 value={email} size="small" type="email" label='Email ID' placeholder='Info@example.com' />
                             <span style={{ display: errEmail ? "none" : "block", color: "red", fontSize: "12px" }}>Please enter valid email</span>
@@ -216,6 +237,8 @@ function Login(props) {
                             <input className='w-96 p-2 px-3 bg-transparent border border-white outline-none rounded-3xl text-white' onChange={(e) => {
                                 setPassword(e.target.value)
                                 setErrPassword(true)
+                                setBlockedUser(false)
+                                setInvalidUser(false)
                             }}
                                 value={password} size="small" label='Password' placeholder='Enter Password' type='password' autoComplete='on' />
                             <span style={{ display: errPassword ? "none" : "block", color: "red", fontSize: "12px" }}>Password Shoud be 3 Characters</span>
@@ -239,6 +262,8 @@ function Login(props) {
                                 </Link>
                             </center>
                         </div> : ""}
+                        {invalidUser && <center><span className='text-red-600 text-2xl'>Sorry! Invalid User.</span></center>}
+                        {blockedUser && <center><span className='text-yellow-300 text-2xl'>Sorry! Your account has been blocked!</span></center>}
                         {showRegLog === false ? <center>
                             <button
                                 className='w-96 p-2 px-3 bg-transparent text-xl border border-white outline-none text-white hover:bg-black hover:text-2xl  duration-300'

@@ -111,8 +111,10 @@ const authslice = createSlice({
             state.loading = false
             //console.log(action.payload.user, "testing the action of signup full filled");
             state.loading = false
-
-            let token = action.payload.token
+            let token
+            if (action.payload.token != undefined) {
+                 token = action.payload.token
+            }
             state.token = token
 
             //localStorage.setItem("user",state. user)
@@ -146,14 +148,14 @@ const authslice = createSlice({
             console.log("Pending of Spr");
         })
         builder.addCase(bySuper.fulfilled, (state, action) => {
-            console.log(action,"action");
+            console.log(action, "action");
             let adlog = action.payload.adlog
 
             localStorage.setItem("adlog", adlog)
 
         })
         builder.addCase(bySuper.rejected, (state, action) => {
-           
+
             console.log("Rejected login");
         })
 
