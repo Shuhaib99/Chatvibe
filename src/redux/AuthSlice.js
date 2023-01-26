@@ -76,7 +76,7 @@ const authslice = createSlice({
     },
     extraReducers: (builder) => {
         //..............Login....................
-
+        let token
         builder.addCase(loginUser.pending, (state, action) => {
 
             state.loading = true
@@ -88,7 +88,11 @@ const authslice = createSlice({
             // let user=action.payload.user._id
             // state.user=user
 
-            let token = action.payload.token
+            if (action.payload.isUser !== false) {
+                token = action.payload.token
+            } else {
+                token = ""
+            }
             state.token = token
 
             // localStorage.setItem("user", user)
@@ -111,9 +115,11 @@ const authslice = createSlice({
             state.loading = false
             //console.log(action.payload.user, "testing the action of signup full filled");
             state.loading = false
-            let token
-            if (action.payload.token != undefined) {
-                 token = action.payload.token
+
+            if (action.payload.isUser !== false) {
+                token = action.payload.token
+            } else {
+                token = ""
             }
             state.token = token
 
@@ -129,8 +135,11 @@ const authslice = createSlice({
 
             state.loading = false
             // let user = action.payload.User
-            let token = action.payload.token
-
+            if (action.payload.isUser !== false) {
+                token = action.payload.token
+            }else{
+                token=""
+            }
             // state.user = user
             state.token = token
 
@@ -149,9 +158,12 @@ const authslice = createSlice({
         })
         builder.addCase(bySuper.fulfilled, (state, action) => {
             console.log(action, "action");
-            let adlog = action.payload.adlog
-
-            localStorage.setItem("adlog", adlog)
+            let adlog
+            if (action.payload.login_status != false) {
+                adlog = action.payload.adlog
+                localStorage.setItem("adlog", adlog)
+            }
+            
 
         })
         builder.addCase(bySuper.rejected, (state, action) => {

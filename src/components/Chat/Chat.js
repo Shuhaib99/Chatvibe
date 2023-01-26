@@ -73,7 +73,7 @@ function Chat() {
           <Search/>
           <PostFormCard />
           <Card>
-            <div className='Chat-list'>
+            <div className=''>
               {chats?.map(chat => (
                 <div key={chat?._id}>
                   <div onClick={() => { setCurrentChat(chat) }}>
@@ -85,7 +85,7 @@ function Chat() {
 
           </Card>
           <Card>
-            <div className='Right-side-chat'>
+            <div className=''>
               <ChatBox chat={currentChat} currentuserid={user}
                 setSendMessage={setSendMessage} recieveMessage={recievedMessage} />
             </div>

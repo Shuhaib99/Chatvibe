@@ -83,9 +83,9 @@ function AdminHome() {
             </div>
 
             <div className='p-10 px-16'>
-                {report && <div> <h1 className='text-4xl text-center p-5 font-bold '><u>Report</u></h1>
+                {report && <div> <h1 className='text-4xl text-center p-5 font-bold text-gray-400 '><u>Report</u></h1>
                     <Report /> </div>}
-                {users && <div> <h1 className='text-4xl text-center p-5 font-bold '><u>Users</u></h1>
+                {users && <div> <h1 className='text-4xl text-center p-5 font-bold text-gray-400'><u>Users</u></h1>
                     <AllUsers /> </div>}
             </div>
         </div>

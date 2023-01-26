@@ -32,7 +32,7 @@ const AllUsers = () => {
         <div>
             {openModalBlock && <Modal closeModal={setOpenModalBlock} confirmModal={setConfirmAction} />}
 
-            <table className='shadow-2xl  font-[popins] border-2 border-cyan-200 ml-9'>
+            <table className='shadow-2xl  font-[popins] border-2 border-cyan-200 ml-9 '>
                 <thead className='text-white '>
                     <tr>
                         <th className='px-14 bg-cyan-800'>Name</th>

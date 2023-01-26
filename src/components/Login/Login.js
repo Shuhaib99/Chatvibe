@@ -153,7 +153,7 @@ function Login(props) {
                         console.log(res, "isBlock");
                         if (res.payload.isBlock) {
                             setBlockedUser(true)
-                        } else if (!res.payload.isUser) {
+                        } else if (!res?.payload?.isUser) {
                             setInvalidUser(true)
                         }
                         else {

@@ -162,7 +162,7 @@ function PostCard(props) {
                 return <Card key={obj._id} >
                     <div className='flex gap-3'>
 
-                        <div>
+                        <div className=''>
                             <Link to='/profile/' state={{ id: obj?.userid._id }}>
                                 <Avatar url={obj?.userid.profilepic} />
                             </Link>
