@@ -38,7 +38,7 @@ function Search() {
 
             </Card>
             <OutsideClickHandler onOutsideClick={(e) => { setIspop(false) }}>
-                {search && ispop && <div className='absolute ml-32 w-96 h-auto bg-blue-900 text-white z-50 rounded-md'>
+                {search && ispop && <div className='absolute md:mx-24 w-80 ml-5 md:w-96 h-auto bg-blue-900 text-white z-50 rounded-md'>
                     {users?.map(obj => {
                         return (
                             <div key={obj._id} className='p-3'>

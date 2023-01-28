@@ -199,7 +199,7 @@ function Login(props) {
                         {props.user === "signup" ?
                             <div className=' space-y-5'>
                                 <center>
-                                    <input className='w-96 p-2 px-3 bg-transparent border border-white outline-none rounded-3xl text-white' type="text" onChange={(e) => {
+                                    <input className='w-80 p-2 px-3 bg-transparent border border-white outline-none rounded-3xl text-white' type="text" onChange={(e) => {
                                         setFirstname(e.target.value)
                                         setErrFirstname(true)
                                     }}
@@ -208,7 +208,7 @@ function Login(props) {
                                 </center>
 
                                 <center>
-                                    <input className='w-96 p-2 px-3 bg-transparent border border-white outline-none rounded-3xl text-white' type="text" onChange={(e) => {
+                                    <input className='w-80 p-2 px-3 bg-transparent border border-white outline-none rounded-3xl text-white' type="text" onChange={(e) => {
                                         setLastname(e.target.value)
 
                                     }}
@@ -218,7 +218,7 @@ function Login(props) {
                             </div>
                             : ""}
                         <center>
-                            <input className='w-96 p-2 px-3 bg-transparent border border-white outline-none rounded-3xl text-white' onChange={(e) => {
+                            <input className='w-80 p-2 px-3 bg-transparent border border-white outline-none rounded-3xl text-white' onChange={(e) => {
                                 setEmail(e.target.value)
                                 setErrEmail(true)
                                 setSignupError(false)
@@ -234,7 +234,7 @@ function Login(props) {
                             </div>}
                         </center>
                         <center>
-                            <input className='w-96 p-2 px-3 bg-transparent border border-white outline-none rounded-3xl text-white' onChange={(e) => {
+                            <input className='w-80 p-2 px-3 bg-transparent border border-white outline-none rounded-3xl text-white' onChange={(e) => {
                                 setPassword(e.target.value)
                                 setErrPassword(true)
                                 setBlockedUser(false)
@@ -246,7 +246,7 @@ function Login(props) {
                         <br />
                         {otp && <center>
                             <div className='text-white font-semibold text-center'> Verify OTP </div>
-                            <input className='w-96 p-2 px-3 bg-transparent border border-white outline-none rounded-xl text-white' onChange={(e) => {
+                            <input className='w-80 p-2 px-3 bg-transparent border border-white outline-none rounded-xl text-white' onChange={(e) => {
                                 setOtpVerify(e.target.value)
                                 setOtpError(false)
                             }}
@@ -266,7 +266,7 @@ function Login(props) {
                         {blockedUser && <center><span className='text-yellow-300 text-2xl'>Sorry! Your account has been blocked!</span></center>}
                         {showRegLog === false ? <center>
                             <button
-                                className='w-96 p-2 px-3 bg-transparent text-xl border border-white outline-none text-white hover:bg-black hover:text-2xl  duration-300'
+                                className='w-80 p-2 px-3 bg-transparent text-xl border border-white outline-none text-white hover:bg-black hover:text-2xl  duration-300'
 
                                 type='submit'   >{props.user === "signup" ? "Register" : "Login"}</button>
 
@@ -274,7 +274,7 @@ function Login(props) {
 
                         {otp ? <center>
                             <button
-                                className='w-96 p-2 px-3 bg-transparent border border-white outline-none rounded-xl text-white hover: duration-300'
+                                className='w-80 p-2 px-3 bg-transparent border border-white outline-none rounded-xl text-white hover: duration-300'
                                 type='submit' >
                                 Send OTP
                             </button>
