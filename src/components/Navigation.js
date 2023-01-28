@@ -10,7 +10,7 @@ function Navigation() {
 
 
     const active_element = "text-sm md:text-md flex gap-1 md:gap-2 py-3 my-1  bg-socialBlue text-white md:-mx-6 px-6 md:px-10 rounded-md shadow-md shadow-gray-300"
-    const nonActive_element = "text-sm md:text-md flex gap-1 md:gap-3 py-2 my-2 hover:bg-blue-500 hover:bg-opacity-20 -mx-4 px-7 md:px-4 rounded-md transition-all hover:scale-110 hover:shadow-md shadow-gray-300"
+    const nonActive_element = "text-sm md:text-md flex gap-1 md:gap-3 py-2 my-2 hover:bg-blue-500 hover:bg-opacity-20 -mx-4 px-7 md:px-4 rounded-md transition-all hover:scale-95 hover:shadow-md shadow-gray-300"
 
     const logout = () => {
         localStorage.setItem("token", "")

@@ -7,7 +7,7 @@ function Layout({children}) {
                 <div className='fixed md:static w-full bottom-0 md:w-3/12 -mb-5 z-50'>
                     <Navigation />
                 </div>
-                <div className='mx-4 md:mx-0  md:w-9/12'>
+                <div className='mx-4 md:mx-16  md:w-9/12'>
                   {children}
                 </div>
             </div>
