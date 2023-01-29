@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode'
 import LoadOnButton from '../LoadOnButton'
 import './Login.css';
+import Logo from '../Logo';
 
 
 function Login(props) {
@@ -185,11 +186,13 @@ function Login(props) {
                     <form className=' space-y-5 ' onSubmit={props.user === 'user' ? handleRegister : otp ? handleRegister : otpVerification}>
 
                         <center>
-                            <h1 className='rounded-lg  text-orange-700 text-6xl'>
-                                Chatvibe </h1>{props.user ? <span><br />
-                                    <p className='rounded-lg text-orange-300'> ChatVibe helps you connect and share
-                                        with<br /> the people in your life.</p>
-                                </span> : ""}
+                           <Logo />
+                            {/* <h1 className='rounded-lg  text-orange-700 text-6xl'>
+                                Chatvibe </h1> */}
+                            {props.user ? <span>
+                                <p className='text-sm rounded-lg text-orange-300'> ChatVibe helps you connect and share
+                                    with<br /> the people in your life.</p>
+                            </span> : ""}
                         </center>
 
                         <center>

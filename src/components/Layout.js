@@ -8,15 +8,12 @@ function Layout({ children }) {
                     <Navigation />
                 </div>
                 <div className='mx-4 md:mx-16  md:w-9/12'>
-                    <div className='md:hidden'>
-                        <h2 className='text-orange-700 text-3xl font-bold  text-center mb-0'>
-                            Chatvibe </h2>
-                    </div>
-
+                   
                     {children}
                 </div>
             </div>
         </div>
+
     )
 }
 

@@ -6,12 +6,15 @@ import Search from '../Search'
 
 function ViewHome() {
   return (
-    <Layout>
-
+    <div>
       <Search />
-      <PostFormCard />
-      <PostCard userid={""} />
-    </Layout>
+      <div className='md:mt-32 mt-24'>
+        <Layout>
+          <PostFormCard />
+          <PostCard userid={""} />
+        </Layout>
+      </div>
+    </div>
   )
 }
 

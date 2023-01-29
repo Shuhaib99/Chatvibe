@@ -7,11 +7,12 @@ import { Link } from 'react-router-dom'
 import { getUsers } from '../redux/UserSlice'
 import OutsideClickHandler from 'react-outside-click-handler'
 import { refr } from '../redux/PostSlice'
+import Logo from './Logo'
 
 function Search() {
     const [search, setSearch] = useState("")
     const [users, setUsers] = useState([])
-    const [ispop,setIspop]=useState(false)
+    const [ispop, setIspop] = useState(false)
 
     const dispatch = useDispatch()
 
@@ -24,16 +25,21 @@ function Search() {
     }, [search])
 
     return (
-        <div>
+        <div className='fixed z-50  w-full top-0  '>
 
             <Card>
-
-                <div className='ml-11 relative'>
-
-                    <input value={search} onChange={(e) => {
-                        setIspop(true)
-                        setSearch(e.target.value)
-                    }} className='p-2 w-11/12' placeholder='Search here...' />
+                <div className='ml-11 relative flex'>
+                    <div className=''>
+                        <Logo />
+                    </div>
+                    <div className='w-full'>
+                        <center>
+                            <input value={search} onChange={(e) => {
+                                setIspop(true)
+                                setSearch(e.target.value)
+                            }} className='p-2 w-11/12' placeholder='Search here...' />
+                        </center>
+                    </div>
                 </div>
 
             </Card>
