@@ -33,7 +33,7 @@ function Search() {
                         <Logo />
                     </div>
 
-                    <div className='w-96 flex items-center md:ml-auto'>
+                    <div className='md:w-[30%] flex items-center md:ml-auto'>
                         <input value={search} onChange={(e) => {
                             setIspop(true)
                             setSearch(e.target.value)
@@ -47,7 +47,7 @@ function Search() {
             <OutsideClickHandler onOutsideClick={(e) => { setIspop(false) }}>
 
                 {search && ispop &&
-                    <div className='md:ml-auto -mt-4  md:w-96 h-auto bg-gray-300 text-white z-50 rounded-md'>
+                    <div className='md:ml-auto -mt-4 md:w-[30%] h-auto bg-blue-900 text-white z-50 rounded-md'>
                         {users?.map(obj => {
                             return (
                                 <div key={obj._id} className='p-3'>

@@ -69,28 +69,30 @@ function Chat() {
   return (
     <div>
       <div className='Chat'>
-        <Layout>
-          <Search/>
-          <PostFormCard />
-          <Card>
-            <div className=''>
-              {chats?.map(chat => (
-                <div key={chat?._id}>
-                  <div onClick={() => { setCurrentChat(chat) }}>
-                    <Conversation data={chat} currentuserid={user} online={checkOnlineStatus(chat)} />
+        <Search />
+        <div className='md:mt-32 mt-24'>
+          <Layout>
+            <PostFormCard />
+            <Card>
+              <div className=''>
+                {chats?.map(chat => (
+                  <div key={chat?._id}>
+                    <div onClick={() => { setCurrentChat(chat) }}>
+                      <Conversation data={chat} currentuserid={user} online={checkOnlineStatus(chat)} />
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
 
-          </Card>
-          <Card>
-            <div className=''>
-              <ChatBox chat={currentChat} currentuserid={user}
-                setSendMessage={setSendMessage} recieveMessage={recievedMessage} />
-            </div>
-          </Card>
-        </Layout>
+            </Card>
+            <Card>
+              <div className=''>
+                <ChatBox chat={currentChat} currentuserid={user}
+                  setSendMessage={setSendMessage} recieveMessage={recievedMessage} />
+              </div>
+            </Card>
+          </Layout>
+        </div>
       </div>
     </div>
   )
