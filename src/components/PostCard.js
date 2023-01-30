@@ -266,10 +266,10 @@ function PostCard(props) {
                                         <div key={comment?._id} className='flex flex-row-reverse mt-2 gap-2 items-center'>
                                             <div>
                                                 <Avatar url={comment?.commentby?.profilepic} /></div>
-                                            <div className='bg-green-300  w-64   rounded-3xl py-2 px-4 '>
+                                            <div className='bg-green-300  w-auto   rounded-full py-0 px-4 '>
                                                 <span className='font-semibold mr-1'>
                                                     {comment?.commentby?.firstname}</span>
-                                                <span className='text-sm text-gray-500'><Moment fromNow>{comment?.createdAt}</Moment></span><br />
+                                                <span className='text-xs text-gray-500'><Moment fromNow>{comment?.createdAt}</Moment></span><br />
 
                                                 <p className='text-sm'>{comment?.comment}</p>
                                             </div>
@@ -278,10 +278,10 @@ function PostCard(props) {
                                         <div key={comment?._id} className='flex gap-2 items-center mt-2'>
                                             <div> <Avatar url={comment?.commentby?.profilepic} /></div>
 
-                                            <div className='bg-gray-200 w-64 rounded-3xl py-2 px-4 '>
+                                            <div className='bg-gray-200 w-auto rounded-full py-0 px-4 '>
                                                 <span className='font-semibold mr-1'>
                                                     {comment?.commentby?.firstname}</span>
-                                                <span className='text-sm text-gray-500'><Moment fromNow>{comment?.createdAt}</Moment></span><br />
+                                                <span className='text-xs text-gray-500'><Moment fromNow>{comment?.createdAt}</Moment></span><br />
 
                                                 <p className='text-sm'>{comment?.comment}</p>
 

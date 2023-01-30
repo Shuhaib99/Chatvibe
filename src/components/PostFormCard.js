@@ -79,7 +79,7 @@ function PostFormCard() {
     }
     useEffect(() => {
         dispatch(getCurrentUser()).then((res) => {
-            //console.log(res, "GetCurrentUser");
+            console.log(res, "GetCurrentUser");
             setUser(res.payload.user)
 
         })

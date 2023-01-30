@@ -13,6 +13,7 @@ import Following from './Pages/Following'
 import Chat from './Pages/Chat'
 import SavedPosts from './Pages/SavedPosts'
 import AdminHome from './Pages/AdminHome'
+import Notification from './Pages/Notification'
 
 // import { useSelector } from 'react-redux'
 import ProtectedAdminRoute from './ProtectedAdminRoute'
@@ -41,6 +42,7 @@ function App() {
             <Route path='/posts' element={<Posts />} />
             <Route path='/chat' element={<Chat />} />
             <Route path='/savedposts' element={<SavedPosts />} />
+            <Route path='/notification' element={<Notification />} />
 
           </Route>
 

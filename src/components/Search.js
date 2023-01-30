@@ -37,7 +37,7 @@ function Search() {
                         <input value={search} onChange={(e) => {
                             setIspop(true)
                             setSearch(e.target.value)
-                        }} className='p-2 w-11/12' placeholder='Search here...' />
+                        }} className='p-2 w-11/12' placeholder="Search here..." />
                     </div>
 
 

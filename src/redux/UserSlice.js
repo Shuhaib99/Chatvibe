@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from '../axios'
-import { loginUserAPI, postsByIdAPI, userAPI,followUserAPI, FollowingUserAPI, getSavedPostsAPI, getUsersAPI, addReportAPI, getReportAPI, deleteReportAPI, getAllUsersAPI } from "../url";
+import { loginUserAPI, postsByIdAPI, userAPI,followUserAPI, FollowingUserAPI, getSavedPostsAPI, getUsersAPI, addReportAPI, getReportAPI, deleteReportAPI, getAllUsersAPI, deleteNotificationAPI } from "../url";
 import { followAPI } from "../url";
 import { unfollowAPI } from "../url";
 import { uploadCoverImgAPI } from "../url";
@@ -121,6 +121,15 @@ export const addReport = createAsyncThunk('addReport', async (body) => {
     } 
 })
 
+export const clearNotification = createAsyncThunk('getuser',async()=>{
+    console.log("clearnotification is called");
+    const token =localStorage.getItem('token')
+    return await axios.delete(`${deleteNotificationAPI}`, { headers: { 'authorization': 'Bearer ' + token } }).then(({ data }) => {
+        return data
+    }).catch(err => {
+        console.log(err)
+    })
+})
 
 const UserSlice = createSlice({
 
