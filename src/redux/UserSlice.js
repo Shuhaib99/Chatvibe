@@ -1,13 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from '../axios'
-import { loginUserAPI, postsByIdAPI, userAPI,followUserAPI, FollowingUserAPI, getSavedPostsAPI, getUsersAPI, addReportAPI, getReportAPI, deleteReportAPI, getAllUsersAPI, deleteNotificationAPI } from "../url";
+import { loginUserAPI, postsByIdAPI, userAPI, followUserAPI, FollowingUserAPI, getSavedPostsAPI, getUsersAPI, addReportAPI, getReportAPI, deleteReportAPI, getAllUsersAPI, deleteNotificationAPI } from "../url";
 import { followAPI } from "../url";
 import { unfollowAPI } from "../url";
 import { uploadCoverImgAPI } from "../url";
 
 
 const initialState = {
-    profileid:""
+    profileid: ""
 }
 
 export const getUser = createAsyncThunk('getUser', async (params) => {
@@ -19,10 +19,10 @@ export const getUser = createAsyncThunk('getUser', async (params) => {
     })
 })
 
-export const getCurrentUser = createAsyncThunk('getCurrentUser', async () => {
+export const getCurrentUser = createAsyncThunk('getCurrentUser', async (params) => {
     const token = localStorage.getItem('token')
-    //console.log("getCurrent user");
-    return await axios.get(`${loginUserAPI}`, { headers: { 'authorization': 'Bearer ' + token } }).then(({ data }) => {
+    // console.log(params,"getCurrent user");
+    return await axios.get(`${loginUserAPI}` + params, { headers: { 'authorization': 'Bearer ' + token } }).then(({ data }) => {
         return data
     }).catch((error) => {
         console.log(error)
@@ -32,7 +32,7 @@ export const getCurrentUser = createAsyncThunk('getCurrentUser', async () => {
 export const getFollowers = createAsyncThunk('getFollowers', async (params) => {
     const token = localStorage.getItem('token')
     //console.log("getCurrent user");
-    return await axios.get(`${followUserAPI}`+params, { headers: { 'authorization': 'Bearer ' + token } }).then(({ data }) => {
+    return await axios.get(`${followUserAPI}` + params, { headers: { 'authorization': 'Bearer ' + token } }).then(({ data }) => {
         return data
     }).catch((error) => {
         console.log(error)
@@ -42,10 +42,10 @@ export const getFollowers = createAsyncThunk('getFollowers', async (params) => {
 export const getUsers = createAsyncThunk('getUsers', async (params) => {
     try {
 
-    const token = localStorage.getItem('token')
-    const {data}=await axios.get(`${getUsersAPI}`+params, { headers: { 'authorization': 'Bearer ' + token } })
+        const token = localStorage.getItem('token')
+        const { data } = await axios.get(`${getUsersAPI}` + params, { headers: { 'authorization': 'Bearer ' + token } })
         return data
-    }catch (err) {
+    } catch (err) {
         console.log(err)
     }
 })
@@ -63,7 +63,7 @@ export const getSavedPosts = createAsyncThunk('getSavedPosts', async () => {
 export const getFollowingUsers = createAsyncThunk('getFollowers', async (params) => {
     const token = localStorage.getItem('token')
     //console.log("getCurrent user");
-    return await axios.get(`${FollowingUserAPI}`+params, { headers: { 'authorization': 'Bearer ' + token } }).then(({ data }) => {
+    return await axios.get(`${FollowingUserAPI}` + params, { headers: { 'authorization': 'Bearer ' + token } }).then(({ data }) => {
         return data
     }).catch((error) => {
         console.log(error)
@@ -118,12 +118,12 @@ export const addReport = createAsyncThunk('addReport', async (body) => {
         return data
     } catch (err) {
         console.log(err)
-    } 
+    }
 })
 
-export const clearNotification = createAsyncThunk('getuser',async()=>{
+export const clearNotification = createAsyncThunk('getuser', async () => {
     console.log("clearnotification is called");
-    const token =localStorage.getItem('token')
+    const token = localStorage.getItem('token')
     return await axios.delete(`${deleteNotificationAPI}`, { headers: { 'authorization': 'Bearer ' + token } }).then(({ data }) => {
         return data
     }).catch(err => {
@@ -136,8 +136,8 @@ const UserSlice = createSlice({
     name: "users",
     initialState,
     reducers: {
-        addProfileId:(state,action)=>{
-            state.profileid=action.payload
+        addProfileId: (state, action) => {
+            state.profileid = action.payload
             //console.log(state.profileid,"Inside of profile id reducer");
         }
     },
@@ -157,5 +157,5 @@ const UserSlice = createSlice({
         })
     }
 })
-export const {addProfileId}=UserSlice.actions
+export const { addProfileId } = UserSlice.actions
 export default UserSlice.reducer
