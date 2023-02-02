@@ -106,7 +106,7 @@ const Report = () => {
 
                             <tr key={obj._id} className=' duration-300'>
                                 <td>
-                                    <div className='px-6  flex py-3'>
+                                    <div className='px-6  flex py-3 truncate'>
                                         <Avatar url={obj?.userid?.profilepic} />
                                         <span className='py-2 px-2'>{obj?.userid?.firstname + " " + obj.userid.lastname} </span>
                                     </div>
@@ -121,7 +121,7 @@ const Report = () => {
                                 <td className='px-6'>{obj?.reason}</td>
                                 <td className='px-6'>{moment(obj?.createdAt).format('DD/MM/YYYY')}</td>
                                 <td >
-                                    <div className='px-6 flex gap-2'>
+                                    <div className='px-6 flex gap-2 truncate'>
                                         <button className='bg-red-700 text-white rounded-full p-2 cursor-pointer flex' onClick={() => {
                                             setReportID(obj._id)
                                             setOpenModalDecline(true)

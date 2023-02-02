@@ -50,7 +50,7 @@ const AllUsers = () => {
                         return (
                             <tr key={obj._id} className=' duration-300 '>
                                 <td>
-                                    <div className='px-6  flex py-3'>
+                                    <div className='px-6  flex py-3 truncate'>
                                         <Avatar url={obj?.profilepic} />
                                         <span className='py-2 px-2'>{obj?.firstname + " " + obj?.lastname} </span>
                                     </div>

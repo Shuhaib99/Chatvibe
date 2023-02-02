@@ -78,7 +78,7 @@ function PostFormCard() {
         }
     }
     useEffect(() => {
-        dispatch(getCurrentUser({isNotify:""})).then((res) => {
+        dispatch(getCurrentUser()).then((res) => {
             console.log(res, "GetCurrentUser");
             setUser(res.payload.user)
 

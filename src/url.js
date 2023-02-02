@@ -11,6 +11,7 @@ export const FollowingUserAPI='user/getFollowingUser/'
 export const uploadCoverImgAPI='user/updateProfileImg/'
 export const getSavedPostsAPI='user/getSavedPosts/'
 export const getUsersAPI='user/getUsers/'
+export const getNotificationAPI='user/getNotification'
 export const deleteNotificationAPI='user/deleteNotification/'
 
 export const postAPI='posts/'

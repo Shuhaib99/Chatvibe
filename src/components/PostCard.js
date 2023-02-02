@@ -169,7 +169,7 @@ function PostCard(props) {
                         </div>
 
                         <div className='grow'>
-                            <Link to="/profile" className='font-semibold'>{obj.userid.firstname + " " + obj.userid.lastname} </Link> shared a
+                            <Link to="/profile" state={{ id: obj?.userid._id }} className='font-semibold'>{obj.userid.firstname + " " + obj.userid.lastname} </Link> shared a
                             <Link to="" className='text-socialBlue'> album</Link>
                             <p className='text-gray-500 text-sm'> <Moment fromNow>{obj.createdAt}</Moment></p>
                         </div>

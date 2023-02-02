@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from '../axios'
-import { loginUserAPI, postsByIdAPI, userAPI, followUserAPI, FollowingUserAPI, getSavedPostsAPI, getUsersAPI, addReportAPI, getReportAPI, deleteReportAPI, getAllUsersAPI, deleteNotificationAPI } from "../url";
+import { loginUserAPI, postsByIdAPI, userAPI, followUserAPI, FollowingUserAPI, getSavedPostsAPI, getUsersAPI, addReportAPI, getReportAPI, deleteReportAPI, getAllUsersAPI, deleteNotificationAPI, getNotificationAPI } from "../url";
 import { followAPI } from "../url";
 import { unfollowAPI } from "../url";
 import { uploadCoverImgAPI } from "../url";
@@ -19,15 +19,23 @@ export const getUser = createAsyncThunk('getUser', async (params) => {
     })
 })
 
-export const getCurrentUser = createAsyncThunk('getCurrentUser', async (params) => {
+export const getCurrentUser = createAsyncThunk('getCurrentUser', async () => {
     const token = localStorage.getItem('token')
-    // console.log(params,"getCurrent user");
-    return await axios.get(`${loginUserAPI}` + params, { headers: { 'authorization': 'Bearer ' + token } }).then(({ data }) => {
+    return await axios.get(`${loginUserAPI}`, { headers: { 'authorization': 'Bearer ' + token } }).then(({ data }) => {
         return data
     }).catch((error) => {
         console.log(error)
     })
 })
+export const getNotification = createAsyncThunk('getNotification', async () => {
+    const token = localStorage.getItem('token')
+    return await axios.get(`${getNotificationAPI}`, { headers: { 'authorization': 'Bearer ' + token } }).then(({ data }) => {
+        return data
+    }).catch((error) => {
+        console.log(error)
+    })
+})
+
 
 export const getFollowers = createAsyncThunk('getFollowers', async (params) => {
     const token = localStorage.getItem('token')
