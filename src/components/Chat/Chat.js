@@ -70,12 +70,13 @@ function Chat() {
     <div>
       <div className='Chat'>
         <Search />
-        <div className='md:mt-32 mt-24'>
+        <div className='md:mt-32'>
           <Layout>
             <PostFormCard />
             <Card>
-              <div className=''>
-                {chats?.map(chat => (
+              <div className='overflow-auto h-56 rounded-md postComments'>
+              
+                {chats?.slice(0).reverse().map(chat => (
                   <div key={chat?._id}>
                     <div onClick={() => { setCurrentChat(chat) }}>
                       <Conversation data={chat} currentuserid={user} online={checkOnlineStatus(chat)} />

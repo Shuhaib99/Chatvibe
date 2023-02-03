@@ -8,7 +8,7 @@ function ViewHome() {
   return (
     <div>
       <Search />
-      <div className='md:mt-32 mt-24'>
+      <div className='md:mt-32'>
         <Layout>
           <PostFormCard />
           <PostCard userid={""} />

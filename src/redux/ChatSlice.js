@@ -1,10 +1,18 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from '../axios'
-import { addMessageAPI, getMessagesAPI, userChatsAPI } from "../url";
+import { addMessageAPI, createChatAPI, getMessagesAPI, userChatsAPI } from "../url";
 
 const initialState = {
 
 }
+export const createChat = createAsyncThunk('createChat', async (body) => {
+    const token = localStorage.getItem('token')
+    return await axios.post(`${createChatAPI}`, body, { headers: { 'authorization': 'Bearer ' + token } }).then(({ data }) => {
+        return data
+    }).catch((err) => {
+        console.log(err)
+    })
+})
 
 export const userChats = createAsyncThunk('userChats', async () => {
     const token = localStorage.getItem('token')
@@ -36,6 +44,7 @@ export const addMessage = createAsyncThunk('addMessage', async (body) => {
         console.log(err)
     })
 })
+
 
 const ChatSlice = createSlice({
 
