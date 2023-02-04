@@ -8,7 +8,8 @@ import { getUsers } from '../redux/UserSlice'
 import OutsideClickHandler from 'react-outside-click-handler'
 // import { refr } from '../redux/PostSlice'
 import Logo from './Logo'
-import { createChat } from '../redux/ChatSlice'
+import { chatAction, createChat } from '../redux/ChatSlice'
+import Chat from './Chat/Chat'
 
 
 function Search({ isChat }) {
@@ -30,7 +31,7 @@ function Search({ isChat }) {
         dispatch(createChat({ recieverid: recieverid })).then((res) => {
             console.log(res.payload);
             if (res.payload.result) {
-               navigate('/chat')
+                dispatch(chatAction(true))
             }
         }) 
     }

@@ -67,9 +67,8 @@ function Chat() {
   }
 
   return (
-    <div className='w-full fixed bottom-5 -ml-5 '>
-          <div className='w-96 ml-auto z-50'>
-
+    <div className='w-full fixed bottom-5 -ml-5'>
+          <div className='w-96 ml-auto '>
             <Card>
               <div className='overflow-auto h-56 rounded-md postComments'>
 

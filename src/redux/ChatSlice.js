@@ -3,7 +3,7 @@ import axios from '../axios'
 import { addMessageAPI, createChatAPI, getMessagesAPI, userChatsAPI } from "../url";
 
 const initialState = {
-
+    isChat:false
 }
 export const createChat = createAsyncThunk('createChat', async (body) => {
     const token = localStorage.getItem('token')
@@ -51,8 +51,15 @@ const ChatSlice = createSlice({
     name: "chat",
     initialState,
     reducers: {
-
+        chatAction: (state, action) => {
+            if (state.isChat === true) {
+                state.isChat = false
+            }
+            else {
+                state.isChat = true
+            }
+        }
     }
 })
-
+export const { chatAction } = ChatSlice.actions
 export default ChatSlice.reducer
