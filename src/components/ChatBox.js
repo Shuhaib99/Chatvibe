@@ -64,7 +64,7 @@ function ChatBox({ chat, currentuserid, setSendMessage, recieveMessage }) {
     scroll.current?.scrollIntoView({ behaviour: "smooth" })
   }, [messages])
   return (
-    <div>
+    <div >
       {chat.length !== 0 ? (
         <>
           <>

@@ -67,15 +67,12 @@ function Chat() {
   }
 
   return (
-    <div>
-      <div className='Chat'>
-        <Search />
-        <div className='md:mt-32'>
-          <Layout>
-            <PostFormCard />
+    <div className='w-full fixed bottom-5 -ml-5 '>
+          <div className='w-96 ml-auto z-50'>
+
             <Card>
               <div className='overflow-auto h-56 rounded-md postComments'>
-              
+
                 {chats?.slice(0).reverse().map(chat => (
                   <div key={chat?._id}>
                     <div onClick={() => { setCurrentChat(chat) }}>
@@ -92,10 +89,9 @@ function Chat() {
                   setSendMessage={setSendMessage} recieveMessage={recievedMessage} />
               </div>
             </Card>
-          </Layout>
+          </div>
         </div>
-      </div>
-    </div>
+  
   )
 
 }
