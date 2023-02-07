@@ -300,7 +300,7 @@ function PostCard(props) {
                             <div className='border grow rounded-full relative'>
                                 <form action="" onSubmit={(e) => { handleSubmit(e, obj._id); }}>
                                     <input ref={formref}
-                                        className='block w-full p-3 px-4 overflow-hidden h-12 bg-black rounded-full' placeholder='Leave a comment'
+                                        className='block w-full p-3 px-4 overflow-hidden h-12  rounded-full' placeholder='Leave a comment'
                                         name="comment"
                                         value={commentText}
 

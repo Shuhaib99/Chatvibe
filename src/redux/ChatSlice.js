@@ -51,13 +51,14 @@ const ChatSlice = createSlice({
     name: "chat",
     initialState,
     reducers: {
-        chatAction: (state, action) => {
-            if (state.isChat === true) {
-                state.isChat = false
-            }
-            else {
-                state.isChat = true
-            }
+        chatAction: (state, action) => {      
+            state.isChat=action.payload
+            // if (state.isChat === true) {
+            //     state.isChat = false
+            // }
+            // else {
+            //     state.isChat = true
+            // }
         }
     }
 })

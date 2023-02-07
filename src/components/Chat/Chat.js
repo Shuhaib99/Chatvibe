@@ -68,29 +68,27 @@ function Chat() {
 
   return (
     <div className='w-full fixed bottom-5 -ml-5'>
-          <div className='w-96 ml-auto '>
-            <Card>
-              <div className='overflow-auto h-56 rounded-md postComments'>
+      <div className='w-80 ml-auto bg-black/80 rounded-md text-center mx-1'>
 
-                {chats?.slice(0).reverse().map(chat => (
-                  <div key={chat?._id}>
-                    <div onClick={() => { setCurrentChat(chat) }}>
-                      <Conversation data={chat} currentuserid={user} online={checkOnlineStatus(chat)} />
-                    </div>
-                  </div>
-                ))}
-              </div>
+        <div className='overflow-auto rounded-md postComments flex gap-3'>
 
-            </Card>
-            <Card>
-              <div className=''>
-                <ChatBox chat={currentChat} currentuserid={user}
-                  setSendMessage={setSendMessage} recieveMessage={recievedMessage} />
+          {chats?.slice(0).reverse().map(chat => (
+            <div key={chat?._id}>
+              <div onClick={() => { setCurrentChat(chat) }}>
+                <Conversation data={chat} currentuserid={user} online={checkOnlineStatus(chat)} />
               </div>
-            </Card>
-          </div>
+            </div>
+          ))}
         </div>
-  
+        <hr />
+        <div className=''>
+          <ChatBox chat={currentChat} currentuserid={user}
+            setSendMessage={setSendMessage} recieveMessage={recievedMessage} />
+        </div>
+
+      </div>
+    </div>
+
   )
 
 }

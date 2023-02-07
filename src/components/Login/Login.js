@@ -35,7 +35,7 @@ function Login(props) {
     // let { user } = useSelector(state => state)
 
     // let usernameRegex = /^[a-zA-Z0-9]{5,12}$/
-    let firstnameRegex = /^[a-zA-Z0-9]{4,12}$/
+    let firstnameRegex = /^[a-zA-Z0-9]{4,8}$/
     let emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
     let PasswordRegex = /^[a-zA-Z0-9]{3,15}$/
 
@@ -207,7 +207,7 @@ function Login(props) {
                                         setErrFirstname(true)
                                     }}
                                         value={firstname} size="small" label='First name' placeholder='Enter first name' />
-                                    <span style={{ display: errFirstname ? "none" : "block", color: "red", fontSize: "12px" }}>First name Shoud be 4 Characters</span>
+                                    <span style={{ display: errFirstname ? "none" : "block", color: "red", fontSize: "12px" }}>First name Shoud be 4-8 Characters</span>
                                 </center>
 
                                 <center>

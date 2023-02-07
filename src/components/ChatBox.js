@@ -26,19 +26,22 @@ function ChatBox({ chat, currentuserid, setSendMessage, recieveMessage }) {
   }, [recieveMessage])
 
   const handleSend = (e) => {
-    e.preventDefault()
-    const message = {
-      text: newMessage,
-      chatId: chat._id,
-    }
-    dispatch(addMessage(message)).then((res) => {
-      setMessages([...messages, res.payload])
-      setNewMessage("")
-    })
+    if (newMessage != "") 
+    {
+      e.preventDefault()
+      const message = {
+        text: newMessage,
+        chatid: chat._id,
+      }
+      dispatch(addMessage(message)).then((res) => {
+        setMessages([...messages, res.payload])
+        setNewMessage("")
+      })
 
-    //send messge to socket server
-    const receiverId = chat.members.find((id) => id !== currentuserid);
-    setSendMessage({ ...message, receiverId })
+      //send messge to socket server
+      const receiverId = chat.members.find((id) => id !== currentuserid);
+      setSendMessage({ ...message, receiverId })
+    }
   }
 
 
@@ -63,6 +66,7 @@ function ChatBox({ chat, currentuserid, setSendMessage, recieveMessage }) {
   useEffect(() => {
     scroll.current?.scrollIntoView({ behaviour: "smooth" })
   }, [messages])
+
   return (
     <div >
       {chat.length !== 0 ? (

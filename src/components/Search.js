@@ -28,11 +28,13 @@ function Search({ isChat }) {
     }, [search])
 
     function handleChat(recieverid) {
+        
         dispatch(createChat({ recieverid: recieverid })).then((res) => {
             console.log(res.payload);
             if (res.payload.result) {
                 dispatch(chatAction(true))
             }
+            setIspop(false)
         }) 
     }
 
