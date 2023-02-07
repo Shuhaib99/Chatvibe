@@ -24,6 +24,7 @@ export const savePostAPI='posts/savePosts/'
 
 export const userChatsAPI='chat/userChats/'
 export const createChatAPI='chat/createChat'
+export const findChatAPI='chat/findchat/'
 
 export const getMessagesAPI='message/get_messages/'
 export const addMessageAPI='message/addMessage/'

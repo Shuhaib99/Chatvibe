@@ -72,11 +72,11 @@ function ChatBox({ chat, currentuserid, setSendMessage, recieveMessage }) {
       {chat.length !== 0 ? (
         <>
           <>
-            <div className='hover:bg-slate-100 hover:cursor-pointer'>
+            <div className='hover:cursor-pointer px-3 p-2'>
               <div>
-                <div className='flex items-center gap-2 mt-2'>
+                <div className='flex items-center gap-2 '>
                   <Avatar url={userDataCB?.profilepic} />
-                  <div className='name font-semibold' >
+                  <div className='text-white' >
                     <span>{userDataCB?.firstname + " " + userDataCB?.lastname}</span><br />
                   </div>
                 </div>
@@ -90,16 +90,16 @@ function ChatBox({ chat, currentuserid, setSendMessage, recieveMessage }) {
                   <div key={message._id}>
                     {message.senderid === currentuserid ?
                       <div ref={scroll} className='flex flex-row-reverse '>
-                        <div className=' items-center bg-blue-500 rounded-3xl leading-4 px-4 py-1 mt-1'>
-                          <div className=' text-white  font-serif'>{message?.text}<br />
+                        <div className=' items-center bg-black/50 rounded-tr-full leading-4 px-5 py-1 mt-1'>
+                          <div className=' text-white text-sm'>{message?.text}<br />
                             <p className=' text-gray-700 text-xs'><Moment fromNow>{message.createdAt}</Moment></p>
                           </div>
                         </div>
                       </div>
                       :
                       <div ref={scroll} className='flex flex-grow-0 '>
-                        <div className=' items-center bg-blue-500 rounded-3xl leading-4 px-4 py-1 mt-1'>
-                          <div className=' text-white  font-serif'>{message?.text}<br />
+                        <div className=' items-center bg-black/50 rounded-tl-full leading-4 px-5 py-1 mt-1'>
+                          <div className=' text-white  text-sm'>{message?.text}<br />
                             <p className=' text-gray-700 text-xs'><Moment fromNow>{message.createdAt}</Moment></p>
                           </div>
                         </div>

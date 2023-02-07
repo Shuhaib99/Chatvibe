@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from '../axios'
-import { addMessageAPI, createChatAPI, getMessagesAPI, userChatsAPI } from "../url";
+import { addMessageAPI, createChatAPI, findChatAPI, getMessagesAPI, userChatsAPI } from "../url";
 
 const initialState = {
-    isChat:false
+    isChat:""
 }
 export const createChat = createAsyncThunk('createChat', async (body) => {
     const token = localStorage.getItem('token')
@@ -45,13 +45,24 @@ export const addMessage = createAsyncThunk('addMessage', async (body) => {
     })
 })
 
+export const findChat = createAsyncThunk('findChat', async (params) => {
+    try {
+        const token = localStorage.getItem('token')
+        const { data } = await axios.get(`${findChatAPI}` + params, { headers: { 'authorization': 'Bearer ' + token } })
+        return data
+    } catch (err) {
+        console.log(err)
+    }
+})
+
 
 const ChatSlice = createSlice({
 
     name: "chat",
     initialState,
     reducers: {
-        chatAction: (state, action) => {      
+        chatAction: (state, action) => {   
+            console.log(action.payload,"action.payload redux");   
             state.isChat=action.payload
             // if (state.isChat === true) {
             //     state.isChat = false

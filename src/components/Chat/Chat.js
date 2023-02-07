@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ChatBox from '../ChatBox'
-import { userChats } from '../../redux/ChatSlice'
+import { createChat, findChat, userChats } from '../../redux/ChatSlice'
 import Card from '../Card'
 import Conversation from '../Conversation'
 import Layout from '../Layout'
@@ -17,18 +17,30 @@ function Chat() {
   const [onlineUsers, setOnlineUsers] = useState([])
   const [sendMessage, setSendMessage] = useState(null)
   const [recievedMessage, setRecievedMessage] = useState(null)
-
+  const chatActn = useSelector(state => state.chatSlice.isChat)
   const socket = useRef()
   const dispatch = useDispatch()
   // const userid = useSelector(state => state.auth.user)
   // console.log(userid,"newwwwwwwwwwwww");
 
   useEffect(() => {
+    console.log(chatActn,"chatACtion in chat");
+    if (chatActn !== "") {
+      dispatch(createChat({recieverid:chatActn})).then((res) => {
+        setCurrentChat(res.payload.result)
+      })
+
+    }
+  }, [chatActn])
+
+  useEffect(() => {
+
     dispatch(userChats()).then((res) => {
       setChats(res.payload.chat)
       setUser(res.payload.user)
       // console.log(res.payload.user,"newwwww");
     })
+
   }, [])
 
   useEffect(() => {
@@ -68,10 +80,9 @@ function Chat() {
 
   return (
     <div className='w-full fixed bottom-5 -ml-5'>
-      <div className='w-80 ml-auto bg-black/80 rounded-md text-center mx-1'>
+      <div className='w-72 md:w-80 ml-auto bg-black/90 rounded-lg text-center'>
 
-        <div className='overflow-auto rounded-md postComments flex gap-3'>
-
+        <div className='overflow-auto w-full rounded-md postComments flex gap-3 p-3'>
           {chats?.slice(0).reverse().map(chat => (
             <div key={chat?._id}>
               <div onClick={() => { setCurrentChat(chat) }}>

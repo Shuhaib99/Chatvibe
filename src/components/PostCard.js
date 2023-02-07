@@ -306,12 +306,7 @@ function PostCard(props) {
 
                                         onChange={(e) => { setCommentText(e.target.value) }}
                                     />
-                                    {/* <InputEmoji
-                                        ref={formref}
-                                        value={commentText}
-                                        onChange={setCommentText}
-                                        placeholder='Leave a comment'
-                                    /> */}
+                                   
 
                                     <button type='submit' className='absolute top-3 right-3 text-gray-400 z-0'>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">

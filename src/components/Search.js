@@ -27,15 +27,14 @@ function Search({ isChat }) {
         }
     }, [search])
 
-    function handleChat(recieverid) {
-        
-        dispatch(createChat({ recieverid: recieverid })).then((res) => {
-            console.log(res.payload);
-            if (res.payload.result) {
-                dispatch(chatAction(true))
-            }
+    function handleChat(recieverid) {        
+        // dispatch(createChat({ recieverid: recieverid })).then((res) => {
+        //     console.log(res.payload);
+        //     if (res.payload.result) {
+                dispatch(chatAction(recieverid))
+            // }
             setIspop(false)
-        }) 
+        // }) 
     }
 
     return (
@@ -51,14 +50,14 @@ function Search({ isChat }) {
                             <input value={search} onChange={(e) => {
                                 setIspop(true)
                                 setSearch(e.target.value)
-                            }} className='p-2 w-11/12 border-2 rounded-full' placeholder="Search here..." />
+                            }} className='p-2 w-11/12 border-2 rounded-full px-5' placeholder="Search here..." />
                         </div>
 
 
                     </div>
                 </Card>
-                <OutsideClickHandler onOutsideClick={(e) => { setIspop(false) }}>
 
+                <OutsideClickHandler onOutsideClick={(e) => { setIspop(false) }}>
                     {search && ispop &&
                         <div className='absolute md:static z-50 w-full md:ml-auto -mt-4 md:w-[30%] h-auto bg-black/70 text-white rounded-md'>
                             {users?.map(obj => {
