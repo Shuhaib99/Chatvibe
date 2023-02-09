@@ -24,12 +24,11 @@ function Chat() {
   // console.log(userid,"newwwwwwwwwwwww");
 
   useEffect(() => {
-    console.log(chatActn,"chatACtion in chat");
+    console.log(chatActn, "chatACtion in chat");
     if (chatActn !== "") {
-      dispatch(createChat({recieverid:chatActn})).then((res) => {
+      dispatch(createChat({ recieverid: chatActn })).then((res) => {
         setCurrentChat(res.payload.result)
       })
-
     }
   }, [chatActn])
 
@@ -79,27 +78,35 @@ function Chat() {
   }
 
   return (
-    <div className='w-full fixed bottom-5 -ml-5'>
-      <div className='w-72 md:w-80 ml-auto bg-black/90 rounded-lg text-center'>
+    <>
+      <Search />
+      <div className='md:mt-32'>
+        <Layout>
 
-        <div className='overflow-auto w-full rounded-md postComments flex gap-3 p-3'>
-          {chats?.slice(0).reverse().map(chat => (
-            <div key={chat?._id}>
-              <div onClick={() => { setCurrentChat(chat) }}>
-                <Conversation data={chat} currentuserid={user} online={checkOnlineStatus(chat)} />
+          <PostFormCard />
+          <div className=''>
+            <div className='w-full bg-black/90 rounded-lg text-center'>
+
+              <div className='overflow-auto w-full rounded-md postComments flex gap-3 p-3'>
+                {chats?.slice(0).reverse().map(chat => (
+                  <div key={chat?._id}>
+                    <div onClick={() => { setCurrentChat(chat) }}>
+                      <Conversation data={chat} currentuserid={user} online={checkOnlineStatus(chat)} />
+                    </div>
+                  </div>
+                ))}
               </div>
+              <hr />
+              <div className=''>
+                <ChatBox chat={currentChat} currentuserid={user}
+                  setSendMessage={setSendMessage} recieveMessage={recievedMessage} />
+              </div>
+
             </div>
-          ))}
-        </div>
-        <hr />
-        <div className=''>
-          <ChatBox chat={currentChat} currentuserid={user}
-            setSendMessage={setSendMessage} recieveMessage={recievedMessage} />
-        </div>
-
+          </div>
+        </Layout>
       </div>
-    </div>
-
+    </>
   )
 
 }

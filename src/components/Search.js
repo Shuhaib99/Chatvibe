@@ -32,6 +32,7 @@ function Search({ isChat }) {
         //     console.log(res.payload);
         //     if (res.payload.result) {
                 dispatch(chatAction(recieverid))
+                navigate('/chat')
             // }
             setIspop(false)
         // }) 

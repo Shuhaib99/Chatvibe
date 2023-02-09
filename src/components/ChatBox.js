@@ -85,7 +85,7 @@ function ChatBox({ chat, currentuserid, setSendMessage, recieveMessage }) {
             </div>
             <hr />
             <>
-              <div className='overflow-auto h-48 postComments'>
+              <div className='overflow-auto h-44 md:h-80 postComments '>
                 {messages?.map((message) => (
                   <div key={message._id}>
                     {message.senderid === currentuserid ?
