@@ -78,14 +78,14 @@ function Chat() {
   }
 
   return (
-    <>
+    <div className='z-0'>
       <Search />
       <div className='md:mt-32'>
         <Layout>
 
           <PostFormCard />
           <div className=''>
-            <div className='w-full bg-black/90 rounded-lg text-center'>
+            <div className='w-full bg-black/90 rounded-lg text-center '>
 
               <div className='overflow-auto w-full rounded-md postComments flex gap-3 p-3'>
                 {chats?.slice(0).reverse().map(chat => (
@@ -97,7 +97,7 @@ function Chat() {
                 ))}
               </div>
               <hr />
-              <div className=''>
+              <div className='z-0'>
                 <ChatBox chat={currentChat} currentuserid={user}
                   setSendMessage={setSendMessage} recieveMessage={recievedMessage} />
               </div>
@@ -106,7 +106,7 @@ function Chat() {
           </div>
         </Layout>
       </div>
-    </>
+    </div>
   )
 
 }

@@ -200,7 +200,7 @@ function Login(props) {
                         </center>
                         {isLoading && <center className='text-orange-500'> <LoadOnButton />Please wait...</center>}
                         {props.user === "signup" ?
-                            <div className=' space-y-5'>
+                            <div className='space-y-5'>
                                 <center>
                                     <input className='w-80 p-2 px-3 bg-transparent border border-white outline-none rounded-3xl text-white' type="text" onChange={(e) => {
                                         setFirstname(e.target.value)
@@ -294,7 +294,7 @@ function Login(props) {
                             <div>
                                 <p className='text-white text-xs'>__________________or continue with__________________</p>
                             </div><br />
-                            <div className='w-96' id='googlebtn'>
+                            <div className='' id='googlebtn'>
 
                             </div>
                         </center>

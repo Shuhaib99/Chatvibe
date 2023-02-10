@@ -4,9 +4,9 @@ import Navigation from './Navigation'
 import { useDispatch, useSelector } from 'react-redux'
 
 function Layout({ children }) {
-    const dispatch = useDispatch()
-    const [isChats, setChats] = useState(false)
-    const chatActn = useSelector(state => state.chatSlice.isChat)
+    // const dispatch = useDispatch()
+    // const [isChats, setChats] = useState(false)
+    // const chatActn = useSelector(state => state.chatSlice.isChat)
 
 
 
@@ -37,7 +37,7 @@ function Layout({ children }) {
                 <div className='fixed md:static w-full bottom-0 md:w-3/12 -mb-5'>
                     <Navigation />
                 </div>
-                <div className='mx-4 md:mx-16  md:w-9/12'>
+                <div className=' md:mx-16  md:w-9/12'>
                     {children}
                 </div>
 

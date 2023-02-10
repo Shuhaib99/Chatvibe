@@ -160,9 +160,9 @@ function PostCard(props) {
             {reportForm && <Report close={setReportForm} postid={reportHandle} />}
             {posts?.map(obj => {
                 return <Card key={obj._id} >
-                    <div className='flex gap-3'>
+                    <div className='flex gap-3 py-5'>
 
-                        <div className=''>
+                        <div className='px-1'>
                             <Link to='/profile/' state={{ id: obj?.userid._id }}>
                                 <Avatar url={obj?.userid.profilepic} />
                             </Link>
@@ -225,13 +225,13 @@ function PostCard(props) {
                     </div>
                     <div>
                         <div className='my-3 text-sm'>
-                            <p>{obj.description}</p>
-                            <div className='rounded-md overflow-hidden'>
+                            <p className='px-3'>{obj.description}</p>
+                            <div className='md:rounded-md overflow-hidden'>
                                 <img src={obj.images} alt='' />
                             </div>
                         </div>
                     </div>
-                    <div className='mt-5 flex gap-8'>
+                    <div className='mt-5 flex gap-8 px-1'>
                         <button onClick={() => {
                             likeThisPost(obj._id)
 
@@ -243,7 +243,7 @@ function PostCard(props) {
 
                         <button onClick={() => {
                             setCurrCommentID(obj._id)
-                            {isComment ? setIsComment(false) : setIsComment(true) } 
+                            { isComment ? setIsComment(false) : setIsComment(true) }
                         }} className='flex gap-2 items-center'>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
@@ -256,9 +256,11 @@ function PostCard(props) {
                             </svg>4
                         </button> */}
                     </div>
+                    {/* /............................................................................................................. */}
+
 
                     {
-                       currCommentID === obj._id && isComment && <div className=' overflow-auto h-40 rounded-md postComments'>
+                        currCommentID === obj._id && isComment && <div className=' overflow-auto h-40 rounded-md postComments'>
                             {
                                 obj?.comments?.slice(0).reverse().map(comment => {
 
@@ -293,34 +295,30 @@ function PostCard(props) {
                     }
 
                     {
-                        !userProfile && <div className='flex mt-4 gap-3 '>
+                        !userProfile && <div className='flex mt-4 gap-3 z-[900] px-1'>
                             <div>
                                 <Avatar url={currentuser.profilepic} />
                             </div>
-                            <div className='border grow rounded-full relative'>
-                                <form action="" onSubmit={(e) => { handleSubmit(e, obj._id); }}>
+                            <div className=' border grow rounded-full'>
+                                <form action="" onSubmit={(e) => { handleSubmit(e, obj._id); }} className='flex'>
                                     <input ref={formref}
-                                        className='block w-full p-3 px-4 overflow-hidden h-12  rounded-full' placeholder='Leave a comment'
+                                        className='block w-full p-3 px-4 overflow-hidden rounded-full' placeholder='Leave a comment'
                                         name="comment"
                                         value={commentText}
 
                                         onChange={(e) => { setCommentText(e.target.value) }}
                                     />
-                                   
-
-                                    <button type='submit' className='absolute top-3 right-3 text-gray-400 z-0'>
+                                    <button type='submit' className='top-3 right-3 text-gray-400'>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
                                         </svg>
                                     </button>
 
                                 </form>
-
-
-
                             </div>
                         </div>
                     }
+                    {/* /............................................................................................................. */}
                 </Card>
             })
             }
