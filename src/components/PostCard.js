@@ -27,7 +27,7 @@ function PostCard(props) {
     const [user, setUser] = useState("")
     const [currentuser, setCurrentUser] = useState("")
     const [posts, setPosts] = useState([])
-    const [commentText, setCommentText] = useState('')
+    const [commentText, setCommentText] = useState("")
     const [refresh, setRefresh] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [userProfile, setUserProfile] = useState(false)
@@ -41,7 +41,7 @@ function PostCard(props) {
     const [isComment, setIsComment] = useState(false)
 
     let likesArr = useSelector(state => state.postSlice.likes)
-    const formref = useRef(null)
+    const formref = useRef("")
     // const btnRef = useRef()
     const notify = () => toast.success("Successfully added");
     const notifySavedPost = () => toast.success("Saved Post");
@@ -111,6 +111,8 @@ function PostCard(props) {
     const handleSubmit = (e, id) => {
         e.preventDefault()
         if (commentText) {
+            // const commentText = commentTexts.value
+            // console.log(commentText,"ref",formref.current.nameInput.value, "Cooooooooooooooooooommmmmmmmeeeeeeeennnnnnt");
             dispatch(commentPost({ commentText, id }))
                 .then((res) => {
                     setCommentText("")
@@ -139,7 +141,10 @@ function PostCard(props) {
         })
     }
 
-
+    // const handlText = (id) => {
+    //     if (id === commentTexts.id)
+    //         return commentTexts.value
+    // }
 
     return (
         <div>
@@ -256,9 +261,8 @@ function PostCard(props) {
                             </svg>4
                         </button> */}
                     </div>
+
                     {/* /............................................................................................................. */}
-
-
                     {
                         currCommentID === obj._id && isComment && <div className=' overflow-auto h-40 rounded-md postComments'>
                             {
@@ -300,12 +304,11 @@ function PostCard(props) {
                                 <Avatar url={currentuser.profilepic} />
                             </div>
                             <div className=' border grow rounded-full'>
-                                <form action="" onSubmit={(e) => { handleSubmit(e, obj._id); }} className='flex'>
-                                    <input ref={formref}
+                                <form ref={formref} action="" onSubmit={(e) => { handleSubmit(e, obj._id); }} className='flex'>
+                                    <input 
                                         className='block w-full p-3 px-4 overflow-hidden rounded-full' placeholder='Leave a comment'
-                                        name="comment"
-                                        value={commentText}
-
+                                        name="nameInput"
+                                        //value={handlText(obj._id)}
                                         onChange={(e) => { setCommentText(e.target.value) }}
                                     />
                                     <button type='submit' className='top-3 right-3 text-gray-400'>
@@ -322,6 +325,7 @@ function PostCard(props) {
                 </Card>
             })
             }
+          
         </div >
     )
 }
